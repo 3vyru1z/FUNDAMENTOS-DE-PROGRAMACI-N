@@ -12,3 +12,31 @@ Específicos:
 2. Diseñar una matriz para el almacenamiento dinámico de los proyectos y sus atributos.
 3. Incorporar funciones con paso de parámetros y retornos para el cálculo de estadísticas.
 4. Garantizar la persistencia de la información mediante la lectura y escritura de archivos externos.
+
+Pseudocódigo:
+SECCIÓN 1 (AUTENTICACIÓN DE USUARIOS)
+Función crear cuenta
+Escribir "Registro nueva cuenta"
+Escribir "Ingrese un nombre de usuario:"
+Leer nuevo_usuario
+Escribir "Ingrese una contraseña:"
+Leer nueva_contraseña
+Función iniciar sesion
+Definir usuario cómo input
+Definir autenticado cómo lógico
+Escribir inicio de sesión 
+Escribir "Ingrese su usario:"
+Leer usuario 
+Escribir "Ingrese contraseña:"
+Leer contraseña
+Si validar usuario entonces
+Escribir "Bienvenido"
+Sino
+Escribir "Datos incorrectos"
+Fin si 
+Fin función
+Función registrar proyecto
+Escribir "Nombre del proyecto:"
+Leer nombre
+Escribir "Porcentaje de avance (0-100):"
+Leer avance
