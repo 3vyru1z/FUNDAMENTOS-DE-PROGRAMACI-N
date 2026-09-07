@@ -40,3 +40,79 @@ Escribir "Nombre del proyecto:"
 Leer nombre
 Escribir "Porcentaje de avance (0-100):"
 Leer avance
+si avance >=0 y avance <= 100 entonces
+Escribir "Proyecto, nombre, registrado con, avance, % de avance"
+Sino 
+Escribir "El porcentaje debe estar entre 0 y 100"
+Fin si
+Fin función
+
+Función calcular_metricas
+Escribir "Calculo de métricas de finanzas y tiempo"
+Escribir "Nombre del proyecto:"
+Leer nombre
+Escribir "Total de metas:"
+Leer metas_total
+Escribir"Metas alcanzadas:"
+Leer metas_cumplidas
+Escribir "Presupuesto inicial($):"
+Leern presupuesto_inicial
+Escribir "Presupuesto gastado ($):"
+Leer presupuesto_gastado
+Escribir "Duración estimada en días del proyecto:"
+Leer días
+
+Si metas_total <= 0 Entonces
+Escribir "Error: Sus metas deben ser al menos 1"
+Sino
+presupuesto_restante (presupuesto_inicial - presupuesto_gastado)
+porcentaje_avance (metas_cumplidas / metas_total)*100
+semanas = dias // 7
+dias_s = dias % 7
+Escribir "Resumen de métricas: ", nombre
+Escribir "Avance real de metas: ", porcentaje_avance, "%"
+Escribir "Presupuesto disponible : $", presupuesto_restante
+Escribir "Tiempo estimado: ", semanas, "semanas y", dias_s, "dias"
+Fin si
+Fin función
+
+Función mostrar_menu
+Escribir "Sistema de gestión de proyectos y resultados"
+Escribir "1. Crear cuenta"
+Escribir "2. Iniciar sesión"
+Escribir "3. Registrar proyecto"
+Escribir "4. Cálcular métricas del proyecto (operadores)"
+Escribir "5. Salir"
+Fin función
+
+Función principal
+Definir ejecutando como lógico
+Definir opcion como cadena
+ejecutando como Verdadero
+
+Mientras ejecutando hacer
+mostrar_menu()
+Escribir "Selecciona una opción (1-5):"
+Leer opción
+
+Si opcion hacer
+caso == 1
+crear cuenta()
+caso == 2
+iniciar_sesion()
+caso == 3
+registrar_proyecto()
+caso == 4
+calcular_metricas()
+caso == 5
+Escribir "Cerrando programa"
+ejecutando = falso
+Sino
+Escribir "Opción no válida"
+Finsi
+Fin mientras
+Fin función
+ Inicio
+ principal()
+ Fin codigo
+
