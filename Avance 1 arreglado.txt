@@ -1,0 +1,142 @@
+Repositorio 
+#Sistema de gestión y seguimiento de proyectos sociales 
+#Descripción del problema 
+En iniciativas comunitarias y académicas, el seguimiento de proyectos, la asignación de recursos y la medición de resultados normalmente se gestionan de forma dispersa en herramientas poco apropiadas. Esta falta de centralización dificulta el tomar decisiones, el avance de los objetivos y el control de presupiuestos. Para resolver esta problemática, se desarrollará un programa interactivo en consola en python. El sistema funcionará como un centro de control dónde los usuarios podrán crear una cuenta, iniciar sesión de forma segura y administrar un portafolio de proyectos organizados con matrices. 
+#Objetivos
+General: Desarrollar un programa de consola en python que permita administrar y registrar usuarios con sus respectivos proyectos de impacto social/académico y monitorear sus resultados cuantitativos. 
+Específicos:
+
+Implementar un módulo de autenticación de usuarios ( registro e inicio de sesión).
+Diseñar una matriz para el almacenamiento dinámico de los proyectos y sus atributos.
+Incorporar funciones con paso de parámetros y retornos para el cálculo de estadísticas.
+Garantizar la persistencia de la información mediante la lectura y escritura de archivos externos.
+
+1. Algoritmo Sistema Gestión Proyectos
+2. 
+3. SECCION 1: AUTENTICACIÓN Y REGISTRO DE PROYECTOS
+4. 
+5. Funcion crear_cuenta()
+6.     Entradas: nuevo_usuario, nueva_contrasena
+7.     Salidas: Mensaje en pantalla
+8.     
+9.     Escribir "REGISTRO NUEVA CUENTA"
+10.    Escribir "Ingrese un nombre de usuario:"
+11.    Leer nuevo_usuario
+12.    Escribir "Ingrese una contrasena:"
+13.    Leer nueva_contrasena
+14.    
+15.    Escribir "Cuenta registrada con exito para: ", nuevo_usuario
+16. FinFuncion
+17. 
+18. Funcion iniciar_sesion()
+19.     Entradas: usuario, contrasena
+20.     Salidas: Mensaje en pantalla
+21.     
+22.     Escribir "INICIO DE SESION"
+23.     Escribir "Ingrese su usuario:"
+24.     Leer usuario
+25.     Escribir "Ingrese contrasena:"
+26.     Leer contrasena
+27.     
+28.     Escribir "Bienvenido, ", usuario
+29. FinFuncion
+30. 
+31. Funcion registrar_proyecto()
+32.     Entradas: nombre, avance
+33.     Salidas: Mensaje en pantalla
+34.     
+35.     Escribir "REGISTRO DE PROYECTO"
+36.     Escribir "Nombre del proyecto:"
+37.     Leer nombre
+38.     Escribir "Porcentaje de avance (0 a 100):"
+39.     Leer avance
+40.     
+41.     Si avance >= 0 Y avance <= 100 Entonces
+42.         Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
+43.     Sino
+44.         Escribir "El porcentaje debe estar entre 0 y 100"
+45.     FinSi
+46. FinFuncion
+47. 
+48. SECCION 2: METRICAS Y OPERADORES ARITMETICOS
+49. 
+50. Funcion calcular_metricas()
+51.     Entradas: nombre, metas_total, metas_cumplidas, presupuesto_inicial, presupuesto_gastado, dias
+52.     Salidas: presupuesto_restante, porcentaje_avance, semanas, dias_s, Resumen en pantalla
+53.     
+54.     Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
+55.     Escribir "Nombre del proyecto:"
+56.     Leer nombre
+57.     Escribir "Total de metas:"
+58.     Leer metas_total
+59.     Escribir "Metas alcanzadas:"
+60.     Leer metas_cumplidas
+61.     Escribir "Presupuesto inicial:"
+62.     Leer presupuesto_inicial
+63.     Escribir "Presupuesto gastado:"
+64.     Leer presupuesto_gastado
+65.     Escribir "Duracion estimada en dias del proyecto:"
+66.     Leer dias
+67.     
+68.     Si metas_total <= 0 Entonces
+69.         Escribir "Error: Sus metas deben ser al menos 1"
+70.     Sino
+71.         presupuesto_restante = presupuesto_inicial - presupuesto_gastado
+72.         porcentaje_avance = (metas_cumplidas / metas_total) * 100
+73.         semanas = dias / 7
+74.         dias_s = dias MOD 7
+75.         
+76.         Escribir "Resumen de metricas: ", nombre
+77.         Escribir "Avance real de metas: ", porcentaje_avance, "%"
+78.         Escribir "Presupuesto disponible: ", presupuesto_restante
+79.         Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
+80.     FinSi
+81. FinFuncion
+82. 
+83. SECCION 3: MENU Y FLUJO PRINCIPAL
+84. 
+85. Funcion mostrar_menu()
+86.     Entradas: Ninguna
+87.     Salidas: Opciones en pantalla
+88.     
+89.     Escribir "Sistema de gestion de proyectos y resultados"
+90.     Escribir "1. Crear cuenta"
+91.     Escribir "2. Iniciar sesion"
+92.     Escribir "3. Registrar proyecto"
+93.     Escribir "4. Calcular metricas de proyecto"
+94.     Escribir "5. Salir"
+95. FinFuncion
+96. 
+97. Funcion principal()
+98.     Entradas: opcion
+99.     Salidas: Ejecucion de funciones
+100.    
+101.    ejecutando = Verdadero
+102.    
+103.    Mientras ejecutando Hacer
+104.        mostrar_menu()
+105.        Escribir "Selecciona una opcion (1 a 5):"
+106.        Leer opcion
+107.        
+108.        Si opcion == "1" Entonces
+109.            crear_cuenta()
+110.        FinSi
+111.        Si opcion == "2" Entonces
+112.            iniciar_sesion()
+113.        FinSi
+114.        Si opcion == "3" Entonces
+115.            registrar_proyecto()
+116.        FinSi
+117.        Si opcion == "4" Entonces
+118.            calcular_metricas()
+119.        FinSi
+120.        Si opcion == "5" Entonces
+121.            Escribir "Cerrando programa"
+122.            ejecutando = Falso
+123.        FinSi
+124.    FinMientras
+125. FinFuncion
+126. 
+127. Inicio
+128.     principal()
+129. FinAlgoritmo
