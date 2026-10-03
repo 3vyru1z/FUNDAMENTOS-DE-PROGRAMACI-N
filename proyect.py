@@ -1,96 +1,108 @@
 # Sistema de gestión y seguimiento de proyectos
+
 # Sección 0: Subfunciones de cálculos (Avance 3)
-def calcular_restante(inicial, gastado):
-    return inicial - gastado
-def calcular_porcentaje(cumplidas, total):
-    return (cumplidas / total) * 100
-def calcular_semanas(dias):
-    return dias // 7
-def calcular_dias_sobrantes(dias, semanas):
-    return dias - (semanas * 7)
-# Sección 1: Autenticación y registro
-def crear_cuenta():
-    print("REGISTRO NUEVA CUENTA")
-    nuevo_usuario = input("Ingrese un nombre de usuario: ")
-    nueva_contrasena = input("Ingrese una contraseña: ")
-    if nuevo_usuario and nueva_contrasena:
-        print(f"¡Cuenta de '{nuevo_usuario}' registrada con éxito!")
-    else:
-        print("Error: Debe llenar todos los campos")
-def iniciar_sesion():
-    print("INICIO DE SESIÓN")
-    usuario = input("Ingrese su usuario: ")
-    contrasena = input("Ingrese su contraseña: ")
-    if usuario and contrasena:
-        print(f"¡Bienvenido/a, '{usuario}'!")
-        return True
-    else:
-        print("Datos incorrectos")
-        return False
-def registrar_proyecto():
-    print("REGISTRA TU PROYECTO")
-    nombre = input("Nombre del proyecto: ")
-    try:
-        avance = float(input("Porcentaje de avance (0-100): "))
-        if 0 <= avance <= 100:
-            print(f"Proyecto '{nombre}' registrado con {avance:.1f}% de avance") #.1f sirve para mostrar un decimal
-        else:
-            print("El porcentaje debe estar entre 0 y 100")
-    except ValueError:
-        print("Error: Por favor ingrese un número válido")
-# Sección 2: Métricas
-def calcular_metricas():
-    print("CÁLCULO DE MÉTRICAS DE TIEMPO Y FINANCIERAS")
-    nombre = input("Nombre del proyecto: ")
-    try:
-        metas_total = int(input("Total de metas planificadas: "))
-        metas_cumplidas = int(input("Metas alcanzadas: "))
-        presupuesto_inicial = int(input("Presupuesto inicial ($): "))
-        presupuesto_gastado = int(input("Presupuesto gastado ($): "))
-        dias = int(input("Duración estimada en días del proyecto: "))
-        if metas_total <= 0:
-            print("Error: Sus metas al menos deben ser 1")
-            return
-        # Funciones del avance 3
-        presupuesto_restante = calcular_restante(
-            presupuesto_inicial, presupuesto_gastado
-        )
-        porcentaje_avance = calcular_porcentaje(metas_cumplidas, metas_total)
-        semanas = calcular_semanas(dias)
-        dias_s = calcular_dias_sobrantes(dias, semanas)
-        print("RESUMEN DE RESULTADOS")
-        print(f"Resumen de métricas: {nombre}")
-        print(f"Avance real de metas: {porcentaje_avance:.2f}%") #.2fsirve para mostrar dos decimales
-        print(f"Presupuesto disponible: ${presupuesto_restante}")
-        print(f"Tiempo estimado: {semanas} semanas y {dias_s} días")
-    except ValueError:
-        print("Error: Ingrese números enteros válidos")
-# Sección 3: Menú principal
-def mostrar_menu():
-    print("  SISTEMA DE GESTIÓN DE PROYECTOS")
-    print("1. Crear cuenta")
-    print("2. Iniciar sesión")
-    print("3. Registrar proyecto")
-    print("4. Calcular métricas de proyecto")
-    print("5. Salir")
-def main():
-    print("PROGRAMA INICIADO CORRECTAMENTE")
-    ejecutando = True
-    while ejecutando:
-        mostrar_menu()
-        opcion = input("Escribe el número de la opción elegida (1-5): ")
-        if opcion == "1":
-            crear_cuenta()
-        elif opcion == "2":
-            iniciar_sesion()
-        elif opcion == "3":
-            registrar_proyecto()
-        elif opcion == "4":
-            calcular_metricas()
-        elif opcion == "5":
-            print("Cerrando el programa")
-            ejecutando = False
-        else:
-            print("Opción no válida. Por favor escribe un número del 1 al 5.")
+def calcular_restante(inicial, gastado): # Define función para restar el gasto del presupuesto
+    return inicial - gastado # Retorna el resultado de la resta de valores
+
+def calcular_porcentaje(cumplidas, total): # Define función para calcular el porcentaje de metas
+    return (cumplidas / total) * 100 # Retorna la división y multiplicación para el porcentaje
+
+def calcular_semanas(dias): # Define función para calcular las semanas completas
+    return dias // 7 # Retorna la división entera para calcular semanas
+
+def calcular_dias_sobrantes(dias, semanas): # Define función para calcular los días sobrantes
+    return dias - (semanas * 7) # Retorna la resta para obtener días sobrantes
+
+# Sección 1: Autenticación y registro (Avance 1)
+def crear_cuenta(): # Define función para registrar usuario
+    print("REGISTRO NUEVA CUENTA") # Muestra mensaje de encabezado
+    nuevo_usuario = input("Ingrese un nombre de usuario: ") # Solicita y guarda el usuario
+    nueva_contrasena = input("Ingrese una contraseña: ") # Solicita y guarda la contraseña
+    if nuevo_usuario and nueva_contrasena: # Verifica que ningún campo esté vacío
+        print(f"¡Cuenta de '{nuevo_usuario}' registrada con éxito!") # Confirma el registro exitoso
+    else: # Ejecuta si falta algún campo
+        print("Error: Debe llenar todos los campos") # Advierte que falta completar información
+
+def iniciar_sesion(): # Define función para autenticar usuario
+    print("INICIO DE SESIÓN") # Muestra encabezado de inicio
+    usuario = input("Ingrese su usuario: ") # Solicita el usuario
+    contrasena = input("Ingrese su contraseña: ") # Solicita la contraseña
+    if usuario and contrasena: # Valida que ambos campos tengan datos
+        print(f"¡Bienvenido/a, '{usuario}'!") # Muestra mensaje de bienvenida
+        return True # Devuelve True si la sesión fue exitosa
+    else: # Ejecuta si faltan datos
+        print("Datos incorrectos") # Informa fallo en autenticación
+        return False # Devuelve False si no se inició sesión
+
+def registrar_proyecto(): # Define función para registrar proyecto
+    print("REGISTRA TU PROYECTO") # Muestra título de la opción
+    nombre = input("Nombre del proyecto: ") # Solicita el nombre del proyecto
+    try: # Inicia bloque de prevención de errores
+        avance = float(input("Porcentaje de avance (0-100): ")) # Lee y convierte a flotante
+        if 0 <= avance <= 100: # Evalúa si el porcentaje está en el rango correcto
+            print(f"Proyecto '{nombre}' registrado con {avance:.1f}% de avance") # Muestra avance formateado
+        else: # Ejecuta si el número está fuera de rango
+            print("El porcentaje debe estar entre 0 y 100") # Muestra advertencia de rango
+    except ValueError: # Atrapa error si ingresan texto en vez de número
+        print("Error: Por favor ingrese un número válido") # Informa de error de entrada
+
+# Sección 2: Métricas (Avance 2)
+def calcular_metricas(): # Define función para calcular métricas
+    print("CÁLCULO DE MÉTRICAS DE TIEMPO Y FINANCIERAS") # Imprime título de sección
+    nombre = input("Nombre del proyecto: ") # Solicita el nombre del proyecto
+    try: # Inicia validación de datos de entrada
+        metas_total = int(input("Total de metas planificadas: ")) # Lee total de metas
+        metas_cumplidas = int(input("Metas alcanzadas: ")) # Lee metas logradas
+        presupuesto_inicial = int(input("Presupuesto inicial ($): ")) # Lee presupuesto inicial
+        presupuesto_gastado = int(input("Presupuesto gastado ($): ")) # Lee monto gastado
+        dias = int(input("Duración estimada en días del proyecto: ")) # Lee días estimados
+
+        if metas_total <= 0: # Comprueba que las metas no sean cero ni negativas
+            print("Error: Sus metas al menos deben ser 1") # Advierte sobre la condición
+            return # Detiene la función para evitar errores matemáticos
+
+        presupuesto_restante = calcular_restante(presupuesto_inicial, presupuesto_gastado) # Llama función para restar presupuesto
+        porcentaje_avance = calcular_porcentaje(metas_cumplidas, metas_total) # Llama función para calcular porcentaje
+        semanas = calcular_semanas(dias) # Llama función para calcular semanas
+        dias_s = calcular_dias_sobrantes(dias, semanas) # Llama función para calcular días restantes
+
+        print("RESUMEN DE RESULTADOS") # Imprime título del reporte
+        print(f"Resumen de métricas: {nombre}") # Muestra el nombre asignado
+        print(f"Avance real de metas: {porcentaje_avance:.2f}%") # Imprime porcentaje con dos decimales
+        print(f"Presupuesto disponible: ${presupuesto_restante}") # Imprime saldo disponible
+        print(f"Tiempo estimado: {semanas} semanas y {dias_s} días") # Imprime desglose de tiempo
+
+    except ValueError: # Atrapa error si la conversión a int/float falla
+        print("Error: Ingrese números enteros válidos") # Informa que la entrada no es un entero
+
+# Sección 3: Menú principal (Avance 3)
+def mostrar_menu(): # Define función para imprimir opciones
+    print("  SISTEMA DE GESTIÓN DE PROYECTOS") # Imprime encabezado principal
+    print("1. Crear cuenta") # Imprime opción 1
+    print("2. Iniciar sesión") # Imprime opción 2
+    print("3. Registrar proyecto") # Imprime opción 3
+    print("4. Calcular métricas de proyecto") # Imprime opción 4
+    print("5. Salir") # Imprime opción 5
+
+def main(): # Define función principal
+    print("PROGRAMA INICIADO CORRECTAMENTE") # Notifica inicio del sistema
+    ejecutando = True # Variable de control para mantener el ciclo activo
+    while ejecutando: # Ciclo mientras ejecutando sea True
+        mostrar_menu() # Llama a la función que dibuja el menú
+        opcion = input("Escribe el número de la opción elegida (1-5): ") # Lee la opción del usuario
+        if opcion == "1": # Compara si se eligió la opción 1
+            crear_cuenta() # Ejecuta función de registro
+        elif opcion == "2": # Compara si se eligió la opción 2
+            iniciar_sesion() # Ejecuta función de inicio de sesión
+        elif opcion == "3": # Compara si se eligió la opción 3
+            registrar_proyecto() # Ejecuta función de registro de proyecto
+        elif opcion == "4": # Compara si se eligió la opción 4
+            calcular_metricas() # Ejecuta función de cálculo de métricas
+        elif opcion == "5": # Compara si se eligió la opción 5
+            print("Cerrando el programa") # Notifica la salida del sistema
+            ejecutando = False # Cambia a False para romper el ciclo while
+        else: # Caso por defecto si la opción no existe
+            print("Opción no válida. Por favor escribe un número del 1 al 5.") # Notifica opción inválda
+
 # Ejecución del programa
-main()
+main() # Inicia el flujo general llamando a la función main
