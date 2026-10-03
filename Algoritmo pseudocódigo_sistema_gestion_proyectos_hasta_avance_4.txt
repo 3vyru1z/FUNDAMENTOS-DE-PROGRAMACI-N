@@ -1,0 +1,205 @@
+Algoritmo sistema_gestion_proyectos
+
+    Definir proyectos_registrados Como Cadena
+    
+    SubProceso calcular_restante (inicial, gastado)
+        Retornar inicial - gastado
+    FinSubProceso
+
+    SubProceso calcular_porcentaje (cumplidas, total)
+        Retornar (cumplidas / total) * 100
+    FinSubProceso
+
+    SubProceso calcular_semanas (dias)
+        Retornar TRUNC(dias / 7)
+    FinSubProceso
+
+    SubProceso calcular_dias_sobrantes (dias, semanas)
+        Retornar dias - (semanas * 7)
+    FinSubProceso
+
+    SubProceso generar_barra_progreso (porcentaje)
+        Definir bloques Como Entero
+        Definir barra Como Cadena
+        
+        Si porcentaje < 0 Entonces
+            porcentaje <- 0
+        FinSi
+        Si porcentaje > 100 Entonces
+            porcentaje <-- 100
+        FinSi
+        
+        bloques <- TRUNC(porcentaje / 10)
+        
+        // Simulación del progreso en pseudocódigo
+        Escribir "Progreso: [", bloques, " de 10 bloques completados]"
+    FinSubProceso
+
+    SubProceso evaluar_salud_presupuesto (inicial, gastado)
+        Definir porcentaje_gastado Como Real
+        
+        Si inicial > 0 Entonces
+            porcentaje_gastado <- (gastado / inicial) * 100
+        Sino
+            porcentaje_gastado <- 0
+        FinSi
+
+        Si porcentaje_gastado > 90 Entonces
+            Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)"
+        Sino 
+            Si porcentaje_gastado >= 70 Entonces
+                Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)"
+            Sino
+                Escribir "Saludable: Presupuesto bajo control (Menor al 70%)"
+            FinSi
+        FinSi
+    FinSubProceso
+
+    SubProceso crear_cuenta()
+        Definir nuevo_usuario, nueva_contrasena Como Cadena
+        
+        Escribir "REGISTRO NUEVA CUENTA"
+        Escribir "Ingrese un nombre de usuario:"
+        Leer nuevo_usuario
+        Escribir "Ingrese una contrasena:"
+        Leer nueva_contrasena
+        
+        Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces
+            Escribir "Cuenta registrada con exito para: ", nuevo_usuario
+        Sino
+            Escribir "Error: Debe llenar todos los campos"
+        FinSi
+    FinSubProceso
+
+    SubProceso iniciar_sesion()
+        Definir usuario, contrasena Como Cadena
+        
+        Escribir "INICIO DE SESION"
+        Escribir "Ingrese su usuario:"
+        Leer usuario
+        Escribir "Ingrese contrasena:"
+        Leer contrasena
+        
+        Si usuario <> "" Y contrasena <> "" Entonces
+            Escribir "Bienvenido/a, ", usuario
+        Sino
+            Escribir "Datos incorrectos"
+        FinSi
+    FinSubProceso
+
+    SubProceso registrar_proyecto()
+        Definir nombre Como Cadena
+        Definir avance Como Real
+        
+        Escribir "REGISTRO DE PROYECTO"
+        Escribir "Nombre del proyecto:"
+        Leer nombre
+        Escribir "Porcentaje de avance (0 a 100):"
+        Leer avance
+        
+        Si avance >= 0 Y avance <= 100 Entonces
+            Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
+            generar_barra_progreso(avance)
+        Sino
+            Escribir "El porcentaje debe estar entre 0 y 100"
+        FinSi
+    FinSubProceso
+
+    SubProceso calcular_metricas()
+        Definir nombre Como Cadena
+        Definir metas_total, metas_cumplidas Como Entero
+        Definir presupuesto_inicial, presupuesto_gastado Como Real
+        Definir dias, semanas, dias_s Como Entero
+        Definir presupuesto_restante, porcentaje_avance Como Real
+        
+        Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
+        Escribir "Nombre del proyecto:"
+        Leer nombre
+        Escribir "Total de metas:"
+        Leer metas_total
+        Escribir "Metas alcanzadas:"
+        Leer metas_cumplidas
+        Escribir "Presupuesto inicial:"
+        Leer presupuesto_inicial
+        Escribir "Presupuesto gastado:"
+        Leer presupuesto_gastado
+        Escribir "Duracion estimada en dias del proyecto:"
+        Leer dias
+        
+        Si metas_total <= 0 Entonces
+            Escribir "Error: Sus metas deben ser al menos 1"
+        Sino
+            presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado)
+            porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total)
+            semanas <- calcular_semanas(dias)
+            dias_s <- calcular_dias_sobrantes(dias, semanas)
+            
+            Escribir "RESUMEN DE RESULTADOS"
+            Escribir "Resumen de metricas: ", nombre
+            Escribir "Avance real de metas: ", porcentaje_avance, "%"
+            generar_barra_progreso(porcentaje_avance)
+            evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado)
+            Escribir "Presupuesto disponible: $", presupuesto_restante
+            Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
+        FinSi
+    FinSubProceso
+
+    SubProceso ver_historial_proyectos()
+        Escribir "HISTORIAL DE PROYECTOS REGISTRADOS"
+        Escribir "Mostrando listado de proyectos en memoria..."
+    FinSubProceso
+
+    SubProceso mostrar_menu()
+        Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS"
+        Escribir "1. Crear cuenta"
+        Escribir "2. Iniciar sesion"
+        Escribir "3. Registrar proyecto"
+        Escribir "4. Calcular metricas de proyecto"
+        Escribir "5. Ver historial de proyectos"
+        Escribir "6. Salir"
+    FinSubProceso
+
+    SubProceso principal()
+        Definir opcion Como Cadena
+        Definir ejecutando Como Logico
+        
+        ejecutando <- Verdadero
+        
+        Mientras ejecutando Hacer
+            mostrar_menu()
+            Escribir "Selecciona una opcion (1 a 6):"
+            Leer opcion
+            
+            Si opcion = "1" Entonces
+                crear_cuenta()
+            Sino 
+                Si opcion = "2" Entonces
+                    iniciar_sesion()
+                Sino 
+                    Si opcion = "3" Entonces
+                        registrar_proyecto()
+                    Sino 
+                        Si opcion = "4" Entonces
+                            calcular_metricas()
+                        Sino 
+                            Si opcion = "5" Entonces
+                                ver_historial_proyectos()
+                            Sino 
+                                Si opcion = "6" Entonces
+                                    Escribir "Cerrando programa"
+                                    ejecutando <- Falso
+                                Sino
+                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 6."
+                                FinSi
+                            FinSi
+                        FinSi
+                    FinSi
+                FinSi
+            FinSi
+        FinMientras
+    FinSubProceso
+
+    // Inicio del flujo del algoritmo
+    principal()
+
+FinAlgoritmo
