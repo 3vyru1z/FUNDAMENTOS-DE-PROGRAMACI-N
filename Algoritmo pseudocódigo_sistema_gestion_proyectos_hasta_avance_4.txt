@@ -1,205 +1,212 @@
 Algoritmo sistema_gestion_proyectos
 
-    Definir proyectos_registrados Como Cadena
+    Definir proyectos_registrados Como Cadena // [Avance 1] Define variable global para proyectos
     
-    SubProceso calcular_restante (inicial, gastado)
-        Retornar inicial - gastado
+    SubProceso calcular_restante (inicial, gastado) // [Avance 3] Define subproceso para restar presupuesto
+        Retornar inicial - gastado // [Avance 2 y 3] Retorna el resultado de la resta
     FinSubProceso
 
-    SubProceso calcular_porcentaje (cumplidas, total)
-        Retornar (cumplidas / total) * 100
+    SubProceso calcular_porcentaje (cumplidas, total) // [Avance 3] Define subproceso para calcular porcentaje
+        Retornar (cumplidas / total) * 100 // [Avance 2 y 3] Retorna el cálculo del porcentaje
     FinSubProceso
 
-    SubProceso calcular_semanas (dias)
-        Retornar TRUNC(dias / 7)
+    SubProceso calcular_semanas (dias) // [Avance 3] Define subproceso para calcular semanas
+        Retornar TRUNC(dias / 7) // [Avance 2 y 3] Retorna la división entera para obtener semanas
     FinSubProceso
 
-    SubProceso calcular_dias_sobrantes (dias, semanas)
-        Retornar dias - (semanas * 7)
+    SubProceso calcular_dias_sobrantes (dias, semanas) // [Avance 3] Define subproceso para días sobrantes
+        Retornar dias - (semanas * 7) // [Avance 2 y 3] Retorna la resta para obtener días restantes
     FinSubProceso
 
-    SubProceso generar_barra_progreso (porcentaje)
-        Definir bloques Como Entero
-        Definir barra Como Cadena
+    SubProceso generar_barra_progreso (porcentaje) // [Avance 3] Define subproceso para la barra visual
+        Definir bloques Como Entero // [Avance 1] Define variable entera local para los bloques
+        Definir barra Como Cadena // [Avance 1] Define variable de texto local para la barra
         
-        Si porcentaje < 0 Entonces
-            porcentaje <- 0
-        FinSi
-        Si porcentaje > 100 Entonces
-            porcentaje <-- 100
-        FinSi
+        Si porcentaje < 0 Entonces // [Avance 4] Estructura de decisión: comprueba si es menor a cero
+            porcentaje <- 0 // [Avance 1] Ajusta el porcentaje a cero si es negativo
+        FinSi // [Avance 4] Cierra la estructura condicional
+        Si porcentaje > 100 Entonces // [Avance 4] Estructura de decisión: comprueba si supera 100
+            porcentaje <- 100 // [Avance 1] Ajusta el porcentaje a 100 si excede el límite
+        FinSi // [Avance 4] Cierra la estructura condicional
         
-        bloques <- TRUNC(porcentaje / 10)
+        bloques <- TRUNC(porcentaje / 10) // [Avance 2 y 3] Calcula cuántos bloques pintar dividiendo entre 10
         
-        // Simulación del progreso en pseudocódigo
-        Escribir "Progreso: [", bloques, " de 10 bloques completados]"
+        Escribir "Progreso: [", bloques, " de 10 bloques completados]" // [Avance 1] Imprime simulación del progreso
     FinSubProceso
 
-    SubProceso evaluar_salud_presupuesto (inicial, gastado)
-        Definir porcentaje_gastado Como Real
+    SubProceso evaluar_salud_presupuesto (inicial, gastado) // [Avance 3] Define subproceso para evaluar dinero
+        Definir porcentaje_gastado Como Real // [Avance 1] Define variable real para el gasto
         
-        Si inicial > 0 Entonces
-            porcentaje_gastado <- (gastado / inicial) * 100
-        Sino
-            porcentaje_gastado <- 0
-        FinSi
+        Si inicial > 0 Entonces // [Avance 4] Estructura de decisión: verifica que el presupuesto inicial sea mayor a cero
+            porcentaje_gastado <- (gastado / inicial) * 100 // [Avance 2 y 3] Calcula el porcentaje utilizado
+        Sino // [Avance 4] Estructura de decisión caso contrario si es cero
+            porcentaje_gastado <- 0 // [Avance 1] Evita división por cero asignando cero
+        FinSi // [Avance 4] Cierra la estructura condicional
 
-        Si porcentaje_gastado > 90 Entonces
-            Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)"
-        Sino 
-            Si porcentaje_gastado >= 70 Entonces
-                Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)"
-            Sino
-                Escribir "Saludable: Presupuesto bajo control (Menor al 70%)"
-            FinSi
-        FinSi
+        Si porcentaje_gastado > 90 Entonces // [Avance 4] Estructura de decisión: evalúa si supera el 90%
+            Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)" // [Avance 1] Imprime mensaje de alerta crítica
+        Sino  // [Avance 4] Estructura de decisión si no supera el 90%
+            Si porcentaje_gastado >= 70 Entonces // [Avance 4] Estructura de decisión: evalúa si está entre 70% y 90%
+                Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)" // [Avance 1] Imprime aviso de precaución
+            Sino // [Avance 4] Estructura de decisión: si es menor al 70%
+                Escribir "Saludable: Presupuesto bajo control (Menor al 70%)" // [Avance 1] Imprime aviso de estado óptimo
+            FinSi // [Avance 4] Cierra la estructura condicional anidada
+        FinSi // [Avance 4] Cierra la estructura condicional principal
     FinSubProceso
 
-    SubProceso crear_cuenta()
-        Definir nuevo_usuario, nueva_contrasena Como Cadena
+    SubProceso crear_cuenta() // [Avance 3] Define subproceso para registro de cuentas
+        Definir nuevo_usuario, nueva_contrasena Como Cadena // [Avance 1] Define variables de texto para credenciales
         
-        Escribir "REGISTRO NUEVA CUENTA"
-        Escribir "Ingrese un nombre de usuario:"
-        Leer nuevo_usuario
-        Escribir "Ingrese una contrasena:"
-        Leer nueva_contrasena
+        Escribir "REGISTRO NUEVA CUENTA" // [Avance 1] Imprime título de la opción
+        Escribir "Ingrese un nombre de usuario:" // [Avance 1] Solicita el nombre de usuario
+        Leer nuevo_usuario // [Avance 1] Lee y almacena el usuario
+        Escribir "Ingrese una contrasena:" // [Avance 1] Solicita la contraseña
+        Leer nueva_contrasena // [Avance 1] Lee y almacena la contraseña
         
-        Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces
-            Escribir "Cuenta registrada con exito para: ", nuevo_usuario
-        Sino
-            Escribir "Error: Debe llenar todos los campos"
-        FinSi
+        Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces // [Avance 4] Estructura de decisión valida que no estén vacíos
+            Escribir "Cuenta registrada con exito para: ", nuevo_usuario // [Avance 1] Imprime confirmación de éxito
+        Sino // [Avance 4] Estructura de decisión: se ejecuta si falta algún campo
+            Escribir "Error: Debe llenar todos los campos" // [Avance 1] Imprime mensaje de error
+        FinSi // [Avance 4] Cierra la estructura condicional
     FinSubProceso
 
-    SubProceso iniciar_sesion()
-        Definir usuario, contrasena Como Cadena
+    SubProceso iniciar_sesion() // [Avance 3] Define subproceso para inicio de sesión
+        Definir usuario, contrasena Como Cadena // [Avance 1] Define variables de texto locales
         
-        Escribir "INICIO DE SESION"
-        Escribir "Ingrese su usuario:"
-        Leer usuario
-        Escribir "Ingrese contrasena:"
-        Leer contrasena
+        Escribir "INICIO DE SESION" // [Avance 1] Imprime título de inicio de sesión
+        Escribir "Ingrese su usuario:" // [Avance 1] Solicita el usuario
+        Leer usuario // [Avance 1] Lee el usuario ingresado
+        Escribir "Ingrese contrasena:" // [Avance 1] Solicita la contraseña
+        Leer contrasena // [Avance 1] Lee la contraseña ingresada
         
-        Si usuario <> "" Y contrasena <> "" Entonces
-            Escribir "Bienvenido/a, ", usuario
-        Sino
-            Escribir "Datos incorrectos"
-        FinSi
+        Si usuario <> "" Y contrasena <> "" Entonces // [Avance 4] Estructura de decisión comprueba campos llenos
+            Escribir "Bienvenido/a, ", usuario // [Avance 1] Imprime bienvenida
+        Sino // [Avance 4] Estructura de decisión se ejecuta si hay campos vacíos
+            Escribir "Datos incorrectos" // [Avance 1] Imprime error de datos
+        FinSi // [Avance 4] Cierra la estructura condicional
     FinSubProceso
 
-    SubProceso registrar_proyecto()
-        Definir nombre Como Cadena
-        Definir avance Como Real
+    SubProceso registrar_proyecto() // [Avance 3] Define subproceso para registrar proyectos
+        Definir nombre Como Cadena // [Avance 1] Define variable de texto para el nombre
+        Definir avance Como Real // [Avance 1] Define variable real para el porcentaje
+        Definir continuar Como Cadena // [Avance 1] Define variable para controlar el ciclo de repetición
         
-        Escribir "REGISTRO DE PROYECTO"
-        Escribir "Nombre del proyecto:"
-        Leer nombre
-        Escribir "Porcentaje de avance (0 a 100):"
-        Leer avance
+        continuar <- "s" // [Avance 5] Inicializa la variable de control en "s" para entrar al ciclo
         
-        Si avance >= 0 Y avance <= 100 Entonces
-            Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
-            generar_barra_progreso(avance)
-        Sino
-            Escribir "El porcentaje debe estar entre 0 y 100"
-        FinSi
-    FinSubProceso
-
-    SubProceso calcular_metricas()
-        Definir nombre Como Cadena
-        Definir metas_total, metas_cumplidas Como Entero
-        Definir presupuesto_inicial, presupuesto_gastado Como Real
-        Definir dias, semanas, dias_s Como Entero
-        Definir presupuesto_restante, porcentaje_avance Como Real
-        
-        Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
-        Escribir "Nombre del proyecto:"
-        Leer nombre
-        Escribir "Total de metas:"
-        Leer metas_total
-        Escribir "Metas alcanzadas:"
-        Leer metas_cumplidas
-        Escribir "Presupuesto inicial:"
-        Leer presupuesto_inicial
-        Escribir "Presupuesto gastado:"
-        Leer presupuesto_gastado
-        Escribir "Duracion estimada en dias del proyecto:"
-        Leer dias
-        
-        Si metas_total <= 0 Entonces
-            Escribir "Error: Sus metas deben ser al menos 1"
-        Sino
-            presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado)
-            porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total)
-            semanas <- calcular_semanas(dias)
-            dias_s <- calcular_dias_sobrantes(dias, semanas)
+        Mientras continuar = "s" O continuar = "S" Hacer // [Avance 5] Estructura de repetición: ciclo para registrar múltiples proyectos de forma continua
+            Escribir "REGISTRO DE PROYECTO" // [Avance 1] Imprime título del módulo
+            Escribir "Nombre del proyecto:" // [Avance 1] Solicita el nombre del proyecto
+            Leer nombre // [Avance 1] Lee el nombre ingresado
+            Escribir "Porcentaje de avance (0 a 100):" // [Avance 1] Solicita el avance numérico
+            Leer avance // [Avance 1] Lee el porcentaje de avance
             
-            Escribir "RESUMEN DE RESULTADOS"
-            Escribir "Resumen de metricas: ", nombre
-            Escribir "Avance real de metas: ", porcentaje_avance, "%"
-            generar_barra_progreso(porcentaje_avance)
-            evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado)
-            Escribir "Presupuesto disponible: $", presupuesto_restante
-            Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
-        FinSi
-    FinSubProceso
-
-    SubProceso ver_historial_proyectos()
-        Escribir "HISTORIAL DE PROYECTOS REGISTRADOS"
-        Escribir "Mostrando listado de proyectos en memoria..."
-    FinSubProceso
-
-    SubProceso mostrar_menu()
-        Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS"
-        Escribir "1. Crear cuenta"
-        Escribir "2. Iniciar sesion"
-        Escribir "3. Registrar proyecto"
-        Escribir "4. Calcular metricas de proyecto"
-        Escribir "5. Ver historial de proyectos"
-        Escribir "6. Salir"
-    FinSubProceso
-
-    SubProceso principal()
-        Definir opcion Como Cadena
-        Definir ejecutando Como Logico
-        
-        ejecutando <- Verdadero
-        
-        Mientras ejecutando Hacer
-            mostrar_menu()
-            Escribir "Selecciona una opcion (1 a 6):"
-            Leer opcion
+            Si avance >= 0 Y avance <= 100 Entonces // [Avance 4] Estructura de decisión: valida el rango correcto
+                Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance" // [Avance 1] Confirma el registro
+                generar_barra_progreso(avance) // [Avance 3] Llama al subproceso de la barra gráfica
+            Sino // [Avance 4] Estructura de decisión: se ejecuta si está fuera de rango
+                Escribir "El porcentaje debe estar entre 0 y 100" // [Avance 1] Muestra advertencia de rango válido
+            FinSi // [Avance 4] Cierra la estructura condicional
             
-            Si opcion = "1" Entonces
-                crear_cuenta()
-            Sino 
-                Si opcion = "2" Entonces
-                    iniciar_sesion()
-                Sino 
-                    Si opcion = "3" Entonces
-                        registrar_proyecto()
-                    Sino 
-                        Si opcion = "4" Entonces
-                            calcular_metricas()
-                        Sino 
-                            Si opcion = "5" Entonces
-                                ver_historial_proyectos()
-                            Sino 
-                                Si opcion = "6" Entonces
-                                    Escribir "Cerrando programa"
-                                    ejecutando <- Falso
-                                Sino
-                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 6."
-                                FinSi
-                            FinSi
-                        FinSi
-                    FinSi
-                FinSi
-            FinSi
-        FinMientras
+            Escribir "¿Desea registrar otro proyecto? (s/n):" // [Avance 1] Pregunta si desea repetir la captura
+            Leer continuar // [Avance 5] Lee la respuesta para decidir si el ciclo se repite o termina
+        FinMientras // [Avance 5] Cierra la estructura de repetición del registro continuo
+    FinSubProceso
+
+    SubProceso calcular_metricas() // [Avance 3] Define subproceso para calcular métricas
+        Definir nombre Como Cadena // [Avance 1] Define variable de texto para el nombre
+        Definir metas_total, metas_cumplidas Como Entero // [Avance 1] Define enteros para las metas
+        Definir presupuesto_inicial, presupuesto_gastado Como Real // [Avance 1] Define reales para el presupuesto
+        Definir dias, semanas, dias_s Como Entero // [Avance 1] Define enteros para el tiempo
+        Definir presupuesto_restante, porcentaje_avance Como Real // [Avance 1] Define reales para resultados
+        
+        Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO" // [Avance 1] Imprime título de métricas
+        Escribir "Nombre del proyecto:" // [Avance 1] Solicita el nombre
+        Leer nombre // [Avance 1] Lee el nombre
+        Escribir "Total de metas:" // [Avance 1] Solicita el total de metas
+        Leer metas_total // [Avance 1] Lee el total de metas
+        Escribir "Metas alcanzadas:" // [Avance 1] Solicita metas cumplidas
+        Leer metas_cumplidas // [Avance 1] Lee metas cumplidas
+        Escribir "Presupuesto inicial:" // [Avance 1] Solicita presupuesto inicial
+        Leer presupuesto_inicial // [Avance 1] Lee presupuesto inicial
+        Escribir "Presupuesto gastado:" // [Avance 1] Solicita presupuesto gastado
+        Leer presupuesto_gastado // [Avance 1] Lee presupuesto gastado
+        Escribir "Duracion estimada en dias del proyecto:" // [Avance 1] Solicita días estimados
+        Leer dias // [Avance 1] Lee los días
+        
+        Si metas_total <= 0 Entonces // [Avance 4] Estructura de decisión comprueba que las metas sean válidas
+            Escribir "Error: Sus metas deben ser al menos 1" // [Avance 1] Imprime error por metas nulas
+        Sino // [Avance 4] Estructura de decisión: se ejecuta si las metas son correctas
+            presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado) // [Avance 2 y 3] Llama subproceso de resta
+            porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total) // [Avance 2 y 3] Llama subproceso de porcentaje
+            semanas <- calcular_semanas(dias) // [Avance 2 y 3] Llama subproceso de semanas
+            dias_s <- calcular_dias_sobrantes(dias, semanas) // [Avance 2 y 3] Llama subproceso de días sobrantes
+            
+            Escribir "RESUMEN DE RESULTADOS" // [Avance 1] Imprime encabezado del reporte
+            Escribir "Resumen de metricas: ", nombre // [Avance 1] Muestra el nombre evaluado
+            Escribir "Avance real de metas: ", porcentaje_avance, "%" // [Avance 1] Imprime el porcentaje
+            generar_barra_progreso(porcentaje_avance) // [Avance 3] Muestra la barra visual
+            evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado) // [Avance 3] Muestra el estado financiero
+            Escribir "Presupuesto disponible: $", presupuesto_restante // [Avance 2] Imprime saldo restante
+            Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias" // [Avance 2] Imprime tiempo desglosado
+        FinSi // [Avance 4] Cierra la estructura condicional
+    FinSubProceso
+
+    SubProceso ver_historial_proyectos() // [Avance 3] Define subproceso para ver el historial
+        Escribir "HISTORIAL DE PROYECTOS REGISTRADOS" // [Avance 1] Imprime título del historial
+        Escribir "Mostrando listado de proyectos en memoria..." // [Avance 1] Mensaje informativo del listado
+    FinSubProceso
+
+    SubProceso mostrar_menu() // [Avance 3] Define subproceso para mostrar opciones
+        Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS" // [Avance 1] Título principal
+        Escribir "1. Crear cuenta" // [Avance 1] Opción 1
+        Escribir "2. Iniciar sesion" // [Avance 1] Opción 2
+        Escribir "3. Registrar proyecto (Con ciclo)" // [Avance 1] Opción 3
+        Escribir "4. Calcular metricas de proyecto" // [Avance 1] Opción 4
+        Escribir "5. Ver historial de proyectos" // [Avance 1] Opción 5
+        Escribir "6. Salir" // [Avance 1] Opción 6
+    FinSubProceso
+
+    SubProceso principal() // [Avance 3] Define subproceso que controla el flujo general
+        Definir opcion Como Cadena // [Avance 1] Define variable de texto para la opción elegida
+        Definir ejecutando Como Logico // [Avance 1] Define variable lógica para mantener activo el sistema
+        
+        ejecutando <- Verdadero // [Avance 1] Inicializa la variable de control en Verdadero
+        
+        Mientras ejecutando Hacer // [Avance 5] Estructura de repetición principal ciclo que mantiene el menú activo en bucle continuo
+            mostrar_menu() // [Avance 3] Llama al subproceso que dibuja las opciones en pantalla
+            Escribir "Selecciona una opcion (1 a 6):" // [Avance 1] Solicita la selección del usuario
+            Leer opcion // [Avance 1] Lee la opción ingresada
+            
+            Si opcion = "1" Entonces // [Avance 4] Estructura de decisión: evalúa si se eligió la opción 1
+                crear_cuenta() // [Avance 3] Llama al subproceso de creación de cuenta
+            Sino // [Avance 4] Estructura de decisión múltiple (Sino si)
+                Si opcion = "2" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 2
+                    iniciar_sesion() // [Avance 3] Llama al subproceso de inicio de sesión
+                Sino // [Avance 4] Continuación de decisión múltiple
+                    Si opcion = "3" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 3
+                        registrar_proyecto() // [Avance 3] Llama al subproceso de registro continuo con ciclo
+                    Sino // [Avance 4] Continuación de decisión múltiple
+                        Si opcion = "4" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 4
+                            calcular_metricas() // [Avance 3] Llama al subproceso de cálculo de métricas
+                        Sino // [Avance 4] Continuación de decisión múltiple
+                            Si opcion = "5" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 5
+                                ver_historial_proyectos() // [Avance 3] Llama al subproceso de historial
+                            Sino // [Avance 4] Continuación de decisión múltiple
+                                Si opcion = "6" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 6
+                                    Escribir "Cerrando programa" // [Avance 1] Imprime mensaje de salida
+                                    ejecutando <- Falso // [Avance 1] Cambia a Falso para romper el ciclo Mientras del menú
+                                Sino // [Avance 4] Estructura de decisión caso por defecto para opción inválida
+                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 6." // [Avance 1] Muestra error de opción incorrecta
+                                FinSi // [Avance 4] Cierra el Si de la opción 6
+                            FinSi // [Avance 4] Cierra el Si de la opción 5
+                        FinSi // [Avance 4] Cierra el Si de la opción 4
+                    FinSi // [Avance 4] Cierra el Si de la opción 3
+                FinSi // [Avance 4] Cierra el Si de la opción 2
+            FinSi // [Avance 4] Cierra el Si de la opción 1
+        FinMientras // [Avance 5] Cierra la estructura de repetición principal del menú
     FinSubProceso
 
     // Inicio del flujo del algoritmo
-    principal()
+    principal() // [Avance 3] Llama al subproceso principal para poner en marcha el sistema
 
 FinAlgoritmo
