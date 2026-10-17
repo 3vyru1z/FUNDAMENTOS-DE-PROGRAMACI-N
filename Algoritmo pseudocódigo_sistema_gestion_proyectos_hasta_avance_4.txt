@@ -1,6 +1,6 @@
 Algoritmo sistema_gestion_proyectos
 
-    Definir proyectos_registrados Como Cadena // [Avance 1] Define variable global para proyectos
+    Definir proyectos_registrados Como Cadena // [Avance 1 y 6] Define arreglo global para almacenar los registros de proyectos
     
     SubProceso calcular_restante (inicial, gastado) // [Avance 3] Define subproceso para restar presupuesto
         Retornar inicial - gastado // [Avance 2 y 3] Retorna el resultado de la resta
@@ -103,6 +103,8 @@ Algoritmo sistema_gestion_proyectos
             Si avance >= 0 Y avance <= 100 Entonces // [Avance 4] Estructura de decisión: valida el rango correcto
                 Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance" // [Avance 1] Confirma el registro
                 generar_barra_progreso(avance) // [Avance 3] Llama al subproceso de la barra gráfica
+                // [Avance 6] Operación de arreglos: almacena y agrega el registro en la estructura de lista
+                AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%") 
             Sino // [Avance 4] Estructura de decisión: se ejecuta si está fuera de rango
                 Escribir "El porcentaje debe estar entre 0 y 100" // [Avance 1] Muestra advertencia de rango válido
             FinSi // [Avance 4] Cierra la estructura condicional
@@ -153,7 +155,17 @@ Algoritmo sistema_gestion_proyectos
 
     SubProceso ver_historial_proyectos() // [Avance 3] Define subproceso para ver el historial
         Escribir "HISTORIAL DE PROYECTOS REGISTRADOS" // [Avance 1] Imprime título del historial
-        Escribir "Mostrando listado de proyectos en memoria..." // [Avance 1] Mensaje informativo del listado
+        // [Avance 5 y 6] Estructura de repetición y manejo de arreglos: recorre los elementos almacenados en la lista
+        Para CADA elemento EN proyectos_registrados Hacer 
+            Escribir "- ", elemento // [Avance 6] Imprime cada elemento contenido dentro del arreglo
+        FinPara // [Avance 5] Cierra el ciclo de recorrido de la lista
+    FinSubProceso
+
+    SubProceso calcular_estadisticas_lista() // [Avance 6] Define subproceso dedicado a operaciones sobre arreglos y listas
+        Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS" // [Avance 1] Imprime título del reporte de arreglos
+        Definir total_elementos Como Entero // [Avance 1] Define variable entera para el tamaño del arreglo
+        total_elementos <- LONGITUD_LISTA(proyectos_registrados) // [Avance 6] Operación de arreglos: obtiene la cantidad total de elementos en la lista
+        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos // [Avance 6] Muestra el tamaño del arreglo en pantalla
     FinSubProceso
 
     SubProceso mostrar_menu() // [Avance 3] Define subproceso para mostrar opciones
@@ -163,7 +175,8 @@ Algoritmo sistema_gestion_proyectos
         Escribir "3. Registrar proyecto (Con ciclo)" // [Avance 1] Opción 3
         Escribir "4. Calcular metricas de proyecto" // [Avance 1] Opción 4
         Escribir "5. Ver historial de proyectos" // [Avance 1] Opción 5
-        Escribir "6. Salir" // [Avance 1] Opción 6
+        Escribir "6. Ver estadisticas de la lista" // [Avance 6] Opción 6 añadida para demostrar procesamiento de arreglos
+        Escribir "7. Salir" // [Avance 1] Opción 7 actualizada
     FinSubProceso
 
     SubProceso principal() // [Avance 3] Define subproceso que controla el flujo general
@@ -174,7 +187,7 @@ Algoritmo sistema_gestion_proyectos
         
         Mientras ejecutando Hacer // [Avance 5] Estructura de repetición principal ciclo que mantiene el menú activo en bucle continuo
             mostrar_menu() // [Avance 3] Llama al subproceso que dibuja las opciones en pantalla
-            Escribir "Selecciona una opcion (1 a 6):" // [Avance 1] Solicita la selección del usuario
+            Escribir "Selecciona una opcion (1 a 7):" // [Avance 1] Solicita la selección del usuario actualizada
             Leer opcion // [Avance 1] Lee la opción ingresada
             
             Si opcion = "1" Entonces // [Avance 4] Estructura de decisión: evalúa si se eligió la opción 1
@@ -190,13 +203,17 @@ Algoritmo sistema_gestion_proyectos
                             calcular_metricas() // [Avance 3] Llama al subproceso de cálculo de métricas
                         Sino // [Avance 4] Continuación de decisión múltiple
                             Si opcion = "5" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 5
-                                ver_historial_proyectos() // [Avance 3] Llama al subproceso de historial
+                                ver_historial_proyectos() // [Avance 3 y 6] Llama al subproceso de historial recorriendo el arreglo
                             Sino // [Avance 4] Continuación de decisión múltiple
-                                Si opcion = "6" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 6
-                                    Escribir "Cerrando programa" // [Avance 1] Imprime mensaje de salida
-                                    ejecutando <- Falso // [Avance 1] Cambia a Falso para romper el ciclo Mientras del menú
-                                Sino // [Avance 4] Estructura de decisión caso por defecto para opción inválida
-                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 6." // [Avance 1] Muestra error de opción incorrecta
+                                Si opcion = "6" Entonces // [Avance 4 y 6] Estructura de decisión evalúa si se eligió la opción de arreglos
+                                    calcular_estadisticas_lista() // [Avance 6] Llama al subproceso que procesa estadísticas de la lista
+                                Sino // [Avance 4] Continuación de decisión múltiple
+                                    Si opcion = "7" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción de salida actualizada
+                                        Escribir "Cerrando programa" // [Avance 1] Imprime mensaje de salida
+                                        ejecutando <- Falso // [Avance 1] Cambia a Falso para romper el ciclo Mientras del menú
+                                    Sino // [Avance 4] Estructura de decisión caso por defecto para opción inválida
+                                        Escribir "Opcion no valida. Por favor escribe un numero del 1 al 7." // [Avance 1] Muestra error de opción incorrecta
+                                    FinSi // [Avance 4] Cierra el Si de la opción 7
                                 FinSi // [Avance 4] Cierra el Si de la opción 6
                             FinSi // [Avance 4] Cierra el Si de la opción 5
                         FinSi // [Avance 4] Cierra el Si de la opción 4
