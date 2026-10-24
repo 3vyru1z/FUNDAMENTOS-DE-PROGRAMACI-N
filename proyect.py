@@ -3,6 +3,9 @@
 proyectos_registrados = (
     []
 )  # [Avance 1 y 6] Declaración de lista global (arreglo unidimensional) para almacenar registros
+matriz_proyectos = (
+    []
+)  # [Avance 7] Declaración de lista anidada (matriz bidimensional) para almacenar filas y columnas
 
 
 def calcular_restante(inicial, gastado):
@@ -40,7 +43,7 @@ def generar_barra_progreso(porcentaje):
     bloques = int(
         limite // 10
     )  # [Avance 2 y 3] Calcula la cantidad de bloques enteros de 0 a 10
-    return "||" * bloques + "|||" * (
+    return "||" * bloques + "||" * (
         10 - bloques
     )  # [Avance 3] Retorna una cadena con caracteres gráficos de barra
 
@@ -67,10 +70,10 @@ def crear_cuenta():
     print("REGISTRO NUEVA CUENTA")  # [Avance 1] Imprime el título del módulo en pantalla
     nuevo_usuario = input(
         "Ingrese un nombre de usuario: "
-    )  # [Avance 1] Solicita y lee el nombre de usuario
+    ).strip()  # [Avance 1] Solicita y lee el nombre de usuario
     nueva_contrasena = input(
         "Ingrese una contraseña: "
-    )  # [Avance 1] Solicita y lee la contraseña
+    ).strip()  # [Avance 1] Solicita y lee la contraseña
     if (
         nuevo_usuario and nueva_contrasena
     ):  # [Avance 4] Estructura de decisión verifica que ambos campos tengan texto
@@ -86,10 +89,12 @@ def crear_cuenta():
 def iniciar_sesion():
     # [Avance 3] Define una función para autenticar a un usuario
     print("INICIO DE SESIÓN")  # [Avance 1] Imprime el título del inicio de sesión
-    usuario = input("Ingrese su usuario: ")  # [Avance 1] Solicita el nombre de usuario
+    usuario = input(
+        "Ingrese su usuario: "
+    ).strip()  # [Avance 1] Solicita el nombre de usuario
     contrasena = input(
         "Ingrese su contraseña: "
-    )  # [Avance 1] Solicita la contraseña
+    ).strip()  # [Avance 1] Solicita la contraseña
     if (
         usuario and contrasena
     ):  # [Avance 4] Estructura de decisión comprueba que no estén vacíos
@@ -109,11 +114,11 @@ def registrar_proyecto():
         "s"  # [Avance 5] Inicializa la variable de control del ciclo en "s"
     )
     while (
-        continuar == "s" or continuar == "S"
+        continuar.strip().lower() == "s"
     ):  # [Avance 5] Estructura de repetición ciclo para registrar muchos proyectos seguidos
         nombre = input(
             "Nombre del proyecto: "
-        )  # [Avance 1] Solicita el nombre del proyecto
+        ).strip()  # [Avance 1] Solicita el nombre del proyecto
         try:  # [Avance 1] Inicia bloque para manejar errores de entrada numérica
             avance = float(
                 input("Porcentaje de avance (0-100): ")
@@ -131,6 +136,22 @@ def registrar_proyecto():
                 proyectos_registrados.append(
                     proyecto
                 )  # [Avance 6] Operación de listas/arreglos método append() para insertar un elemento al final
+
+                # [Avance 7] Asigna el estado inicial según el porcentaje de avance para la matriz
+                estado_inicial = (
+                    "Completado"
+                    if avance == 100
+                    else ("En Proceso" if avance > 0 else "Iniciado")
+                )
+                fila_matriz = [
+                    nombre,
+                    f"{avance:.1f}%",
+                    estado_inicial,
+                ]  # [Avance 7] Crea la fila para la matriz bidimensional
+                matriz_proyectos.append(
+                    fila_matriz
+                )  # [Avance 7] Inserta la fila en la matriz global
+
                 print(
                     f"Proyecto '{nombre}' registrado con {avance:.1f}% de avance"
                 )  # [Avance 1] Muestra el avance formateado
@@ -159,7 +180,7 @@ def calcular_metricas():
     )  # [Avance 1] Imprime el título de la sección
     nombre = input(
         "Nombre del proyecto: "
-    )  # [Avance 1] Solicita el nombre del proyecto a evaluar
+    ).strip()  # [Avance 1] Solicita el nombre del proyecto a evaluar
     try:  # [Avance 1] Inicia bloque de control de errores
         metas_total = int(
             input("Total de metas planificadas: ")
@@ -238,7 +259,7 @@ def ver_historial_proyectos():
         not proyectos_registrados
     ):  # [Avance 4 y 6] Estructura de decisión evalúa si la lista/arreglo está vacía usando 'not'
         print(
-            "No hay proyectos registrados aún."
+            "No hay proyectos registrados aún. Por favor registre un proyecto en la opción 3."
         )  # [Avance 1] Muestra mensaje de que no hay registros
     else:  # [Avance 4] Estructura de decisión se ejecuta si hay proyectos guardados
         for posicion, p in enumerate(
@@ -258,7 +279,9 @@ def calcular_estadisticas_lista():
     if (
         not proyectos_registrados
     ):  # [Avance 4 y 6] Verifica si el arreglo contiene datos
-        print("La lista está vacía. Registre proyectos primero.")
+        print(
+            "La lista está vacía. Registre proyectos primero en la opción 3."
+        )
         return
 
     lista_avances = [
@@ -289,6 +312,98 @@ def calcular_estadisticas_lista():
     )  # [Avance 6] Imprime el valor mínimo del arreglo
 
 
+def ver_matriz_proyectos():
+    # [Avance 7] Función para ver la matriz de proyectos en formato de tabla tabular
+    print("TABLA DE DATOS  MATRIZ DE PROYECTOS")
+    if not matriz_proyectos:
+        print(
+            "No hay datos en la matriz de proyectos. Registre proyectos en la opción 3."
+        )  # [Avance 4 y 7] Valida si la matriz está vacía
+        return
+
+    print("-" * 55)
+    print(f"{'ÍNDICE':<8} | {'NOMBRE':<18} | {'AVANCE':<10} | {'ESTADO':<8}")
+    print("-" * 55)
+    for (
+        fila_idx,
+        fila,
+    ) in (
+        enumerate(matriz_proyectos)
+    ):  # [Avance 5 y 7] Recorrido de filas en la matriz bidimensional
+        nombre_m = fila[0]  # [Avance 7] Extrae el nombre de la columna 0
+        avance_m = fila[1]  # [Avance 7] Extrae el avance de la columna 1
+        estado_m = fila[2]  # [Avance 7] Extrae el estado de la columna 2
+        print(
+            f"[{fila_idx}]      | {nombre_m:<18} | {avance_m:<10} | {estado_m:<8}"
+        )
+    print("-" * 55)
+
+
+def actualizar_estados_matriz():
+    # [Avance 7] Función para actualización dinámica de estados en lote usando ciclos anidados sobre la matriz
+    if not matriz_proyectos:
+        return  # [Avance 4 y 7] Sale de la función si la matriz está vacía
+    for i, p in enumerate(
+        proyectos_registrados
+    ):  # [Avance 5 y 6] Recorre la lista de proyectos registrados
+        avance_val = p["avance"]  # [Avance 6] Obtiene el valor del avance numérico
+        if avance_val == 100:
+            matriz_proyectos[i][2] = (
+                "Completado"  # [Avance 7] Actualiza celda de estado a completado si llega a 100
+            )
+        elif avance_val > 0:
+            matriz_proyectos[i][2] = (
+                "En Proceso"  # [Avance 7] Actualiza celda de estado si está en progreso
+            )
+        else:
+            matriz_proyectos[i][2] = (
+                "Iniciado"  # [Avance 7] Actualiza celda de estado inicial si es cero
+            )
+
+
+def resumen_conteo_matriz():
+    # [Avance 7] Función para generar resumen y conteo cruzado por categorías de estado en la matriz
+    print("RESUMEN Y CONTEO CRUZADO DE PROYECTOS")
+    if not matriz_proyectos:
+        print(
+            "No hay proyectos registrados en la matriz. Registre proyectos en la opción 3."
+        )  # [Avance 4 y 7] Valida si hay datos disponibles
+        return
+    actualizar_estados_matriz()  # [Avance 7] Sincroniza y actualiza los estados en lote antes del conteo
+    conteo_iniciados = 0  # [Avance 1] Inicializa contador para proyectos iniciados
+    conteo_proceso = 0  # [Avance 1] Inicializa contador para proyectos en proceso
+    conteo_completados = (
+        0  # [Avance 1] Inicializa contador para proyectos completados
+    )
+    for (
+        fila
+    ) in (
+        matriz_proyectos
+    ):  # [Avance 5 y 7] Estructura de repetición que recorre cada fila de la matriz bidimensional
+        estado = fila[2]  # [Avance 7] Extrae el valor de la columna de estado
+        if estado == "Iniciado":
+            conteo_iniciados += 1  # [Avance 2] Incrementa el acumulador de iniciados
+        elif estado == "En Proceso":
+            conteo_proceso += 1  # [Avance 2] Incrementa el acumulador en proceso
+        elif estado == "Completado":
+            conteo_completados += (
+                1  # [Avance 2] Incrementa el acumulador de completados
+            )
+
+    print(
+        f"Total de registros procesados: {len(matriz_proyectos)}"
+    )  # [Avance 6] Imprime el total de filas
+    print(
+        f"Proyectos en estado 'Iniciado': {conteo_iniciados}"
+    )  # [Avance 1] Muestra el conteo cruzado
+    print(
+        f"Proyectos en estado 'En Proceso': {conteo_proceso}"
+    )  # [Avance 1] Muestra el conteo cruzado
+    print(
+        f"Proyectos en estado 'Completado': {conteo_completados}"
+    )  # [Avance 1] Muestra el conteo cruzado
+
+
 def mostrar_menu():
     # [Avance 3] Define una función para desplegar el menú de opciones
     print("  SISTEMA DE GESTIÓN DE PROYECTOS")  # [Avance 1] Imprime el título general del menú
@@ -298,7 +413,16 @@ def mostrar_menu():
     print("4. Calcular métricas de proyecto")  # [Avance 1] Opción 4
     print("5. Ver historial de proyectos")  # [Avance 1] Opción 5
     print("6. Ver estadísticas de las listas")  # [Avance 6] Opción 6 añadida para demostrar operaciones sobre arreglos
-    print("7. Salir")  # [Avance 1] Opción 7
+    print(
+        "7. Ver matriz de proyectos en tabla"
+    )  # [Avance 7] Opción 7 para mostrar la matriz completa en tabla
+    print(
+        "8. Actualizar estados de proyectos en lote"
+    )  # [Avance 7] Opción 8 añadida para actualización dinámica
+    print(
+        "9. Ver resumen y conteo cruzado"
+    )  # [Avance 7] Opción 9 añadida para matriz de resumen
+    print("10. Salir")  # [Avance 1 y 7] Opción 10 de salida actualizada
 
 
 def main():
@@ -313,9 +437,9 @@ def main():
         ejecutando
     ):  # [Avance 5] Estructura de repetición ciclo principal que mantiene el menú corriendo en bucle
         mostrar_menu()  # [Avance 3] Llama a la función para dibujar las opciones en pantalla
-        opcion = input(
-            "Escribe el número de la opción elegida (1-7): "
-        )  # [Avance 1] Lee la opción seleccionada por el usuario
+        opcion = (
+            input("Escribe el número de la opción elegida (1-10): ").strip()
+        )  # [Avance 1] Lee la opción seleccionada por el usuario limpiando espacios
         if (
             opcion == "1"
         ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 1
@@ -342,17 +466,35 @@ def main():
             calcular_estadisticas_lista()  # [Avance 6] Llama a la función que ejecuta operaciones avanzadas sobre listas
         elif (
             opcion == "7"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 7
+        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 7
+            ver_matriz_proyectos()  # [Avance 7] Muestra la matriz de proyectos en formato tabular
+        elif (
+            opcion == "8"
+        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 8
+            actualizar_estados_matriz()  # [Avance 7] Llama a la función de actualización dinámica de estados en lote
+            print(
+                "¡Estados actualizados en lote correctamente!"
+            )  # [Avance 1] Imprime mensaje de éxito
+        elif (
+            opcion == "9"
+        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 9
+            resumen_conteo_matriz()  # [Avance 7] Llama a la función de resumen y conteo cruzado
+        elif (
+            opcion == "10"
+        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 10
             print(
                 "Cerrando el programa"
             )  # [Avance 1] Mensaje de salida del sistema
             ejecutando = (
                 False  # [Avance 1] Cambia la variable a False para romper el ciclo while y terminar
             )
-        else:  # [Avance 4] Estructura de decisión se ejecuta si ingresan un número fuera del rango 1 al 7
+        else:  # [Avance 4] Estructura de decisión se ejecuta si ingresan un número fuera del rango 1 al 10
             print(
-                "Opción no válida. Por favor escribe un número del 1 al 7."
+                "Opción no válida. Por favor escribe un número del 1 al 10."
             )  # [Avance 1] Muestra mensaje de error por opción incorrecta
+
+        input("\nPresiona enter para continuar...\n")
+        print("\n" * 2)
 
 
 main()  # [Avance 3] Ejecuta la función principal para poner en marcha todo el programa
