@@ -1,6 +1,7 @@
 Algoritmo sistema_gestion_proyectos
 
-    Definir proyectos_registrados Como Cadena // [Avance 1 y 6] Define arreglo global para almacenar los registros de proyectos
+    Definir proyectos_registrados como cadena // [Avance 1 y 6] Define arreglo global para almacenar registros simples
+    Definir matriz_proyectos como cadena // [Avance 7] Define matriz global (arreglo bidimensional) para almacenar filas y columnas
     
     SubProceso calcular_restante (inicial, gastado) // [Avance 3] Define subproceso para restar presupuesto
         Retornar inicial - gastado // [Avance 2 y 3] Retorna el resultado de la resta
@@ -19,8 +20,8 @@ Algoritmo sistema_gestion_proyectos
     FinSubProceso
 
     SubProceso generar_barra_progreso (porcentaje) // [Avance 3] Define subproceso para la barra visual
-        Definir bloques Como Entero // [Avance 1] Define variable entera local para los bloques
-        Definir barra Como Cadena // [Avance 1] Define variable de texto local para la barra
+        Definir bloques como entero // [Avance 1] Define variable entera local para los bloques
+        Definir barra como cadena // [Avance 1] Define variable de texto local para la barra
         
         Si porcentaje < 0 Entonces // [Avance 4] Estructura de decisión: comprueba si es menor a cero
             porcentaje <- 0 // [Avance 1] Ajusta el porcentaje a cero si es negativo
@@ -63,7 +64,7 @@ Algoritmo sistema_gestion_proyectos
         Escribir "Ingrese una contrasena:" // [Avance 1] Solicita la contraseña
         Leer nueva_contrasena // [Avance 1] Lee y almacena la contraseña
         
-        Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces // [Avance 4] Estructura de decisión valida que no estén vacíos
+        Si nuevo_usuario  "" Y nueva_contraseña  "" Entonces // [Avance 4] Estructura de decisión valida que no estén vacíos
             Escribir "Cuenta registrada con exito para: ", nuevo_usuario // [Avance 1] Imprime confirmación de éxito
         Sino // [Avance 4] Estructura de decisión: se ejecuta si falta algún campo
             Escribir "Error: Debe llenar todos los campos" // [Avance 1] Imprime mensaje de error
@@ -79,7 +80,7 @@ Algoritmo sistema_gestion_proyectos
         Escribir "Ingrese contrasena:" // [Avance 1] Solicita la contraseña
         Leer contrasena // [Avance 1] Lee la contraseña ingresada
         
-        Si usuario <> "" Y contrasena <> "" Entonces // [Avance 4] Estructura de decisión comprueba campos llenos
+        Si usuario  "" Y contraseña "" Entonces // [Avance 4] Estructura de decisión comprueba campos llenos
             Escribir "Bienvenido/a, ", usuario // [Avance 1] Imprime bienvenida
         Sino // [Avance 4] Estructura de decisión se ejecuta si hay campos vacíos
             Escribir "Datos incorrectos" // [Avance 1] Imprime error de datos
@@ -87,11 +88,11 @@ Algoritmo sistema_gestion_proyectos
     FinSubProceso
 
     SubProceso registrar_proyecto() // [Avance 3] Define subproceso para registrar proyectos
-        Definir nombre Como Cadena // [Avance 1] Define variable de texto para el nombre
-        Definir avance Como Real // [Avance 1] Define variable real para el porcentaje
-        Definir continuar Como Cadena // [Avance 1] Define variable para controlar el ciclo de repetición
+        Definir nombre como cadena // [Avance 1] Define variable de texto para el nombre
+        Definir avance como real // [Avance 1] Define variable real para el porcentaje
+        Definir continuar como cadena // [Avance 1] Define variable para controlar el ciclo de repetición
         
-        continuar <- "s" // [Avance 5] Inicializa la variable de control en "s" para entrar al ciclo
+        continuar  "s" // [Avance 5] Inicializa la variable de control en "s" para entrar al ciclo
         
         Mientras continuar = "s" O continuar = "S" Hacer // [Avance 5] Estructura de repetición: ciclo para registrar múltiples proyectos de forma continua
             Escribir "REGISTRO DE PROYECTO" // [Avance 1] Imprime título del módulo
@@ -103,8 +104,10 @@ Algoritmo sistema_gestion_proyectos
             Si avance >= 0 Y avance <= 100 Entonces // [Avance 4] Estructura de decisión: valida el rango correcto
                 Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance" // [Avance 1] Confirma el registro
                 generar_barra_progreso(avance) // [Avance 3] Llama al subproceso de la barra gráfica
-                // [Avance 6] Operación de arreglos: almacena y agrega el registro en la estructura de lista
+                // [Avance 6] Operación de arreglos simples
                 AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%") 
+                // [Avance 7] Operación de listas anidadas (Matriz): Agrega fila con atributos tabulares
+                AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", "Activo")
             Sino // [Avance 4] Estructura de decisión: se ejecuta si está fuera de rango
                 Escribir "El porcentaje debe estar entre 0 y 100" // [Avance 1] Muestra advertencia de rango válido
             FinSi // [Avance 4] Cierra la estructura condicional
@@ -115,7 +118,7 @@ Algoritmo sistema_gestion_proyectos
     FinSubProceso
 
     SubProceso calcular_metricas() // [Avance 3] Define subproceso para calcular métricas
-        Definir nombre Como Cadena // [Avance 1] Define variable de texto para el nombre
+        Definir nombre como cadena // [Avance 1] Define variable de texto para el nombre
         Definir metas_total, metas_cumplidas Como Entero // [Avance 1] Define enteros para las metas
         Definir presupuesto_inicial, presupuesto_gastado Como Real // [Avance 1] Define reales para el presupuesto
         Definir dias, semanas, dias_s Como Entero // [Avance 1] Define enteros para el tiempo
@@ -155,17 +158,31 @@ Algoritmo sistema_gestion_proyectos
 
     SubProceso ver_historial_proyectos() // [Avance 3] Define subproceso para ver el historial
         Escribir "HISTORIAL DE PROYECTOS REGISTRADOS" // [Avance 1] Imprime título del historial
-        // [Avance 5 y 6] Estructura de repetición y manejo de arreglos: recorre los elementos almacenados en la lista
-        Para CADA elemento EN proyectos_registrados Hacer 
-            Escribir "- ", elemento // [Avance 6] Imprime cada elemento contenido dentro del arreglo
-        FinPara // [Avance 5] Cierra el ciclo de recorrido de la lista
+        Para CADA elemento EN proyectos_registrados Hacer // [Avance 5 y 6] Recorrido de lista
+            Escribir "- ", elemento // [Avance 6] Imprime cada elemento
+        FinPara // [Avance 5] Cierra el ciclo
     FinSubProceso
 
-    SubProceso calcular_estadisticas_lista() // [Avance 6] Define subproceso dedicado a operaciones sobre arreglos y listas
-        Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS" // [Avance 1] Imprime título del reporte de arreglos
-        Definir total_elementos Como Entero // [Avance 1] Define variable entera para el tamaño del arreglo
-        total_elementos <- LONGITUD_LISTA(proyectos_registrados) // [Avance 6] Operación de arreglos: obtiene la cantidad total de elementos en la lista
-        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos // [Avance 6] Muestra el tamaño del arreglo en pantalla
+    SubProceso calcular_estadisticas_lista() // [Avance 6] Subproceso de análisis de listas
+        Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS" // [Avance 1]
+        Definir total_elementos Como Entero // [Avance 1]
+        total_elementos <- LONGITUD_LISTA(proyectos_registrados) // [Avance 6]
+        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos // [Avance 6]
+    FinSubProceso
+
+    SubProceso ver_matriz_proyectos() // [Avance 7] Define subproceso para ver matriz en tabla
+        Escribir "TABLA DE DATOS MATRIZ DE PROYECTOS" // [Avance 1]
+        Para cada fila en matriz_proyectos Hacer // [Avance 5 y 7] Recorrido de filas en la matriz
+            Escribir "Proyecto: ", fila[0], " | Avance: ", fila[1], " | Estado: ", fila[2] // [Avance 7] Acceso a columnas
+        FinPara // [Avance 5] Cierra el ciclo de la matriz
+    FinSubProceso
+
+    SubProceso actualizar_estados_matriz() // [Avance 7] Subproceso de actualización dinámica en lote
+        // [Avance 7] Recorre y actualiza los estados de la matriz según los valores registrados
+    FinSubProceso
+
+    SubProceso resumen_conteo_matriz() // [Avance 7] Subproceso de resumen y conteo cruzado
+        Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS" // [Avance 1]
     FinSubProceso
 
     SubProceso mostrar_menu() // [Avance 3] Define subproceso para mostrar opciones
@@ -175,55 +192,73 @@ Algoritmo sistema_gestion_proyectos
         Escribir "3. Registrar proyecto (Con ciclo)" // [Avance 1] Opción 3
         Escribir "4. Calcular metricas de proyecto" // [Avance 1] Opción 4
         Escribir "5. Ver historial de proyectos" // [Avance 1] Opción 5
-        Escribir "6. Ver estadisticas de la lista" // [Avance 6] Opción 6 añadida para demostrar procesamiento de arreglos
-        Escribir "7. Salir" // [Avance 1] Opción 7 actualizada
+        Escribir "6. Ver estadisticas de la lista" // [Avance 6] Opción 6
+        Escribir "7. Ver matriz de proyectos en tabla" // [Avance 7] Opción 7
+        Escribir "8. Actualizar estados de proyectos en lote" // [Avance 7] Opción 8
+        Escribir "9. Ver resumen y conteo cruzado" // [Avance 7] Opción 9
+        Escribir "10. Salir" // [Avance 1 y 7] Opción 10 actualizada
     FinSubProceso
 
     SubProceso principal() // [Avance 3] Define subproceso que controla el flujo general
-        Definir opcion Como Cadena // [Avance 1] Define variable de texto para la opción elegida
-        Definir ejecutando Como Logico // [Avance 1] Define variable lógica para mantener activo el sistema
+        Definir opcion Como Cadena // [Avance 1]
+        Definir ejecutando Como Logico // [Avance 1]
         
-        ejecutando <- Verdadero // [Avance 1] Inicializa la variable de control en Verdadero
+        ejecutando <- Verdadero // [Avance 1]
         
-        Mientras ejecutando Hacer // [Avance 5] Estructura de repetición principal ciclo que mantiene el menú activo en bucle continuo
-            mostrar_menu() // [Avance 3] Llama al subproceso que dibuja las opciones en pantalla
-            Escribir "Selecciona una opcion (1 a 7):" // [Avance 1] Solicita la selección del usuario actualizada
-            Leer opcion // [Avance 1] Lee la opción ingresada
+        Mientras ejecutando Hacer // [Avance 5] Estructura de repetición principal del menú
+            mostrar_menu() // [Avance 3]
+            Escribir "Selecciona una opcion (1 a 10):" // [Avance 1]
+            Leer opcion // [Avance 1]
             
-            Si opcion = "1" Entonces // [Avance 4] Estructura de decisión: evalúa si se eligió la opción 1
-                crear_cuenta() // [Avance 3] Llama al subproceso de creación de cuenta
-            Sino // [Avance 4] Estructura de decisión múltiple (Sino si)
-                Si opcion = "2" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 2
-                    iniciar_sesion() // [Avance 3] Llama al subproceso de inicio de sesión
-                Sino // [Avance 4] Continuación de decisión múltiple
-                    Si opcion = "3" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 3
-                        registrar_proyecto() // [Avance 3] Llama al subproceso de registro continuo con ciclo
-                    Sino // [Avance 4] Continuación de decisión múltiple
-                        Si opcion = "4" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 4
-                            calcular_metricas() // [Avance 3] Llama al subproceso de cálculo de métricas
-                        Sino // [Avance 4] Continuación de decisión múltiple
-                            Si opcion = "5" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción 5
-                                ver_historial_proyectos() // [Avance 3 y 6] Llama al subproceso de historial recorriendo el arreglo
-                            Sino // [Avance 4] Continuación de decisión múltiple
-                                Si opcion = "6" Entonces // [Avance 4 y 6] Estructura de decisión evalúa si se eligió la opción de arreglos
-                                    calcular_estadisticas_lista() // [Avance 6] Llama al subproceso que procesa estadísticas de la lista
-                                Sino // [Avance 4] Continuación de decisión múltiple
-                                    Si opcion = "7" Entonces // [Avance 4] Estructura de decisión evalúa si se eligió la opción de salida actualizada
-                                        Escribir "Cerrando programa" // [Avance 1] Imprime mensaje de salida
-                                        ejecutando <- Falso // [Avance 1] Cambia a Falso para romper el ciclo Mientras del menú
-                                    Sino // [Avance 4] Estructura de decisión caso por defecto para opción inválida
-                                        Escribir "Opcion no valida. Por favor escribe un numero del 1 al 7." // [Avance 1] Muestra error de opción incorrecta
-                                    FinSi // [Avance 4] Cierra el Si de la opción 7
-                                FinSi // [Avance 4] Cierra el Si de la opción 6
-                            FinSi // [Avance 4] Cierra el Si de la opción 5
-                        FinSi // [Avance 4] Cierra el Si de la opción 4
-                    FinSi // [Avance 4] Cierra el Si de la opción 3
-                FinSi // [Avance 4] Cierra el Si de la opción 2
-            FinSi // [Avance 4] Cierra el Si de la opción 1
-        FinMientras // [Avance 5] Cierra la estructura de repetición principal del menú
+            Si opcion = "1" Entonces // [Avance 4]
+                crear_cuenta() // [Avance 3]
+            Sino 
+                Si opcion = "2" Entonces // [Avance 4]
+                    iniciar_sesion() // [Avance 3]
+                Sino 
+                    Si opcion = "3" Entonces // [Avance 4]
+                        registrar_proyecto() // [Avance 3]
+                    Sino 
+                        Si opcion = "4" Entonces // [Avance 4]
+                            calcular_metricas() // [Avance 3]
+                        Sino 
+                            Si opcion = "5" Entonces // [Avance 4]
+                                ver_historial_proyectos() // [Avance 3 y 6]
+                            Sino 
+                                Si opcion = "6" Entonces // [Avance 4]
+                                    calcular_estadisticas_lista() // [Avance 6]
+                                Sino 
+                                    Si opcion = "7" Entonces // [Avance 4 y 7]
+                                        ver_matriz_proyectos() // [Avance 7]
+                                    Sino 
+                                        Si opcion = "8" Entonces // [Avance 4 y 7]
+                                            actualizar_estados_matriz() // [Avance 7]
+                                            Escribir "Estados actualizados en lote correctamente!" // [Avance 1]
+                                        Sino 
+                                            Si opcion = "9" Entonces // [Avance 4 y 7]
+                                                resumen_conteo_matriz() // [Avance 7]
+                                            Sino 
+                                                Si opcion = "10" Entonces // [Avance 4 y 7]
+                                                    Escribir "Cerrando programa" // [Avance 1]
+                                                    ejecutando <- Falso // [Avance 1]
+                                                Sino 
+                                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 10." // [Avance 1]
+                                                FinSi // [Avance 4]
+                                            FinSi // [Avance 4]
+                                        FinSi // [Avance 4]
+                                    FinSi // [Avance 4]
+                                FinSi // [Avance 4]
+                            FinSi // [Avance 4]
+                        FinSi // [Avance 4]
+                    FinSi // [Avance 4]
+                FinSi // [Avance 4]
+            FinSi // [Avance 4]
+            Escribir "Presiona enter para continuar..."
+            Leer opcion // Paus
+        FinMientras // [Avance 5]
     FinSubProceso
 
     // Inicio del flujo del algoritmo
-    principal() // [Avance 3] Llama al subproceso principal para poner en marcha el sistema
+    principal() // [Avance 3] Llama al subproceso principal
 
 FinAlgoritmo
