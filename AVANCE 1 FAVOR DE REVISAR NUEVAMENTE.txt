@@ -1,142 +1,251 @@
 Repositorio 
-#Sistema de gestión y seguimiento de proyectos sociales 
-#Descripción del problema 
-En iniciativas comunitarias y académicas, el seguimiento de proyectos, la asignación de recursos y la medición de resultados normalmente se gestionan de forma dispersa en herramientas poco apropiadas. Esta falta de centralización dificulta el tomar decisiones, el avance de los objetivos y el control de presupiuestos. Para resolver esta problemática, se desarrollará un programa interactivo en consola en python. El sistema funcionará como un centro de control dónde los usuarios podrán crear una cuenta, iniciar sesión de forma segura y administrar un portafolio de proyectos organizados con matrices. 
-#Objetivos
-General: Desarrollar un programa de consola en python que permita administrar y registrar usuarios con sus respectivos proyectos de impacto social/académico y monitorear sus resultados cuantitativos. 
-Específicos:
+Algoritmo sistema_gestion_proyectos
 
-Implementar un módulo de autenticación de usuarios ( registro e inicio de sesión).
-Diseñar una matriz para el almacenamiento dinámico de los proyectos y sus atributos.
-Incorporar funciones con paso de parámetros y retornos para el cálculo de estadísticas.
-Garantizar la persistencia de la información mediante la lectura y escritura de archivos externos.
+    Definir proyectos_registrados Como cadena
+    Definir matriz_proyectos Como cadena
 
-1. Algoritmo Sistema Gestión Proyectos
-2. 
-3. SECCION 1: AUTENTICACIÓN Y REGISTRO DE PROYECTOS
-4. 
-5. Funcion crear_cuenta()
-6.     Entradas: nuevo_usuario, nueva_contrasena
-7.     Salidas: Mensaje en pantalla
-8.     
-9.     Escribir "REGISTRO NUEVA CUENTA"
-10.    Escribir "Ingrese un nombre de usuario:"
-11.    Leer nuevo_usuario
-12.    Escribir "Ingrese una contrasena:"
-13.    Leer nueva_contrasena
-14.    
-15.    Escribir "Cuenta registrada con exito para: ", nuevo_usuario
-16. FinFuncion
-17. 
-18. Funcion iniciar_sesion()
-19.     Entradas: usuario, contrasena
-20.     Salidas: Mensaje en pantalla
-21.     
-22.     Escribir "INICIO DE SESION"
-23.     Escribir "Ingrese su usuario:"
-24.     Leer usuario
-25.     Escribir "Ingrese contrasena:"
-26.     Leer contrasena
-27.     
-28.     Escribir "Bienvenido, ", usuario
-29. FinFuncion
-30. 
-31. Funcion registrar_proyecto()
-32.     Entradas: nombre, avance
-33.     Salidas: Mensaje en pantalla
-34.     
-35.     Escribir "REGISTRO DE PROYECTO"
-36.     Escribir "Nombre del proyecto:"
-37.     Leer nombre
-38.     Escribir "Porcentaje de avance (0 a 100):"
-39.     Leer avance
-40.     
-41.     Si avance >= 0 Y avance <= 100 Entonces
-42.         Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
-43.     Sino
-44.         Escribir "El porcentaje debe estar entre 0 y 100"
-45.     FinSi
-46. FinFuncion
-47. 
-48. SECCION 2: METRICAS Y OPERADORES ARITMETICOS
-49. 
-50. Funcion calcular_metricas()
-51.     Entradas: nombre, metas_total, metas_cumplidas, presupuesto_inicial, presupuesto_gastado, dias
-52.     Salidas: presupuesto_restante, porcentaje_avance, semanas, dias_s, Resumen en pantalla
-53.     
-54.     Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
-55.     Escribir "Nombre del proyecto:"
-56.     Leer nombre
-57.     Escribir "Total de metas:"
-58.     Leer metas_total
-59.     Escribir "Metas alcanzadas:"
-60.     Leer metas_cumplidas
-61.     Escribir "Presupuesto inicial:"
-62.     Leer presupuesto_inicial
-63.     Escribir "Presupuesto gastado:"
-64.     Leer presupuesto_gastado
-65.     Escribir "Duracion estimada en dias del proyecto:"
-66.     Leer dias
-67.     
-68.     Si metas_total <= 0 Entonces
-69.         Escribir "Error: Sus metas deben ser al menos 1"
-70.     Sino
-71.         presupuesto_restante = presupuesto_inicial - presupuesto_gastado
-72.         porcentaje_avance = (metas_cumplidas / metas_total) * 100
-73.         semanas = dias / 7
-74.         dias_s = dias MOD 7
-75.         
-76.         Escribir "Resumen de metricas: ", nombre
-77.         Escribir "Avance real de metas: ", porcentaje_avance, "%"
-78.         Escribir "Presupuesto disponible: ", presupuesto_restante
-79.         Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
-80.     FinSi
-81. FinFuncion
-82. 
-83. SECCION 3: MENU Y FLUJO PRINCIPAL
-84. 
-85. Funcion mostrar_menu()
-86.     Entradas: Ninguna
-87.     Salidas: Opciones en pantalla
-88.     
-89.     Escribir "Sistema de gestion de proyectos y resultados"
-90.     Escribir "1. Crear cuenta"
-91.     Escribir "2. Iniciar sesion"
-92.     Escribir "3. Registrar proyecto"
-93.     Escribir "4. Calcular metricas de proyecto"
-94.     Escribir "5. Salir"
-95. FinFuncion
-96. 
-97. Funcion principal()
-98.     Entradas: opcion
-99.     Salidas: Ejecucion de funciones
-100.    
-101.    ejecutando = Verdadero
-102.    
-103.    Mientras ejecutando Hacer
-104.        mostrar_menu()
-105.        Escribir "Selecciona una opcion (1 a 5):"
-106.        Leer opcion
-107.        
-108.        Si opcion == "1" Entonces
-109.            crear_cuenta()
-110.        FinSi
-111.        Si opcion == "2" Entonces
-112.            iniciar_sesion()
-113.        FinSi
-114.        Si opcion == "3" Entonces
-115.            registrar_proyecto()
-116.        FinSi
-117.        Si opcion == "4" Entonces
-118.            calcular_metricas()
-119.        FinSi
-120.        Si opcion == "5" Entonces
-121.            Escribir "Cerrando programa"
-122.            ejecutando = Falso
-123.        FinSi
-124.    FinMientras
-125. FinFuncion
-126. 
-127. Inicio
-128.     principal()
-129. FinAlgoritmo
+    SECCIÓN 1: FUNCIONES AUXILIARES Y MATEMÁTICAS
+    1
+    1.1 SubProceso calcular_restante (inicial, gastado)
+    1.2     Retornar inicial - gastado
+    1.3 FinSubProceso
+
+    1.4 SubProceso calcular_porcentaje (cumplidas, total)
+    1.5     Retornar (cumplidas / total) * 100
+    1.6 FinSubProceso
+
+    1.7 SubProceso calcular_semanas (dias)
+    1.8     Retornar TRUNC(dias / 7)
+    1.9 FinSubProceso
+
+    1.10 SubProceso calcular_dias_sobrantes (dias, semanas)
+    1.11    Retornar dias - (semanas * 7)
+    1.12 FinSubProceso
+
+    1.13 SubProceso generar_barra_progreso (porcentaje)
+    1.14    Definir bloques Como Entero
+    1.15    Si porcentaje < 0 Entonces
+    1.16        porcentaje <- 0
+    1.17    FinSi
+    1.18    Si porcentaje > 100 Entonces
+    1.19        porcentaje <- 100
+    1.20    FinSi
+    1.21    bloques <- TRUNC(porcentaje / 10)
+    1.22    Escribir "Progreso: [", bloques, " de 10 bloques completados]"
+    1.23 FinSubProceso
+
+    1.24 SubProceso evaluar_salud_presupuesto (inicial, gastado)
+    1.25    Definir porcentaje_gastado como real
+    1.26    Si inicial > 0 Entonces
+    1.27        porcentaje_gastado <- (gastado / inicial) * 100
+    1.28    Sino
+    1.29        porcentaje_gastado <- 0
+    1.30    FinSi
+    1.31    Si porcentaje_gastado > 90 Entonces
+    1.32        Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)"
+    1.33    Sino
+    1.34        Si porcentaje_gastado >= 70 Entonces
+    1.35            Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)"
+    1.36        Sino
+    1.37            Escribir "Saludable: Presupuesto bajo control (Menor al 70%)"
+    1.38        FinSi
+    1.39    FinSi
+    1.40 FinSubProceso
+
+    SECCIÓN 2: MÓDULO DE AUTENTICACIÓN
+    2
+    2.1 SubProceso crear_cuenta()
+    2.2     Definir nuevo_usuario, nueva_contrasena como cadena
+    2.3     Escribir "REGISTRO NUEVA CUENTA"
+    2.4     Escribir "Ingrese un nombre de usuario:"
+    2.5     Leer nuevo_usuario
+    2.6     Escribir "Ingrese una contrasena:"
+    2.7     Leer nueva_contrasena
+    2.8     Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces
+    2.9         Escribir "Cuenta registrada con exito para: ", nuevo_usuario
+    2.10    Sino
+    2.11        Escribir "Error: Debe llenar todos los campos"
+    2.12    FinSi
+    2.13 FinSubProceso
+
+    2.14 SubProceso iniciar_sesion()
+    2.15    Definir usuario, contrasena como cadena
+    2.16    Escribir "INICIO DE SESION"
+    2.17    Escribir "Ingrese su usuario:"
+    2.18    Leer usuario
+    2.19    Escribir "Ingrese contrasena:"
+    2.20    Leer contrasena
+    2.21    Si usuario <> "" Y contrasena <> "" Entonces
+    2.22        Escribir "Bienvenido/a, ", usuario
+    2.23    Sino
+    2.24        Escribir "Datos incorrectos"
+    2.25    FinSi
+    2.26 FinSubProceso
+
+    SECCIÓN 3: REGISTRO Y MÉTRICAS DE PROYECTOS
+    3
+    3.1 SubProceso registrar_proyecto()
+    3.2     Definir nombre como cadena
+    3.3     Definir avance como real
+    3.4     Definir continuar como cadena
+    3.5     continuar <- "s"
+    3.6     Mientras continuar = "s" O continuar = "S" Hacer
+    3.7         Escribir "REGISTRO DE PROYECTO"
+    3.8         Escribir "Nombre del proyecto:"
+    3.9         Leer nombre
+    3.10        Escribir "Porcentaje de avance (0 a 100):"
+    3.11        Leer avance
+    3.12        Si avance >= 0 Y avance <= 100 Entonces
+    3.13            Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
+    3.14            generar_barra_progreso(avance)
+    3.15            AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%")
+    3.16            AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", "Activo")
+    3.17        Sino
+    3.18            Escribir "El porcentaje debe estar entre 0 y 100"
+    3.19        FinSi
+    3.20        Escribir "¿Desea registrar otro proyecto? (s/n):"
+    3.21        Leer continuar
+    3.22    FinMientras
+    3.23 FinSubProceso
+
+    3.24 SubProceso calcular_metricas()
+    3.25    Definir nombre como cadena
+    3.26    Definir metas_total, metas_cumplidas Como Entero
+    3.27    Definir presupuesto_inicial, presupuesto_gastado Como Real
+    3.28    Definir dias, semanas, dias_s Como Entero
+    3.29    Definir presupuesto_restante, porcentaje_avance Como Real
+    3.30    Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
+    3.31    Escribir "Nombre del proyecto:"
+    3.32    Leer nombre
+    3.33    Escribir "Total de metas:"
+    3.34    Leer metas_total
+    3.35    Escribir "Metas alcanzadas:"
+    3.36    Leer metas_cumplidas
+    3.37    Escribir "Presupuesto inicial:"
+    3.38    Leer presupuesto_inicial
+    3.39    Escribir "Presupuesto gastado:"
+    3.40    Leer presupuesto_gastado
+    3.41    Escribir "Duracion estimada en dias del proyecto:"
+    3.42    Leer dias
+    3.43    Si metas_total <= 0 Entonces
+    3.44        Escribir "Error: Sus metas deben ser al menos 1"
+    3.45    Sino
+    3.46        presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado)
+    3.47        porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total)
+    3.48        semanas <- calcular_semanas(dias)
+    3.49        dias_s <- calcular_dias_sobrantes(dias, semanas)
+    3.50        Escribir "RESUMEN DE RESULTADOS"
+    3.51        Escribir "Resumen de metricas: ", nombre
+    3.52        Escribir "Avance real de metas: ", porcentaje_avance, "%"
+    3.53        generar_barra_progreso(porcentaje_avance)
+    3.54        evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado)
+    3.55        Escribir "Presupuesto disponible: $", presupuesto_restante
+    3.56        Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
+    3.57    FinSi
+    3.58 FinSubProceso
+
+    SECCIÓN 4: LISTAS, MATRICES Y ANÁLISIS DE CADENAS
+    4
+    4.1 SubProceso ver_historial_proyectos()
+    4.2     Escribir "HISTORIAL DE PROYECTOS REGISTRADOS"
+    4.3 FinSubProceso
+
+    4.4 SubProceso calcular_estadisticas_lista()
+    4.5     Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS"
+    4.6 FinSubProceso
+
+    4.7 SubProceso ver_matriz_proyectos()
+    4.8     Escribir "TABLA DE DATOS - MATRIZ DE PROYECTOS"
+    4.9 FinSubProceso
+
+    4.10 SubProceso actualizar_estados_matriz()
+    4.11    Escribir "ACTUALIZACION DE ESTADOS EN LOTE"
+    4.12 FinSubProceso
+
+    4.13 SubProceso resumen_conteo_matriz()
+    4.14    Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS"
+    4.15 FinSubProceso
+
+    4.16 SubProceso buscar_analizar_cadenas()
+    4.17    Escribir "BUSQUEDA Y ANALISIS DE CADENAS EN PROYECTOS"
+    4.18 FinSubProceso
+
+    SECCIÓN 5: MENÚ Y FLUJO PRINCIPAL
+    5
+    5.1 SubProceso mostrar_menu()
+    5.2     Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS"
+    5.3     Escribir "1. Crear cuenta"
+    5.4     Escribir "2. Iniciar sesion"
+    5.5     Escribir "3. Registrar proyecto (Con ciclo)"
+    5.6     Escribir "4. Calcular metricas de proyecto"
+    5.7     Escribir "5. Ver historial de proyectos"
+    5.8     Escribir "6. Ver estadisticas de la lista"
+    5.9     Escribir "7. Ver matriz de proyectos en tabla"
+    5.10    Escribir "8. Actualizar estados de proyectos en lote"
+    5.11    Escribir "9. Ver resumen y conteo cruzado"
+    5.12    Escribir "10. Buscar y analizar cadenas en proyectos"
+    5.13    Escribir "11. Salir"
+    5.14 FinSubProceso
+
+    5.15 subproceso
+    5.16    Definir opcion como cadena
+    5.17    Definir ejecutando como logico
+    5.18    ejecutando <- Verdadero
+    5.19    Mientras ejecutando Hacer
+    5.20        mostrar_menu()
+    5.21        Escribir "Selecciona una opcion (1 a 11):"
+    5.22        Leer opcion
+    5.23        Si opcion = "1" Entonces
+    5.24            crear_cuenta()
+    5.25        Sino
+    5.26            Si opcion = "2" Entonces
+    5.27                iniciar_sesion()
+    5.28            Sino
+    5.29                Si opcion = "3" Entonces
+    5.30                    registrar_proyecto()
+    5.31                Sino
+    5.32                    Si opcion = "4" Entonces
+    5.33                        calcular_metricas()
+    5.34                    Sino
+    5.35                        Si opcion = "5" Entonces
+    5.36                            ver_historial_proyectos()
+    5.37                        Sino
+    5.38                            Si opcion = "6" Entonces
+    5.39                                calcular_estadisticas_lista()
+    5.40                            Sino
+    5.41                                Si opcion = "7" Entonces
+    5.42                                    ver_matriz_proyectos()
+    5.43                                Sino
+    5.44                                    Si opcion = "8" Entonces
+    5.45                                        actualizar_estados_matriz()
+    5.46                                Sino
+    5.47                                    Si opcion = "9" Entonces
+    5.48                                        resumen_conteo_matriz()
+    5.49                                Sino
+    5.50                                    Si opcion = "10" Entonces
+    5.51                                        buscar_analizar_cadenas()
+    5.52                                Sino
+    5.53                                    Si opcion = "11" Entonces
+    5.54                                        Escribir "Cerrando programa"
+    5.55                                        ejecutando <- Falso
+    5.56                                Sino
+    5.57                                    Escribir "Opcion no válida. Por favor escribe un numero del 1 al 11."
+    5.58                                FinSi
+    5.59                                FinSi
+    5.60                                FinSi
+    5.61                                FinSi
+    5.62                                FinSi
+    5.63                                FinSi
+    5.64                            FinSi
+    5.65                        FinSi
+    5.66                    FinSi
+    5.67                FinSi
+    5.68            FinSi
+    5.69        Escribir "Presiona Enter para continuar..."
+    5.70        Leer opcion
+    5.71    FinMientras
+    5.72 FinSubProceso
+
+    principal()
+
+FinAlgoritmo
