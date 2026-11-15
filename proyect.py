@@ -135,7 +135,7 @@ def registrar_proyecto():
                 }  # [Avance 3 y 6] Estructura de arreglo asociativo (diccionario) con los campos del proyecto
                 proyectos_registrados.append(
                     proyecto
-                )  # [Avance 6] Operación de listas/arreglos método append() para insertar un elemento al final
+                )  # [Avance 6] Operación de listas con método append() para insertar un elemento al final
 
                 # [Avance 7] Asigna el estado inicial según el porcentaje de avance para la matriz
                 estado_inicial = (
@@ -404,6 +404,47 @@ def resumen_conteo_matriz():
     )  # [Avance 1] Muestra el conteo cruzado
 
 
+def buscar_analizar_cadenas():
+    # [Avance 8] Función dedicada a la manipulación y análisis avanzado de cadenas (strings)
+    print("BÚSQUEDA Y ANÁLISIS DE CADENAS EN PROYECTOS")
+    if not proyectos_registrados:
+        print(
+            "No hay proyectos registrados para analizar. Registre proyectos en la opción 3."
+        )  # [Avance 4 y 8] Valida si la lista está vacía
+        return
+    
+    # [Avance 8] Lee el texto de búsqueda, elimina espacios con .strip() y normaliza con .lower()
+    keyword = input("Ingrese una palabra clave para buscar en los proyectos: ").strip().lower()
+    encontrados = 0  # [Avance 1] Inicializa contador de coincidencias
+    
+    for p in proyectos_registrados:  # [Avance 5 y 6] Recorre la lista de proyectos registrados
+        nombre_proyecto = p["nombre"]  # [Avance 6] Extrae el nombre del proyecto
+        
+        # [Avance 8] Aplicación de métodos avanzados de cadenas (strings)
+        nombre_limpio = nombre_proyecto.strip()         # [Avance 8] Limpia espacios laterales
+        nombre_mayus = nombre_proyecto.upper()          # [Avance 8] Convierte la cadena completa a mayúsculas
+        nombre_formateado = nombre_proyecto.title()     # [Avance 8] Formatea como título (mayúscula inicial por palabra)
+        longitud_nombre = len(nombre_proyecto)          # [Avance 8] Calcula el número total de caracteres
+        
+        # [Avance 4 y 8] Operador 'in' para verificar si la palabra clave está contenida en el texto normalizado
+        if keyword in nombre_proyecto.lower():
+            encontrados += 1  # [Avance 2] Incrementa el contador de coincidencias halladas
+            
+            # [Avance 1 y 8] Muestra reporte detallado demostrando el manejo integral de strings
+            print(f"\n--- REPORTE DE CADENA [{encontrados}] ---")
+            print(f"  * Nombre original:    '{nombre_proyecto}'")
+            print(f"  * Formato Título:     '{nombre_formateado}'")   # [Avance 8] Método .title()
+            print(f"  * Todo en Mayúsculas: '{nombre_mayus}'")      # [Avance 8] Método .upper()
+            print(f"  * Total caracteres:   {longitud_nombre}")     # [Avance 8] Función len()
+            print(f"  * Avance registrado:  {p['avance']:.1f}%")
+            print("-" * 35)
+
+    if encontrados == 0:  # [Avance 4] Estructura de decisión si no se encontraron resultados
+        print(f"No se encontraron proyectos que coincidan con la palabra clave '{keyword}'.")
+    else:
+        print(f"\nBúsqueda finalizada. Total de coincidencias encontradas: {encontrados}")
+
+
 def mostrar_menu():
     # [Avance 3] Define una función para desplegar el menú de opciones
     print("  SISTEMA DE GESTIÓN DE PROYECTOS")  # [Avance 1] Imprime el título general del menú
@@ -422,7 +463,10 @@ def mostrar_menu():
     print(
         "9. Ver resumen y conteo cruzado"
     )  # [Avance 7] Opción 9 añadida para matriz de resumen
-    print("10. Salir")  # [Avance 1 y 7] Opción 10 de salida actualizada
+    print(
+        "10. Buscar y analizar cadenas en proyectos"
+    )  # [Avance 8] Opción 10 añadida para manejo avanzado de cadenas (strings)
+    print("11. Salir")  # [Avance 1 y 8] Opción 11 de salida actualizada
 
 
 def main():
@@ -438,7 +482,7 @@ def main():
     ):  # [Avance 5] Estructura de repetición ciclo principal que mantiene el menú corriendo en bucle
         mostrar_menu()  # [Avance 3] Llama a la función para dibujar las opciones en pantalla
         opcion = (
-            input("Escribe el número de la opción elegida (1-10): ").strip()
+            input("Escribe el número de la opción elegida (1-11): ").strip()
         )  # [Avance 1] Lee la opción seleccionada por el usuario limpiando espacios
         if (
             opcion == "1"
@@ -481,19 +525,23 @@ def main():
             resumen_conteo_matriz()  # [Avance 7] Llama a la función de resumen y conteo cruzado
         elif (
             opcion == "10"
-        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 10
+        ):  # [Avance 4 y 8] Estructura de decisión evalúa si se eligió la opción 10
+            buscar_analizar_cadenas()  # [Avance 8] Llama a la función de manipulación y búsqueda de cadenas
+        elif (
+            opcion == "11"
+        ):  # [Avance 4 y 8] Estructura de decisión evalúa si se eligió la opción 11 de salida
             print(
                 "Cerrando el programa"
             )  # [Avance 1] Mensaje de salida del sistema
             ejecutando = (
                 False  # [Avance 1] Cambia la variable a False para romper el ciclo while y terminar
             )
-        else:  # [Avance 4] Estructura de decisión se ejecuta si ingresan un número fuera del rango 1 al 10
+        else:  # [Avance 4] Estructura de decisión se ejecuta si ingresan un número fuera del rango 1 al 11
             print(
-                "Opción no válida. Por favor escribe un número del 1 al 10."
+                "Opción no válida. Por favor escribe un número del 1 al 11."
             )  # [Avance 1] Muestra mensaje de error por opción incorrecta
 
-        input("\nPresiona enter para continuar...\n")
+        input("\nPresiona enter para continuar.\n")
         print("\n" * 2)
 
 
