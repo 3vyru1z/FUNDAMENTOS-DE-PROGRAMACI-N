@@ -1,548 +1,841 @@
-# Sistema de gestión y seguimiento de proyectos
+# Sistema de gestion y seguimiento de proyectos
+
+ARCHIVO_PROYECTOS = (
+    "proyectos_guardados.txt"
+)  # Guarda el nombre del archivo donde se anotan los proyectos
+ARCHIVO_MATRIZ = (
+    "matriz_proyectos.txt"
+)  # Guarda el nombre del archivo donde se anota la tabla de proyectos
 
 proyectos_registrados = (
     []
-)  # [Avance 1 y 6] Declaración de lista global (arreglo unidimensional) para almacenar registros
+)  # Crea una lista vacia para ir guardando los proyectos
 matriz_proyectos = (
     []
-)  # [Avance 7] Declaración de lista anidada (matriz bidimensional) para almacenar filas y columnas
+)  # Crea una tabla vacia (lista dentro de lista) para filas y columnas
 
 
 def calcular_restante(inicial, gastado):
-    # [Avance 3] Define una función para restar el gasto del presupuesto inicial
-    return inicial - gastado  # [Avance 2 y 3] Retorna el resultado numérico de la resta
+    # Calcula cuanto dinero queda del presupuesto
+    return (
+        inicial - gastado
+    )  # Resta lo que se gasto a lo que habia al inicio y regresa el resultado
 
 
 def calcular_porcentaje(cumplidas, total):
-    # [Avance 3] Define una función para calcular el porcentaje de metas logradas
+    # Calcula que porcentaje de metas se lograron
     return (
         cumplidas / total
-    ) * 100  # [Avance 2 y 3] Retorna la operación aritmética del porcentaje
+    ) * 100.0  # Divide las metas logradas entre el total y multiplica por 100.0
 
 
 def calcular_semanas(dias):
-    # [Avance 3] Define una función para calcular las semanas completas
-    return dias // 7  # [Avance 2 y 3] Retorna la división entera para obtener las semanas
+    # Calcula cuantas semanas completas caben en esos dias
+    return (
+        dias // 7
+    )  # Divide los dias entre 7 sin decimales para sacar las semanas
 
 
 def calcular_dias_sobrantes(dias, semanas):
-    # [Avance 3] Define una función para calcular los días que sobran
+    # Calcula cuantos dias quedan sueltos despues de contar las semanas
     return dias - (
         semanas * 7
-    )  # [Avance 2 y 3] Retorna la resta de los días menos las semanas completas
+    )  # Quita los dias de las semanas completas al total de dias
 
 
 def generar_barra_progreso(porcentaje):
-    # [Avance 3] Define una función para crear una representación visual del progreso
+    # Arma una barra visual de 10 partes segun el porcentaje
     limite = max(
-        0, porcentaje
-    )  # [Avance 2 y 3] Usa max() para asegurar que el porcentaje no sea menor a 0
+        0.0, porcentaje
+    )  # Evita que el porcentaje baje de 0.0
     limite = min(
-        100, limite
-    )  # [Avance 2 y 3] Usa min() para asegurar que el porcentaje no rebase 100
+        100.0, limite
+    )  # Evita que el porcentaje pase de 100.0
     bloques = int(
         limite // 10
-    )  # [Avance 2 y 3] Calcula la cantidad de bloques enteros de 0 a 10
+    )  # Calcula cuantas partes llenas (de 0 a 10) lleva la barra
     return "||" * bloques + "||" * (
         10 - bloques
-    )  # [Avance 3] Retorna una cadena con caracteres gráficos de barra
+    )  # Junta las partes llenas y las restantes y regresa el texto
 
 
 def evaluar_salud_presupuesto(inicial, gastado):
-    # [Avance 3] Define una función para calificar la salud financiera
-    porcentaje_gastado = (
-        (gastado / inicial) * 100 if inicial > 0 else 0
-    )  # [Avance 2 y 3] Calcula el porcentaje gastado si el presupuesto es mayor a cero
+    # Revisa como va el dinero del presupuesto segun lo gastado
+    if inicial > 0:  # Revisa si el presupuesto inicial es mayor que cero
+        porcentaje_gastado = (
+            gastado / inicial
+        ) * 100.0  # Saca que porcentaje del dinero inicial ya se gasto
+    else:  # Si el presupuesto inicial es cero o menos
+        porcentaje_gastado = (
+            0.0  # Pone 0.0 para no dividir entre cero
+        )
     if (
-        porcentaje_gastado > 90
-    ):  # [Avance 4] Estructura de decisión evalúa si el gasto supera el 90%
-        return "Alerta: Presupuesto casi agotado"  # [Avance 4] Retorna un mensaje de advertencia crítica
-    elif (
-        porcentaje_gastado >= 70
-    ):  # [Avance 4] Estructura de decisión evalúa si está entre el 70% y 90%
-        return "Precaución: Presupuesto en riesgo moderado"  # [Avance 4] Retorna un mensaje de precaución
-    else:  # [Avance 4] Estructura de decisión caso por defecto si es menor al 70%
-        return "Saludable: Presupuesto bajo control"  # [Avance 4] Retorna un mensaje de estado óptimo
+        porcentaje_gastado > 90.0
+    ):  # Revisa si ya se gasto mas del 90%
+        return (
+            "Alerta: Presupuesto casi agotado"
+        )  # Regresa aviso de que queda muy poco dinero
+    if (
+        porcentaje_gastado >= 70.0
+    ):  # Revisa si se gasto entre 70% y 90%
+        return (
+            "Precaucion: Presupuesto en riesgo moderado"
+        )  # Regresa aviso de tener cuidado con el gasto
+    return (
+        "Saludable: Presupuesto bajo control"
+    )  # Regresa aviso de que el gasto va bien (menos del 70%)
 
 
 def crear_cuenta():
-    # [Avance 3] Define una función para el registro de nuevos usuarios
-    print("REGISTRO NUEVA CUENTA")  # [Avance 1] Imprime el título del módulo en pantalla
+    # Pide datos para crear una cuenta nueva y revisa que no esten vacios
+    print(
+        "REGISTRO NUEVA CUENTA"
+    )  # Muestra el titulo para crear cuenta
     nuevo_usuario = input(
         "Ingrese un nombre de usuario: "
-    ).strip()  # [Avance 1] Solicita y lee el nombre de usuario
+    ).strip()  # Pide el nombre de usuario y quita espacios de las orillas
     nueva_contrasena = input(
-        "Ingrese una contraseña: "
-    ).strip()  # [Avance 1] Solicita y lee la contraseña
+        "Ingrese una contrasena: "
+    ).strip()  # Pide la contrasena y quita espacios de las orillas
     if (
         nuevo_usuario and nueva_contrasena
-    ):  # [Avance 4] Estructura de decisión verifica que ambos campos tengan texto
+    ):  # Revisa que se hayan escrito ambos datos
         print(
-            f"¡Cuenta de '{nuevo_usuario}' registrada con éxito!"
-        )  # [Avance 1] Muestra mensaje de éxito
-    else:  # [Avance 4] Estructura de decisión se ejecuta si algún campo quedó vacío
+            f"Cuenta de '{nuevo_usuario}' registrada con exito!"
+        )  # Avisa que la cuenta quedo lista
+    else:  # Si falta escribir usuario o contrasena
         print(
             "Error: Debe llenar todos los campos"
-        )  # [Avance 1] Muestra un aviso de error por campos vacíos
+        )  # Avisa que hay que llenar los dos datos
 
 
 def iniciar_sesion():
-    # [Avance 3] Define una función para autenticar a un usuario
-    print("INICIO DE SESIÓN")  # [Avance 1] Imprime el título del inicio de sesión
+    # Pide usuario y contrasena para entrar al sistema
+    print(
+        "INICIO DE SESION"
+    )  # Muestra el titulo de inicio de sesion
     usuario = input(
         "Ingrese su usuario: "
-    ).strip()  # [Avance 1] Solicita el nombre de usuario
+    ).strip()  # Pide el usuario y quita espacios de las orillas
     contrasena = input(
-        "Ingrese su contraseña: "
-    ).strip()  # [Avance 1] Solicita la contraseña
+        "Ingrese su contrasena: "
+    ).strip()  # Pide la contrasena y quita espacios de las orillas
     if (
         usuario and contrasena
-    ):  # [Avance 4] Estructura de decisión comprueba que no estén vacíos
+    ):  # Revisa que ambos campos tengan texto
         print(
-            f"¡Bienvenido/a, '{usuario}'!"
-        )  # [Avance 1] Muestra el mensaje de bienvenida
-        return True  # [Avance 3] Devuelve verdadero confirmando acceso
-    else:  # [Avance 4] Estructura de decisión se ejecuta si faltan datos
-        print("Datos incorrectos")  # [Avance 1] Imprime aviso de error
-        return False  # [Avance 3] Devuelve falso indicando fallo de inicio
+            f"Bienvenido/a, '{usuario}'!"
+        )  # Saluda al usuario
+        return True  # Regresa verdadero para indicar que si entro
+    print(
+        "Datos incorrectos"
+    )  # Avisa que faltaron datos
+    return False  # Regresa falso para indicar que no pudo entrar
 
 
 def registrar_proyecto():
-    # [Avance 3] Define una función para registrar uno o varios proyectos
-    print("REGISTRA TU PROYECTO")  # [Avance 1] Muestra el encabezado del registro
+    # Guarda uno o varios proyectos con su porcentaje de avance
+    print(
+        "REGISTRA TU PROYECTO"
+    )  # Muestra el titulo para registrar proyectos
     continuar = (
-        "s"  # [Avance 5] Inicializa la variable de control del ciclo en "s"
+        "s"  # Empieza con "s" para entrar al ciclo de registro
     )
     while (
         continuar.strip().lower() == "s"
-    ):  # [Avance 5] Estructura de repetición ciclo para registrar muchos proyectos seguidos
+    ):  # Repite el registro mientras el usuario escriba "s"
         nombre = input(
             "Nombre del proyecto: "
-        ).strip()  # [Avance 1] Solicita el nombre del proyecto
-        try:  # [Avance 1] Inicia bloque para manejar errores de entrada numérica
+        ).strip()  # Pide el nombre del proyecto y quita espacios extras
+        try:  # Intenta leer el avance como numero para evitar fallos si escriben letras
             avance = float(
                 input("Porcentaje de avance (0-100): ")
-            )  # [Avance 1] Lee y convierte la entrada a número decimal
+            )  # Pide el avance y lo convierte a numero con decimales
             if (
-                0 <= avance <= 100
-            ):  # [Avance 4] Estructura de decisión verifica que el avance esté en el rango permitido
+                0.0 <= avance <= 100.0
+            ):  # Revisa que el avance este entre 0.0 y 100.0
                 barra = generar_barra_progreso(
                     avance
-                )  # [Avance 3] Llama a la función para obtener la barra gráfica
+                )  # Crea la barra visual segun el avance
                 proyecto = {
                     "nombre": nombre,
                     "avance": avance,
-                }  # [Avance 3 y 6] Estructura de arreglo asociativo (diccionario) con los campos del proyecto
+                }  # Guarda el nombre y el avance del proyecto juntos
                 proyectos_registrados.append(
                     proyecto
-                )  # [Avance 6] Operación de listas con método append() para insertar un elemento al final
-
-                # [Avance 7] Asigna el estado inicial según el porcentaje de avance para la matriz
-                estado_inicial = (
-                    "Completado"
-                    if avance == 100
-                    else ("En Proceso" if avance > 0 else "Iniciado")
-                )
+                )  # Mete el proyecto a la lista general
+                if (
+                    avance == 100.0
+                ):  # Revisa si ya llego al 100%
+                    estado_inicial = (
+                        "Completado"  # Marca el proyecto como completado
+                    )
+                elif (
+                    avance > 0.0
+                ):  # Revisa si ya empezo pero no ha terminado
+                    estado_inicial = (
+                        "En Proceso"  # Marca el proyecto como en proceso
+                    )
+                else:  # Si el avance es 0.0%
+                    estado_inicial = (
+                        "Iniciado"  # Marca el proyecto como iniciado
+                    )
                 fila_matriz = [
                     nombre,
                     f"{avance:.1f}%",
                     estado_inicial,
-                ]  # [Avance 7] Crea la fila para la matriz bidimensional
+                ]  # Arma una fila con nombre, avance y estado
                 matriz_proyectos.append(
                     fila_matriz
-                )  # [Avance 7] Inserta la fila en la matriz global
-
+                )  # Mete la fila nueva a la tabla de proyectos
                 print(
-                    f"Proyecto '{nombre}' registrado con {avance:.1f}% de avance"
-                )  # [Avance 1] Muestra el avance formateado
+                    f"Proyecto '{nombre}' registrado con "
+                    f"{avance:.1f}% de avance"
+                )  # Muestra que el proyecto ya se guardo
                 print(
                     f"Progreso visual: [{barra}] {avance:.1f}%"
-                )  # [Avance 1] Muestra la barra visual en pantalla
-            else:  # [Avance 4] Estructura de decisión se ejecuta si el número está fuera de rango
+                )  # Muestra la barra y el porcentaje
+            else:  # Si el numero no esta entre 0 y 100
                 print(
                     "El porcentaje debe estar entre 0 y 100"
-                )  # [Avance 1] Muestra advertencia de rango válido
+                )  # Avisa que el numero debe estar en ese rango
         except (
             ValueError
-        ):  # [Avance 1] Captura el error si el usuario escribe letras en lugar de números
+        ):  # Si el usuario escribio algo que no es numero
             print(
-                "Error: Por favor ingrese un número válido"
-            )  # [Avance 1] Muestra el mensaje de error de formato
+                "Error: Por favor ingrese un numero valido"
+            )  # Avisa que debe escribir un numero
         continuar = input(
-            "¿Desea registrar otro proyecto? (s/n): "
-        )  # [Avance 5] Pregunta si desea repetir el ciclo de registro
+            "Desea registrar otro proyecto? (s/n): "
+        )  # Pregunta si quiere anotar otro proyecto
 
 
 def calcular_metricas():
-    # [Avance 3] Define una función para calcular métricas financieras y de tiempo
+    # Pide datos de un proyecto y muestra sus cuentas de metas, dinero y tiempo
     print(
-        "CÁLCULO DE MÉTRICAS DE TIEMPO Y FINANCIERAS"
-    )  # [Avance 1] Imprime el título de la sección
+        "CALCULO DE METRICAS DE TIEMPO Y FINANCIERAS"
+    )  # Muestra el titulo de esta seccion
     nombre = input(
         "Nombre del proyecto: "
-    ).strip()  # [Avance 1] Solicita el nombre del proyecto a evaluar
-    try:  # [Avance 1] Inicia bloque de control de errores
+    ).strip()  # Pide el nombre del proyecto
+    try:  # Intenta convertir los datos a numeros enteros
         metas_total = int(
             input("Total de metas planificadas: ")
-        )  # [Avance 1] Lee el total de metas como número entero
+        )  # Pide cuantas metas se pensaron en total
         metas_cumplidas = int(
             input("Metas alcanzadas: ")
-        )  # [Avance 1] Lee las metas logradas como entero
+        )  # Pide cuantas metas ya se cumplieron
         presupuesto_inicial = int(
             input("Presupuesto inicial ($): ")
-        )  # [Avance 1] Lee el presupuesto inicial
+        )  # Pide con cuanto dinero empezaron
         presupuesto_gastado = int(
             input("Presupuesto gastado ($): ")
-        )  # [Avance 1] Lee el presupuesto gastado
+        )  # Pide cuanto dinero ya se gasto
         dias = int(
-            input("Duración estimada en días del proyecto: ")
-        )  # [Avance 1] Lee los días estimados de duración
-
+            input("Duracion estimada en dias del proyecto: ")
+        )  # Pide en cuantos dias se piensa terminar
         if (
             metas_total <= 0
-        ):  # [Avance 4] Estructura de decisión comprueba que las metas sean mayores a cero
+        ):  # Revisa que haya por lo menos 1 meta
             print(
                 "Error: Sus metas al menos deben ser 1"
-            )  # [Avance 1] Muestra mensaje de error por metas nulas
-            return  # [Avance 3] Finaliza la función anticipadamente para evitar errores matemáticos
-
+            )  # Avisa que el total de metas no puede ser cero o menor
+            return  # Sale de la funcion para no dividir entre cero
         presupuesto_restante = calcular_restante(
             presupuesto_inicial, presupuesto_gastado
-        )  # [Avance 2 y 3] Obtiene el presupuesto restante llamando a la función
+        )  # Saca cuanto dinero queda disponible
         porcentaje_avance = calcular_porcentaje(
             metas_cumplidas, metas_total
-        )  # [Avance 2 y 3] Obtiene el porcentaje de avance llamando a la función
+        )  # Saca el porcentaje de metas cumplidas
         semanas = calcular_semanas(
             dias
-        )  # [Avance 2 y 3] Obtiene las semanas completas llamando a la función
+        )  # Saca cuantas semanas completas son
         dias_s = calcular_dias_sobrantes(
             dias, semanas
-        )  # [Avance 2 y 3] Obtiene los días sobrantes llamando a la función
+        )  # Saca cuantos dias quedan extra
         barra = generar_barra_progreso(
             porcentaje_avance
-        )  # [Avance 3] Genera la barra visual para el porcentaje obtenido
+        )  # Dibuja la barra de avance
         estatus = evaluar_salud_presupuesto(
             presupuesto_inicial, presupuesto_gastado
-        )  # [Avance 3] Obtiene la evaluación de salud financiera
-
-        print("RESUMEN DE RESULTADOS")  # [Avance 1] Imprime el título del reporte
+        )  # Revisa como esta el presupuesto
         print(
-            f"Resumen de métricas: {nombre}"
-        )  # [Avance 1] Muestra el nombre evaluado
+            "RESUMEN DE RESULTADOS"
+        )  # Muestra el titulo del resumen
         print(
-            f"Avance real de metas: [{barra}] {porcentaje_avance:.2f}%"
-        )  # [Avance 1] Imprime la barra y el porcentaje con dos decimales
+            f"Resumen de metricas: {nombre}"
+        )  # Muestra el nombre del proyecto
+        print(
+            f"Avance real de metas: [{barra}] "
+            f"{porcentaje_avance:.2f}%"
+        )  # Muestra la barra y el porcentaje con dos decimales
         print(
             f"Estado del Presupuesto: {estatus}"
-        )  # [Avance 1] Imprime el estado financiero obtenido
+        )  # Muestra si el presupuesto va bien o en alerta
         print(
             f"Presupuesto disponible: ${presupuesto_restante}"
-        )  # [Avance 2] Imprime el dinero restante
+        )  # Muestra el dinero que sobra
         print(
-            f"Tiempo estimado: {semanas} semanas y {dias_s} días"
-        )  # [Avance 2] Imprime el tiempo desglosado
-
+            f"Tiempo estimado: {semanas} semanas y {dias_s} dias"
+        )  # Muestra la duracion en semanas y dias
     except (
         ValueError
-    ):  # [Avance 1] Captura errores si los datos ingresados no son números enteros
+    ):  # Si alguno de los datos no es un numero entero valido
         print(
-            "Error: Ingrese números enteros válidos"
-        )  # [Avance 1] Muestra mensaje de error de formato
+            "Error: Ingrese numeros enteros validos"
+        )  # Avisa que escriba numeros enteros
 
 
 def ver_historial_proyectos():
-    # [Avance 3] Define una función para visualizar el historial guardado
+    # Muestra en pantalla todos los proyectos guardados hasta ahora
     print(
         "HISTORIAL DE PROYECTOS REGISTRADOS"
-    )  # [Avance 1] Imprime el encabezado del historial
+    )  # Muestra el titulo del historial
     if (
         not proyectos_registrados
-    ):  # [Avance 4 y 6] Estructura de decisión evalúa si la lista/arreglo está vacía usando 'not'
+    ):  # Revisa si todavia no hay proyectos guardados
         print(
-            "No hay proyectos registrados aún. Por favor registre un proyecto en la opción 3."
-        )  # [Avance 1] Muestra mensaje de que no hay registros
-    else:  # [Avance 4] Estructura de decisión se ejecuta si hay proyectos guardados
-        for posicion, p in enumerate(
+            "No hay proyectos registrados aun. "
+            "Por favor registre un proyecto en la opcion 3."
+        )  # Avisa que la lista esta vacia
+    else:  # Si ya hay proyectos guardados
+        for posicion, proyecto in enumerate(
             proyectos_registrados, 1
-        ):  # [Avance 5 y 6] Estructura de repetición y recorrido de listas iteración por elementos e índices
+        ):  # Recorre cada proyecto poniendole numero desde el 1
             barra = generar_barra_progreso(
-                p["avance"]
-            )  # [Avance 3 y 6] Acceso a arreglo asociativo usando la clave ["avance"]
+                proyecto["avance"]
+            )  # Dibuja la barra del avance de ese proyecto
             print(
-                f"{posicion}. {p['nombre']} -> [{barra}] {p['avance']:.1f}%"
-            )  # [Avance 1 y 6] Lectura e impresión de los elementos del arreglo
+                f"{posicion}. {proyecto['nombre']} -> "
+                f"[{barra}] {proyecto['avance']:.1f}%"
+            )  # Muestra el numero, nombre, barra y avance del proyecto
 
 
 def calcular_estadisticas_lista():
-    # [Avance 6] Función dedicada exclusivamente al análisis de listas y arreglos
-    print("ANÁLISIS ESTADÍSTICO DE LA LISTA DE PROYECTOS")
+    # Saca el total, promedio, mayor y menor avance de los proyectos
+    print(
+        "ANALISIS ESTADISTICO DE LA LISTA DE PROYECTOS"
+    )  # Muestra el titulo de estadisticas
     if (
         not proyectos_registrados
-    ):  # [Avance 4 y 6] Verifica si el arreglo contiene datos
+    ):  # Revisa si hay proyectos en la lista
         print(
-            "La lista está vacía. Registre proyectos primero en la opción 3."
-        )
-        return
-
+            "La lista esta vacia. "
+            "Registre proyectos primero en la opcion 3."
+        )  # Avisa que no hay datos para calcular
+        return  # Sale de la funcion porque no hay proyectos
     lista_avances = [
-        p["avance"] for p in proyectos_registrados
-    ]  # [Avance 6] Arreglo derivado crea una lista que contiene solo los porcentajes numéricos
+        proyecto["avance"] for proyecto in proyectos_registrados
+    ]  # Junta todos los porcentajes de avance en una lista
     total_proyectos = len(
         proyectos_registrados
-    )  # [Avance 6] Operación de listas función len() para obtener la cantidad total de elementos
-    promedio_avance = sum(lista_avances) / total_proyectos  # [Avance 2 y 6] Operación de listas sum() para sumar todos los valores del arreglo
+    )  # Cuenta cuantos proyectos hay en total
+    promedio_avance = (
+        sum(lista_avances) / total_proyectos
+    )  # Suma todos los avances y divide entre el total para sacar el promedio
     maximo_avance = max(
         lista_avances
-    )  # [Avance 6] Operación de listas max() para extraer el valor numérico más alto del arreglo
+    )  # Busca el avance mas alto
     minimo_avance = min(
         lista_avances
-    )  # [Avance 6] Operación de listas min() para extraer el valor numérico más bajo del arreglo
-
+    )  # Busca el avance mas bajo
     print(
-        f"Total de proyectos almacenados en la lista: {total_proyectos}"
-    )  # [Avance 6] Imprime el tamaño total del arreglo
+        f"Total de proyectos almacenados en la lista: "
+        f"{total_proyectos}"
+    )  # Muestra cuantos proyectos hay guardados
     print(
         f"Promedio general de avance: {promedio_avance:.2f}%"
-    )  # [Avance 6] Imprime el promedio calculado sobre la lista
+    )  # Muestra el promedio con dos decimales
     print(
         f"Mayor avance registrado en la lista: {maximo_avance:.1f}%"
-    )  # [Avance 6] Imprime el valor máximo del arreglo
+    )  # Muestra el avance mas alto
     print(
         f"Menor avance registrado en la lista: {minimo_avance:.1f}%"
-    )  # [Avance 6] Imprime el valor mínimo del arreglo
+    )  # Muestra el avance mas bajo
 
 
 def ver_matriz_proyectos():
-    # [Avance 7] Función para ver la matriz de proyectos en formato de tabla tabular
-    print("TABLA DE DATOS  MATRIZ DE PROYECTOS")
-    if not matriz_proyectos:
+    # Muestra los proyectos acomodados como una tabla con columnas
+    print(
+        "TABLA DE DATOS  MATRIZ DE PROYECTOS"
+    )  # Muestra el titulo de la tabla
+    if not matriz_proyectos:  # Revisa si la tabla esta vacia
         print(
-            "No hay datos en la matriz de proyectos. Registre proyectos en la opción 3."
-        )  # [Avance 4 y 7] Valida si la matriz está vacía
-        return
-
-    print("-" * 55)
-    print(f"{'ÍNDICE':<8} | {'NOMBRE':<18} | {'AVANCE':<10} | {'ESTADO':<8}")
-    print("-" * 55)
-    for (
-        fila_idx,
-        fila,
-    ) in (
-        enumerate(matriz_proyectos)
-    ):  # [Avance 5 y 7] Recorrido de filas en la matriz bidimensional
-        nombre_m = fila[0]  # [Avance 7] Extrae el nombre de la columna 0
-        avance_m = fila[1]  # [Avance 7] Extrae el avance de la columna 1
-        estado_m = fila[2]  # [Avance 7] Extrae el estado de la columna 2
+            "No hay datos en la matriz de proyectos. "
+            "Registre proyectos en la opcion 3."
+        )  # Avisa que aun no hay filas en la tabla
+        return  # Sale de la funcion si no hay datos
+    print("-" * 55)  # Dibuja una linea de guiones para separar
+    print(
+        f"{'INDICE':<8} | {'NOMBRE':<18} | "
+        f"{'AVANCE':<10} | {'ESTADO':<8}"
+    )  # Escribe los nombres de las columnas
+    print("-" * 55)  # Dibuja otra linea de guiones debajo de los titulos
+    for fila_idx, fila in enumerate(
+        matriz_proyectos
+    ):  # Recorre cada fila de la tabla junto con su numero de fila
+        nombre_m = fila[
+            0
+        ]  # Toma el nombre del proyecto de la primera columna
+        avance_m = fila[
+            1
+        ]  # Toma el avance de la segunda columna
+        estado_m = fila[
+            2
+        ]  # Toma el estado de la tercera columna
         print(
-            f"[{fila_idx}]      | {nombre_m:<18} | {avance_m:<10} | {estado_m:<8}"
-        )
-    print("-" * 55)
+            f"[{fila_idx}]      | {nombre_m:<18} | "
+            f"{avance_m:<10} | {estado_m:<8}"
+        )  # Imprime una fila completa bien acomodada
+    print("-" * 55)  # Dibuja la linea final de la tabla
 
 
 def actualizar_estados_matriz():
-    # [Avance 7] Función para actualización dinámica de estados en lote usando ciclos anidados sobre la matriz
-    if not matriz_proyectos:
-        return  # [Avance 4 y 7] Sale de la función si la matriz está vacía
-    for i, p in enumerate(
+    # Actualiza el estado de todos los proyectos en la tabla segun su avance
+    if not matriz_proyectos:  # Revisa si la tabla tiene datos
+        return  # Sale de la funcion si esta vacia
+    for idx, proyecto in enumerate(
         proyectos_registrados
-    ):  # [Avance 5 y 6] Recorre la lista de proyectos registrados
-        avance_val = p["avance"]  # [Avance 6] Obtiene el valor del avance numérico
-        if avance_val == 100:
-            matriz_proyectos[i][2] = (
-                "Completado"  # [Avance 7] Actualiza celda de estado a completado si llega a 100
-            )
-        elif avance_val > 0:
-            matriz_proyectos[i][2] = (
-                "En Proceso"  # [Avance 7] Actualiza celda de estado si está en progreso
-            )
-        else:
-            matriz_proyectos[i][2] = (
-                "Iniciado"  # [Avance 7] Actualiza celda de estado inicial si es cero
-            )
+    ):  # Recorre cada proyecto registrado con su posicion
+        avance_val = proyecto[
+            "avance"
+        ]  # Toma el porcentaje de avance del proyecto
+        if avance_val == 100.0:  # Si ya esta al 100%
+            matriz_proyectos[idx][
+                2
+            ] = "Completado"  # Cambia su estado a Completado
+        elif avance_val > 0.0:  # Si lleva algo de avance pero no llega a 100%
+            matriz_proyectos[idx][
+                2
+            ] = "En Proceso"  # Cambia su estado a En Proceso
+        else:  # Si su avance es 0.0%
+            matriz_proyectos[idx][
+                2
+            ] = "Iniciado"  # Cambia su estado a Iniciado
 
 
 def resumen_conteo_matriz():
-    # [Avance 7] Función para generar resumen y conteo cruzado por categorías de estado en la matriz
-    print("RESUMEN Y CONTEO CRUZADO DE PROYECTOS")
-    if not matriz_proyectos:
+    # Cuenta cuantos proyectos hay en cada estado
+    print(
+        "RESUMEN Y CONTEO CRUZADO DE PROYECTOS"
+    )  # Muestra el titulo del resumen
+    if not matriz_proyectos:  # Revisa si hay datos en la tabla
         print(
-            "No hay proyectos registrados en la matriz. Registre proyectos en la opción 3."
-        )  # [Avance 4 y 7] Valida si hay datos disponibles
-        return
-    actualizar_estados_matriz()  # [Avance 7] Sincroniza y actualiza los estados en lote antes del conteo
-    conteo_iniciados = 0  # [Avance 1] Inicializa contador para proyectos iniciados
-    conteo_proceso = 0  # [Avance 1] Inicializa contador para proyectos en proceso
+            "No hay proyectos registrados en la matriz. "
+            "Registre proyectos en la opcion 3."
+        )  # Avisa que no hay datos para contar
+        return  # Sale de la funcion si no hay datos
+    actualizar_estados_matriz()  # Pone al dia los estados antes de contar
+    conteo_iniciados = (
+        0  # Empieza en 0 la cuenta de proyectos iniciados
+    )
+    conteo_proceso = (
+        0  # Empieza en 0 la cuenta de proyectos en proceso
+    )
     conteo_completados = (
-        0  # [Avance 1] Inicializa contador para proyectos completados
+        0  # Empieza en 0 la cuenta de proyectos completados
     )
     for (
         fila
     ) in (
         matriz_proyectos
-    ):  # [Avance 5 y 7] Estructura de repetición que recorre cada fila de la matriz bidimensional
-        estado = fila[2]  # [Avance 7] Extrae el valor de la columna de estado
-        if estado == "Iniciado":
-            conteo_iniciados += 1  # [Avance 2] Incrementa el acumulador de iniciados
-        elif estado == "En Proceso":
-            conteo_proceso += 1  # [Avance 2] Incrementa el acumulador en proceso
-        elif estado == "Completado":
-            conteo_completados += (
-                1  # [Avance 2] Incrementa el acumulador de completados
+    ):  # Revisa cada fila de la tabla
+        estado = fila[
+            2
+        ]  # Toma el estado que esta en la tercera columna
+        if estado == "Iniciado":  # Si dice Iniciado
+            conteo_iniciados += (
+                1  # Suma 1 a los iniciados
             )
-
+        elif estado == "En Proceso":  # Si dice En Proceso
+            conteo_proceso += (
+                1  # Suma 1 a los que estan en proceso
+            )
+        elif estado == "Completado":  # Si dice Completado
+            conteo_completados += (
+                1  # Suma 1 a los completados
+            )
     print(
         f"Total de registros procesados: {len(matriz_proyectos)}"
-    )  # [Avance 6] Imprime el total de filas
+    )  # Muestra cuantos proyectos se contaron en total
     print(
         f"Proyectos en estado 'Iniciado': {conteo_iniciados}"
-    )  # [Avance 1] Muestra el conteo cruzado
+    )  # Muestra cuantos estan iniciados
     print(
         f"Proyectos en estado 'En Proceso': {conteo_proceso}"
-    )  # [Avance 1] Muestra el conteo cruzado
+    )  # Muestra cuantos estan en proceso
     print(
         f"Proyectos en estado 'Completado': {conteo_completados}"
-    )  # [Avance 1] Muestra el conteo cruzado
+    )  # Muestra cuantos estan completados
 
 
 def buscar_analizar_cadenas():
-    # [Avance 8] Función dedicada a la manipulación y análisis avanzado de cadenas (strings)
-    print("BÚSQUEDA Y ANÁLISIS DE CADENAS EN PROYECTOS")
-    if not proyectos_registrados:
+    # Busca una palabra en los nombres de proyectos y muestra como se ve el texto
+    print(
+        "BUSQUEDA Y ANALISIS DE CADENAS EN PROYECTOS"
+    )  # Muestra el titulo de busqueda de texto
+    if not proyectos_registrados:  # Revisa si hay proyectos registrados
         print(
-            "No hay proyectos registrados para analizar. Registre proyectos en la opción 3."
-        )  # [Avance 4 y 8] Valida si la lista está vacía
-        return
-    
-    # [Avance 8] Lee el texto de búsqueda, elimina espacios con .strip() y normaliza con .lower()
-    keyword = input("Ingrese una palabra clave para buscar en los proyectos: ").strip().lower()
-    encontrados = 0  # [Avance 1] Inicializa contador de coincidencias
-    
-    for p in proyectos_registrados:  # [Avance 5 y 6] Recorre la lista de proyectos registrados
-        nombre_proyecto = p["nombre"]  # [Avance 6] Extrae el nombre del proyecto
-        
-        # [Avance 8] Aplicación de métodos avanzados de cadenas (strings)
-        nombre_limpio = nombre_proyecto.strip()         # [Avance 8] Limpia espacios laterales
-        nombre_mayus = nombre_proyecto.upper()          # [Avance 8] Convierte la cadena completa a mayúsculas
-        nombre_formateado = nombre_proyecto.title()     # [Avance 8] Formatea como título (mayúscula inicial por palabra)
-        longitud_nombre = len(nombre_proyecto)          # [Avance 8] Calcula el número total de caracteres
-        
-        # [Avance 4 y 8] Operador 'in' para verificar si la palabra clave está contenida en el texto normalizado
-        if keyword in nombre_proyecto.lower():
-            encontrados += 1  # [Avance 2] Incrementa el contador de coincidencias halladas
-            
-            # [Avance 1 y 8] Muestra reporte detallado demostrando el manejo integral de strings
-            print(f"\n--- REPORTE DE CADENA [{encontrados}] ---")
-            print(f"  * Nombre original:    '{nombre_proyecto}'")
-            print(f"  * Formato Título:     '{nombre_formateado}'")   # [Avance 8] Método .title()
-            print(f"  * Todo en Mayúsculas: '{nombre_mayus}'")      # [Avance 8] Método .upper()
-            print(f"  * Total caracteres:   {longitud_nombre}")     # [Avance 8] Función len()
-            print(f"  * Avance registrado:  {p['avance']:.1f}%")
-            print("-" * 35)
+            "No hay proyectos registrados para analizar. "
+            "Registre proyectos en la opcion 3."
+        )  # Avisa que no hay proyectos para revisar
+        return  # Sale de la funcion si la lista esta vacia
+    keyword = (
+        input("Ingrese una palabra clave para buscar: ")
+        .strip()
+        .lower()
+    )  # Pide la palabra a buscar, quita espacios y la pasa a minusculas
+    encontrados = (
+        0  # Empieza en 0 la cuenta de proyectos que coinciden
+    )
+    for (
+        proyecto
+    ) in (
+        proyectos_registrados
+    ):  # Revisa uno por uno los proyectos guardados
+        nombre_proyecto = proyecto[
+            "nombre"
+        ]  # Toma el nombre del proyecto
+        nombre_mayus = (
+            nombre_proyecto.upper()
+        )  # Pone todo el nombre en mayusculas
+        nombre_formateado = (
+            nombre_proyecto.title()
+        )  # Pone en mayuscula la primera letra de cada palabra
+        longitud_nombre = len(
+            nombre_proyecto
+        )  # Cuenta cuantas letras o espacios tiene el nombre
+        if (
+            keyword in nombre_proyecto.lower()
+        ):  # Revisa si la palabra buscada aparece dentro del nombre
+            encontrados += (
+                1  # Suma 1 a los proyectos encontrados
+            )
+            print(
+                f"\n--- REPORTE DE CADENA [{encontrados}] ---"
+            )  # Muestra el encabezado del resultado
+            print(
+                f"  * Nombre original:    '{nombre_proyecto}'"
+            )  # Muestra el nombre tal como se escribio
+            print(
+                f"  * Formato Titulo:     '{nombre_formateado}'"
+            )  # Muestra el nombre con inicial mayuscula en cada palabra
+            print(
+                f"  * Todo en Mayusculas: '{nombre_mayus}'"
+            )  # Muestra el nombre todo en mayusculas
+            print(
+                f"  * Total caracteres:   {longitud_nombre}"
+            )  # Muestra cuantas letras y espacios tiene
+            print(
+                f"  * Avance registrado:  "
+                f"{proyecto['avance']:.1f}%"
+            )  # Muestra el avance del proyecto
+            print(
+                "-" * 35
+            )  # Dibuja una linea de guiones para separar resultados
+    if (
+        encontrados == 0
+    ):  # Si no se encontro ningun proyecto con esa palabra
+        print(
+            f"No se encontraron proyectos que coincidan "
+            f"con '{keyword}'."
+        )  # Avisa que no hubo coincidencias
+    else:  # Si se encontro al menos uno
+        print(
+            f"\nBusqueda finalizada. "
+            f"Total de coincidencias: {encontrados}"
+        )  # Muestra cuantos proyectos coincidieron
 
-    if encontrados == 0:  # [Avance 4] Estructura de decisión si no se encontraron resultados
-        print(f"No se encontraron proyectos que coincidan con la palabra clave '{keyword}'.")
-    else:
-        print(f"\nBúsqueda finalizada. Total de coincidencias encontradas: {encontrados}")
+
+def guardar_datos_archivos():
+    # Guarda los proyectos y la tabla en archivos de texto
+    print(
+        "GUARDAR PROYECTOS Y MATRIZ EN ARCHIVO"
+    )  # Muestra el titulo para guardar en archivo
+    if (
+        not proyectos_registrados
+    ):  # Revisa si hay proyectos guardados en el programa
+        print(
+            "No hay proyectos en memoria para guardar. "
+            "Registre proyectos primero."
+        )  # Avisa que no hay nada que guardar
+        return  # Sale de la funcion si no hay proyectos
+    actualizar_estados_matriz()  # Pone al dia los estados de la tabla antes de guardar
+    try:  # Intenta guardar los archivos en la carpeta
+        with open(
+            ARCHIVO_PROYECTOS, "w", encoding="utf-8"
+        ) as archivo_p:  # Abre el archivo de proyectos para escribir desde cero
+            for (
+                proyecto
+            ) in (
+                proyectos_registrados
+            ):  # Recorre cada proyecto guardado
+                linea = f"{proyecto['nombre']}|{proyecto['avance']}\n"  # Prepara una linea con nombre, barra y avance
+                archivo_p.write(
+                    linea
+                )  # Escribe esa linea en el archivo de proyectos
+        with open(
+            ARCHIVO_MATRIZ, "w", encoding="utf-8"
+        ) as archivo_m:  # Abre el archivo de la tabla para escribir desde cero
+            for (
+                fila
+            ) in (
+                matriz_proyectos
+            ):  # Recorre cada fila de la tabla
+                linea_m = f"{fila[0]}|{fila[1]}|{fila[2]}\n"  # Prepara una linea con las tres columnas separadas por barra
+                archivo_m.write(
+                    linea_m
+                )  # Escribe esa fila en el archivo de la tabla
+        print(
+            f"Datos guardados en '{ARCHIVO_PROYECTOS}' "
+            f"y '{ARCHIVO_MATRIZ}'."
+        )  # Avisa que los dos archivos ya se guardaron
+    except OSError as error_archivo:  # Si hubo algun problema al crear o escribir los archivos
+        print(
+            f"Error al escribir archivos: {error_archivo}"
+        )  # Muestra que fallo al guardar
+
+
+def cargar_datos_archivos():
+    # Lee los proyectos y la tabla desde los archivos de texto
+    print(
+        "CARGAR PROYECTOS Y MATRIZ DESDE ARCHIVO"
+    )  # Muestra el titulo para cargar desde archivo
+    try:  # Intenta abrir y leer el archivo de proyectos
+        with open(
+            ARCHIVO_PROYECTOS, "r", encoding="utf-8"
+        ) as archivo_p:  # Abre el archivo de proyectos solo para leerlo
+            proyectos_cargados = (
+                []
+            )  # Crea una lista vacia para ir guardando lo que se lea
+            for (
+                linea
+            ) in archivo_p:  # Lee el archivo linea por linea
+                limpia = (
+                    linea.strip()
+                )  # Quita espacios y saltos de renglon de la linea
+                if (
+                    limpia
+                ):  # Revisa que el renglon no este vacio
+                    partes = limpia.split(
+                        "|"
+                    )  # Separa el texto donde haya una barra "|"
+                    if (
+                        len(partes) == 2
+                    ):  # Revisa que vengan dos datos: nombre y avance
+                        nombre_p = partes[
+                            0
+                        ].strip()  # Toma el nombre del proyecto sin espacios extras
+                        avance_p = float(
+                            partes[1].strip()
+                        )  # Convierte el avance a numero con decimales
+                        proyectos_cargados.append(
+                            {
+                                "nombre": nombre_p,
+                                "avance": avance_p,
+                            }
+                        )  # Agrega el proyecto leido a la lista temporal
+    except (
+        FileNotFoundError
+    ):  # Si todavia no existe el archivo de proyectos
+        print(
+            f"No se encontro el archivo '{ARCHIVO_PROYECTOS}'."
+        )  # Avisa que no encontro el archivo
+        return  # Sale de la funcion porque no hay archivo que leer
+    except (
+        OSError,
+        ValueError,
+    ) as error_lectura:  # Si hubo error al leer o al pasar el avance a numero
+        print(
+            f"Error al leer el archivo: {error_lectura}"
+        )  # Muestra el error que ocurrio
+        return  # Sale de la funcion por el error
+
+    matriz_cargada = (
+        []
+    )  # Crea una lista vacia para las filas de la tabla
+    try:  # Intenta abrir y leer el archivo de la tabla
+        with open(
+            ARCHIVO_MATRIZ, "r", encoding="utf-8"
+        ) as archivo_m:  # Abre el archivo de la tabla solo para leerlo
+            for (
+                linea_m
+            ) in archivo_m:  # Lee la tabla linea por linea
+                limpia_m = (
+                    linea_m.strip()
+                )  # Quita espacios y saltos de renglon
+                if (
+                    limpia_m
+                ):  # Revisa que el renglon tenga texto
+                    campos = limpia_m.split(
+                        "|"
+                    )  # Separa las columnas donde haya "|"
+                    if (
+                        len(campos) == 3
+                    ):  # Revisa que tenga tres columnas
+                        matriz_cargada.append(
+                            [
+                                campos[0].strip(),
+                                campos[1].strip(),
+                                campos[2].strip(),
+                            ]
+                        )  # Agrega la fila a la tabla temporal
+    except (
+        FileNotFoundError
+    ):  # Si no existe el archivo de la tabla, la arma con los proyectos cargados
+        for (
+            proyecto
+        ) in (
+            proyectos_cargados
+        ):  # Recorre los proyectos que se acaban de cargar
+            avance_val = proyecto[
+                "avance"
+            ]  # Toma el avance del proyecto
+            if avance_val == 100.0:  # Si esta al 100%
+                estado_c = (
+                    "Completado"  # Pone estado Completado
+                )
+            elif avance_val > 0.0:  # Si tiene algo de avance
+                estado_c = (
+                    "En Proceso"  # Pone estado En Proceso
+                )
+            else:  # Si esta en 0.0%
+                estado_c = (
+                    "Iniciado"  # Pone estado Iniciado
+                )
+            matriz_cargada.append(
+                [
+                    proyecto["nombre"],
+                    f"{avance_val:.1f}%",
+                    estado_c,
+                ]
+            )  # Agrega la fila armada a la tabla temporal
+    except OSError as error_mat:  # Si hubo error al leer el archivo de la tabla
+        print(
+            f"Error al leer matriz: {error_mat}"
+        )  # Muestra el error al leer la tabla
+        return  # Sale de la funcion si hubo error
+
+    proyectos_registrados.clear()  # Borra lo que habia antes en la lista de proyectos
+    proyectos_registrados.extend(
+        proyectos_cargados
+    )  # Pone los proyectos cargados del archivo en la lista principal
+    matriz_proyectos.clear()  # Borra lo que habia antes en la tabla
+    matriz_proyectos.extend(
+        matriz_cargada
+    )  # Pone las filas cargadas del archivo en la tabla principal
+    print(
+        f"Se cargaron {len(proyectos_registrados)} "
+        f"proyectos correctamente."
+    )  # Muestra cuantos proyectos se cargaron
 
 
 def mostrar_menu():
-    # [Avance 3] Define una función para desplegar el menú de opciones
-    print("  SISTEMA DE GESTIÓN DE PROYECTOS")  # [Avance 1] Imprime el título general del menú
-    print("1. Crear cuenta")  # [Avance 1] Opción 1
-    print("2. Iniciar sesión")  # [Avance 1] Opción 2
-    print("3. Registrar proyecto (Con ciclo)")  # [Avance 1] Opción 3
-    print("4. Calcular métricas de proyecto")  # [Avance 1] Opción 4
-    print("5. Ver historial de proyectos")  # [Avance 1] Opción 5
-    print("6. Ver estadísticas de las listas")  # [Avance 6] Opción 6 añadida para demostrar operaciones sobre arreglos
+    # Muestra en pantalla todas las opciones del programa
+    print(
+        "  SISTEMA DE GESTION DE PROYECTOS"
+    )  # Muestra el titulo del menu
+    print(
+        "1. Crear cuenta"
+    )  # Muestra la opcion 1
+    print(
+        "2. Iniciar sesion"
+    )  # Muestra la opcion 2
+    print(
+        "3. Registrar proyecto (Con ciclo)"
+    )  # Muestra la opcion 3
+    print(
+        "4. Calcular metricas de proyecto"
+    )  # Muestra la opcion 4
+    print(
+        "5. Ver historial de proyectos"
+    )  # Muestra la opcion 5
+    print(
+        "6. Ver estadisticas de las listas"
+    )  # Muestra la opcion 6
     print(
         "7. Ver matriz de proyectos en tabla"
-    )  # [Avance 7] Opción 7 para mostrar la matriz completa en tabla
+    )  # Muestra la opcion 7
     print(
         "8. Actualizar estados de proyectos en lote"
-    )  # [Avance 7] Opción 8 añadida para actualización dinámica
+    )  # Muestra la opcion 8
     print(
         "9. Ver resumen y conteo cruzado"
-    )  # [Avance 7] Opción 9 añadida para matriz de resumen
+    )  # Muestra la opcion 9
     print(
         "10. Buscar y analizar cadenas en proyectos"
-    )  # [Avance 8] Opción 10 añadida para manejo avanzado de cadenas (strings)
-    print("11. Salir")  # [Avance 1 y 8] Opción 11 de salida actualizada
+    )  # Muestra la opcion 10
+    print(
+        "11. Guardar proyectos en archivo"
+    )  # Muestra la opcion 11
+    print(
+        "12. Cargar proyectos desde archivo"
+    )  # Muestra la opcion 12
+    print(
+        "13. Salir"
+    )  # Muestra la opcion 13
 
 
 def main():
-    # [Avance 3] Define la función principal que controla el flujo general del sistema
+    # Arranca el programa y repite el menu hasta que el usuario decida salir
     print(
         "PROGRAMA INICIADO CORRECTAMENTE"
-    )  # [Avance 1] Mensaje de arranque del programa
+    )  # Muestra mensaje de que el programa ya inicio
     ejecutando = (
-        True  # [Avance 1] Variable booleana de control para mantener activo el ciclo del menú
+        True  # Deja encendido el ciclo del menu
     )
     while (
         ejecutando
-    ):  # [Avance 5] Estructura de repetición ciclo principal que mantiene el menú corriendo en bucle
-        mostrar_menu()  # [Avance 3] Llama a la función para dibujar las opciones en pantalla
-        opcion = (
-            input("Escribe el número de la opción elegida (1-11): ").strip()
-        )  # [Avance 1] Lee la opción seleccionada por el usuario limpiando espacios
-        if (
-            opcion == "1"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 1
-            crear_cuenta()  # [Avance 3] Llama a la función de creación de cuenta
-        elif (
-            opcion == "2"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 2
-            iniciar_sesion()  # [Avance 3] Llama a la función de inicio de sesión
-        elif (
-            opcion == "3"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 3
-            registrar_proyecto()  # [Avance 3] Llama a la función de registro continuo de proyectos
-        elif (
-            opcion == "4"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 4
-            calcular_metricas()  # [Avance 3] Llama a la función de cálculo de métricas
-        elif (
-            opcion == "5"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 5
-            ver_historial_proyectos()  # [Avance 3 y 6] Llama a la función para mostrar el historial recorriendo la lista
-        elif (
-            opcion == "6"
-        ):  # [Avance 4] Estructura de decisión evalúa si se eligió la opción 6
-            calcular_estadisticas_lista()  # [Avance 6] Llama a la función que ejecuta operaciones avanzadas sobre listas
-        elif (
-            opcion == "7"
-        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 7
-            ver_matriz_proyectos()  # [Avance 7] Muestra la matriz de proyectos en formato tabular
-        elif (
-            opcion == "8"
-        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 8
-            actualizar_estados_matriz()  # [Avance 7] Llama a la función de actualización dinámica de estados en lote
+    ):  # Repite el menu mientras ejecutando sea verdadero
+        mostrar_menu()  # Dibuja el menu en pantalla
+        opcion = input(
+            "Escribe el numero de la opcion elegida (1-13): "
+        ).strip()  # Lee el numero que eligio el usuario y quita espacios
+        if opcion == "1":  # Si eligio la 1
+            crear_cuenta()  # Abre la funcion para crear cuenta
+        elif opcion == "2":  # Si eligio la 2
+            iniciar_sesion()  # Abre la funcion para iniciar sesion
+        elif opcion == "3":  # Si eligio la 3
+            registrar_proyecto()  # Abre la funcion para registrar proyectos
+        elif opcion == "4":  # Si eligio la 4
+            calcular_metricas()  # Abre la funcion para calcular metricas
+        elif opcion == "5":  # Si eligio la 5
+            ver_historial_proyectos()  # Abre la funcion para ver el historial
+        elif opcion == "6":  # Si eligio la 6
+            calcular_estadisticas_lista()  # Abre la funcion de estadisticas
+        elif opcion == "7":  # Si eligio la 7
+            ver_matriz_proyectos()  # Abre la funcion para ver la tabla
+        elif opcion == "8":  # Si eligio la 8
+            actualizar_estados_matriz()  # Pone al dia los estados de la tabla
             print(
-                "¡Estados actualizados en lote correctamente!"
-            )  # [Avance 1] Imprime mensaje de éxito
-        elif (
-            opcion == "9"
-        ):  # [Avance 4 y 7] Estructura de decisión evalúa si se eligió la opción 9
-            resumen_conteo_matriz()  # [Avance 7] Llama a la función de resumen y conteo cruzado
-        elif (
-            opcion == "10"
-        ):  # [Avance 4 y 8] Estructura de decisión evalúa si se eligió la opción 10
-            buscar_analizar_cadenas()  # [Avance 8] Llama a la función de manipulación y búsqueda de cadenas
-        elif (
-            opcion == "11"
-        ):  # [Avance 4 y 8] Estructura de decisión evalúa si se eligió la opción 11 de salida
+                "Estados actualizados en lote correctamente!"
+            )  # Avisa que se actualizaron los estados
+        elif opcion == "9":  # Si eligio la 9
+            resumen_conteo_matriz()  # Muestra el conteo por estado
+        elif opcion == "10":  # Si eligio la 10
+            buscar_analizar_cadenas()  # Abre la funcion para buscar y revisar texto
+        elif opcion == "11":  # Si eligio la 11
+            guardar_datos_archivos()  # Guarda los datos en los archivos de texto
+        elif opcion == "12":  # Si eligio la 12
+            cargar_datos_archivos()  # Carga los datos desde los archivos de texto
+        elif opcion == "13":  # Si eligio la 13
             print(
                 "Cerrando el programa"
-            )  # [Avance 1] Mensaje de salida del sistema
+            )  # Muestra mensaje de despedida
             ejecutando = (
-                False  # [Avance 1] Cambia la variable a False para romper el ciclo while y terminar
+                False  # Apaga el ciclo para terminar el programa
             )
-        else:  # [Avance 4] Estructura de decisión se ejecuta si ingresan un número fuera del rango 1 al 11
+        else:  # Si escribio otro numero o letra que no esta en el menu
             print(
-                "Opción no válida. Por favor escribe un número del 1 al 11."
-            )  # [Avance 1] Muestra mensaje de error por opción incorrecta
+                "Opcion no valida. "
+                "Por favor escribe un numero del 1 al 13."
+            )  # Avisa que la opcion no es valida
+        input(
+            "\nPresiona enter para continuar.\n"
+        )  # Espera a que presione Enter antes de seguir
+        print(
+            "\n" * 2
+        )  # Deja dos renglones en blanco para separar
 
-        input("\nPresiona enter para continuar.\n")
-        print("\n" * 2)
 
-
-main()  # [Avance 3] Ejecuta la función principal para poner en marcha todo el programa
+main()  # Llama a main para que empiece a correr todo el programa
