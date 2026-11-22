@@ -1,0 +1,3 @@
+stv|70.0
+constela|50.0
+astrotar|40.0
