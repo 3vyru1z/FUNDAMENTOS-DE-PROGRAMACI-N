@@ -1,264 +1,325 @@
 Algoritmo sistema_gestion_proyectos
 
-    Definir proyectos_registrados como cadena // [Avance 1 y 6] Define arreglo global para almacenar registros simples
-    Definir matriz_proyectos como cadena // [Avance 7] Define matriz global (arreglo bidimensional) para almacenar filas y columnas
-    
-    SubProceso calcular_restante (inicial, gastado) // [Avance 3] Define subproceso para restar presupuesto
-        Retornar inicial - gastado // [Avance 2 y 3] Retorna el resultado de la resta
+    Definir proyectos_registrados Como Cadena # [Avance 1 y 6] Crea la lista global para guardar los proyectos
+    Definir matriz_proyectos Como Cadena # [Avance 7] Crea la tabla global (matriz) para guardar filas y columnas
+    Definir archivo_proyectos Como Cadena # [Avance 9] Guarda el nombre del archivo de proyectos
+    Definir archivo_matriz Como Cadena # [Avance 9] Guarda el nombre del archivo de la tabla
+
+    archivo_proyectos <- "proyectos_guardados.txt" # [Avance 9] Asigna el nombre del archivo de proyectos
+    archivo_matriz <- "matriz_proyectos.txt" # [Avance 9] Asigna el nombre del archivo de la tabla
+
+    SubProceso calcular_restante (inicial, gastado) # [Avance 3] Crea la funcion para restar presupuesto
+        Retornar inicial - gastado # [Avance 2 y 3] Regresa cuanto dinero queda disponible
     FinSubProceso
 
-    SubProceso calcular_porcentaje (cumplidas, total) // [Avance 3] Define subproceso para calcular porcentaje
-        Retornar (cumplidas / total) * 100 // [Avance 2 y 3] Retorna el cálculo del porcentaje
+    SubProceso calcular_porcentaje (cumplidas, total) # [Avance 3] Crea la funcion para calcular porcentaje
+        Retornar (cumplidas / total) * 100 # [Avance 2 y 3] Regresa el porcentaje de metas logradas
     FinSubProceso
 
-    SubProceso calcular_semanas (dias) // [Avance 3] Define subproceso para calcular semanas
-        Retornar TRUNC(dias / 7) // [Avance 2 y 3] Retorna la división entera para obtener semanas
+    SubProceso calcular_semanas (dias) # [Avance 3] Crea la funcion para calcular semanas
+        Retornar TRUNC(dias / 7) # [Avance 2 y 3] Regresa las semanas completas sin decimales
     FinSubProceso
 
-    SubProceso calcular_dias_sobrantes (dias, semanas) // [Avance 3] Define subproceso para días sobrantes
-        Retornar dias - (semanas * 7) // [Avance 2 y 3] Retorna la resta para obtener días restantes
+    SubProceso calcular_dias_sobrantes (dias, semanas) # [Avance 3] Crea la funcion para dias sobrantes
+        Retornar dias - (semanas * 7) # [Avance 2 y 3] Regresa los dias que quedan sueltos
     FinSubProceso
 
-    SubProceso generar_barra_progreso (porcentaje) // [Avance 3] Define subproceso para la barra visual
-        Definir bloques como entero // [Avance 1] Define variable entera local para los bloques
-        Definir barra como cadena // [Avance 1] Define variable de texto local para la barra
-        
-        Si porcentaje < 0 Entonces // [Avance 4] Estructura de decisión: comprueba si es menor a cero
-            porcentaje <- 0 // [Avance 1] Ajusta el porcentaje a cero si es negativo
-        FinSi // [Avance 4] Cierra la estructura condicional
-        Si porcentaje > 100 Entonces // [Avance 4] Estructura de decisión: comprueba si supera 100
-            porcentaje <- 100 // [Avance 1] Ajusta el porcentaje a 100 si excede el límite
-        FinSi // [Avance 4] Cierra la estructura condicional
-        
-        bloques <- TRUNC(porcentaje / 10) // [Avance 2 y 3] Calcula cuántos bloques pintar dividiendo entre 10
-        
-        Escribir "Progreso: [", bloques, " de 10 bloques completados]" // [Avance 1] Imprime simulación del progreso
+    SubProceso generar_barra_progreso (porcentaje) # [Avance 3] Crea la funcion para la barra visual
+        Definir bloques Como Entero # [Avance 1] Guarda cuantos bloques llenos tendra la barra
+        Si porcentaje < 0 Entonces # [Avance 4] Revisa si el porcentaje es menor que cero
+            porcentaje <- 0 # [Avance 1] Ajusta el porcentaje a cero
+        FinSi # [Avance 4] Cierra la revision del limite inferior
+        Si porcentaje > 100 Entonces # [Avance 4] Revisa si el porcentaje pasa de 100
+            porcentaje <- 100 # [Avance 1] Ajusta el porcentaje a 100
+        FinSi # [Avance 4] Cierra la revision del limite superior
+        bloques <- TRUNC(porcentaje / 10) # [Avance 2 y 3] Calcula cuantos bloques de 10 tocan
+        Escribir "Progreso: [", bloques, " de 10 bloques completados]" # [Avance 1] Muestra la barra en pantalla
     FinSubProceso
 
-    SubProceso evaluar_salud_presupuesto (inicial, gastado) // [Avance 3] Define subproceso para evaluar dinero
-        Definir porcentaje_gastado Como Real // [Avance 1] Define variable real para el gasto
-        
-        Si inicial > 0 Entonces // [Avance 4] Estructura de decisión: verifica que el presupuesto inicial sea mayor a cero
-            porcentaje_gastado <- (gastado / inicial) * 100 // [Avance 2 y 3] Calcula el porcentaje utilizado
-        Sino // [Avance 4] Estructura de decisión caso contrario si es cero
-            porcentaje_gastado <- 0 // [Avance 1] Evita división por cero asignando cero
-        FinSi // [Avance 4] Cierra la estructura condicional
-
-        Si porcentaje_gastado > 90 Entonces // [Avance 4] Estructura de decisión: evalúa si supera el 90%
-            Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)" // [Avance 1] Imprime mensaje de alerta crítica
-        Sino  // [Avance 4] Estructura de decisión si no supera el 90%
-            Si porcentaje_gastado >= 70 Entonces // [Avance 4] Estructura de decisión: evalúa si está entre 70% y 90%
-                Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)" // [Avance 1] Imprime aviso de precaución
-            Sino // [Avance 4] Estructura de decisión: si es menor al 70%
-                Escribir "Saludable: Presupuesto bajo control (Menor al 70%)" // [Avance 1] Imprime aviso de estado óptimo
-            FinSi // [Avance 4] Cierra la estructura condicional anidada
-        FinSi // [Avance 4] Cierra la estructura condicional principal
+    SubProceso evaluar_salud_presupuesto (inicial, gastado) # [Avance 3] Crea la funcion para revisar el dinero
+        Definir porcentaje_gastado Como Real # [Avance 1] Guarda que porcentaje del dinero ya se gasto
+        Si inicial > 0 Entonces # [Avance 4] Revisa que el presupuesto inicial sea mayor que cero
+            porcentaje_gastado <- (gastado / inicial) * 100 # [Avance 2 y 3] Calcula el porcentaje gastado
+        Sino # [Avance 4] Si el presupuesto inicial es cero o menos
+            porcentaje_gastado <- 0 # [Avance 1] Evita dividir entre cero
+        FinSi # [Avance 4] Cierra la revision del presupuesto inicial
+        Si porcentaje_gastado > 90 Entonces # [Avance 4] Revisa si ya se gasto mas del 90%
+            Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)" # [Avance 1] Muestra aviso de alerta
+        Sino # [Avance 4] Si no pasa del 90%
+            Si porcentaje_gastado >= 70 Entonces # [Avance 4] Revisa si esta entre 70% y 90%
+                Escribir "Precaucion: Presupuesto en riesgo moderado (Entre 70% y 90%)" # [Avance 1] Muestra aviso de cuidado
+            Sino # [Avance 4] Si es menor al 70%
+                Escribir "Saludable: Presupuesto bajo control (Menor al 70%)" # [Avance 1] Muestra aviso de buen control
+            FinSi # [Avance 4] Cierra la condicion intermedia
+        FinSi # [Avance 4] Cierra la condicion principal
     FinSubProceso
 
-    SubProceso crear_cuenta() // [Avance 3] Define subproceso para registro de cuentas
-        Definir nuevo_usuario, nueva_contrasena Como Cadena // [Avance 1] Define variables de texto para credenciales
-        
-        Escribir "REGISTRO NUEVA CUENTA" // [Avance 1] Imprime título de la opción
-        Escribir "Ingrese un nombre de usuario:" // [Avance 1] Solicita el nombre de usuario
-        Leer nuevo_usuario // [Avance 1] Lee y almacena el usuario
-        Escribir "Ingrese una contrasena:" // [Avance 1] Solicita la contraseña
-        Leer nueva_contrasena // [Avance 1] Lee y almacena la contraseña
-        
-        Si nuevo_usuario  "" Y nueva_contraseña  "" Entonces // [Avance 4] Estructura de decisión valida que no estén vacíos
-            Escribir "Cuenta registrada con exito para: ", nuevo_usuario // [Avance 1] Imprime confirmación de éxito
-        Sino // [Avance 4] Estructura de decisión: se ejecuta si falta algún campo
-            Escribir "Error: Debe llenar todos los campos" // [Avance 1] Imprime mensaje de error
-        FinSi // [Avance 4] Cierra la estructura condicional
+    SubProceso crear_cuenta() # [Avance 3] Crea la funcion para registrar una cuenta
+        Definir nuevo_usuario, nueva_contrasena Como Cadena # [Avance 1] Guarda usuario y contrasena nuevos
+        Escribir "REGISTRO NUEVA CUENTA" # [Avance 1] Muestra el titulo de registro
+        Escribir "Ingrese un nombre de usuario:" # [Avance 1] Pide el nombre de usuario
+        Leer nuevo_usuario # [Avance 1] Lee el nombre de usuario
+        Escribir "Ingrese una contrasena:" # [Avance 1] Pide la contrasena
+        Leer nueva_contrasena # [Avance 1] Lee la contrasena
+        Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces # [Avance 4] Revisa que ambos datos esten llenos
+            Escribir "Cuenta registrada con exito para: ", nuevo_usuario # [Avance 1] Confirma que la cuenta se creo
+        Sino # [Avance 4] Si falta algun dato
+            Escribir "Error: Debe llenar todos los campos" # [Avance 1] Avisa que faltan campos
+        FinSi # [Avance 4] Cierra la revision de campos
     FinSubProceso
 
-    SubProceso iniciar_sesion() // [Avance 3] Define subproceso para inicio de sesión
-        Definir usuario, contrasena Como Cadena // [Avance 1] Define variables de texto locales
-        
-        Escribir "INICIO DE SESION" // [Avance 1] Imprime título de inicio de sesión
-        Escribir "Ingrese su usuario:" // [Avance 1] Solicita el usuario
-        Leer usuario // [Avance 1] Lee el usuario ingresado
-        Escribir "Ingrese contrasena:" // [Avance 1] Solicita la contraseña
-        Leer contrasena // [Avance 1] Lee la contraseña ingresada
-        
-        Si usuario  "" Y contraseña "" Entonces // [Avance 4] Estructura de decisión comprueba campos llenos
-            Escribir "Bienvenido/a, ", usuario // [Avance 1] Imprime bienvenida
-        Sino // [Avance 4] Estructura de decisión se ejecuta si hay campos vacíos
-            Escribir "Datos incorrectos" // [Avance 1] Imprime error de datos
-        FinSi // [Avance 4] Cierra la estructura condicional
+    SubProceso iniciar_sesion() # [Avance 3] Crea la funcion para iniciar sesion
+        Definir usuario, contrasena Como Cadena # [Avance 1] Guarda usuario y contrasena ingresados
+        Escribir "INICIO DE SESION" # [Avance 1] Muestra el titulo de inicio de sesion
+        Escribir "Ingrese su usuario:" # [Avance 1] Pide el usuario
+        Leer usuario # [Avance 1] Lee el usuario
+        Escribir "Ingrese contrasena:" # [Avance 1] Pide la contrasena
+        Leer contrasena # [Avance 1] Lee la contrasena
+        Si usuario <> "" Y contrasena <> "" Entonces # [Avance 4] Revisa que se hayan escrito ambos datos
+            Escribir "Bienvenido/a, ", usuario # [Avance 1] Muestra saludo de bienvenida
+        Sino # [Avance 4] Si quedo algun campo vacio
+            Escribir "Datos incorrectos" # [Avance 1] Avisa que faltaron datos
+        FinSi # [Avance 4] Cierra la revision de inicio de sesion
     FinSubProceso
 
-    SubProceso registrar_proyecto() // [Avance 3] Define subproceso para registrar proyectos
-        Definir nombre como cadena // [Avance 1] Define variable de texto para el nombre
-        Definir avance como real // [Avance 1] Define variable real para el porcentaje
-        Definir continuar como cadena // [Avance 1] Define variable para controlar el ciclo de repetición
-        
-        continuar  "s" // [Avance 5] Inicializa la variable de control en "s" para entrar al ciclo
-        
-        Mientras continuar = "s" O continuar = "S" Hacer // [Avance 5] Estructura de repetición: ciclo para registrar múltiples proyectos de forma continua
-            Escribir "REGISTRO DE PROYECTO" // [Avance 1] Imprime título del módulo
-            Escribir "Nombre del proyecto:" // [Avance 1] Solicita el nombre del proyecto
-            Leer nombre // [Avance 1] Lee el nombre ingresado
-            Escribir "Porcentaje de avance (0 a 100):" // [Avance 1] Solicita el avance numérico
-            Leer avance // [Avance 1] Lee el porcentaje de avance
-            
-            Si avance >= 0 Y avance <= 100 Entonces // [Avance 4] Estructura de decisión: valida el rango correcto
-                Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance" // [Avance 1] Confirma el registro
-                generar_barra_progreso(avance) // [Avance 3] Llama al subproceso de la barra gráfica
-                // [Avance 6] Operación de arreglos simples
-                AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%") 
-                // [Avance 7] Operación de listas anidadas (Matriz): Agrega fila con atributos tabulares
-                AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", "Activo")
-            Sino // [Avance 4] Estructura de decisión: se ejecuta si está fuera de rango
-                Escribir "El porcentaje debe estar entre 0 y 100" // [Avance 1] Muestra advertencia de rango válido
-            FinSi // [Avance 4] Cierra la estructura condicional
-            
-            Escribir "¿Desea registrar otro proyecto? (s/n):" // [Avance 1] Pregunta si desea repetir la captura
-            Leer continuar // [Avance 5] Lee la respuesta para decidir si el ciclo se repite o termina
-        FinMientras // [Avance 5] Cierra la estructura de repetición del registro continuo
+    SubProceso registrar_proyecto() # [Avance 3] Crea la funcion para registrar proyectos
+        Definir nombre Como Cadena # [Avance 1] Guarda el nombre del proyecto
+        Definir avance Como Real # [Avance 1] Guarda el porcentaje de avance
+        Definir continuar Como Cadena # [Avance 1] Controla si se registra otro proyecto
+        Definir estado_inicial Como Cadena # [Avance 7] Guarda el estado inicial del proyecto
+        continuar <- "s" # [Avance 5] Empieza en "s" para entrar al ciclo
+        Mientras continuar = "s" O continuar = "S" Hacer # [Avance 5] Repite el registro mientras responda "s" o "S"
+            Escribir "REGISTRO DE PROYECTO" # [Avance 1] Muestra el titulo de registro de proyecto
+            Escribir "Nombre del proyecto:" # [Avance 1] Pide el nombre del proyecto
+            Leer nombre # [Avance 1] Lee el nombre del proyecto
+            Escribir "Porcentaje de avance (0 a 100):" # [Avance 1] Pide el porcentaje de avance
+            Leer avance # [Avance 1] Lee el porcentaje de avance
+            Si avance >= 0 Y avance <= 100 Entonces # [Avance 4] Revisa que el avance este entre 0 y 100
+                Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance" # [Avance 1] Muestra el registro hecho
+                generar_barra_progreso(avance) # [Avance 3] Muestra la barra visual de avance
+                Si avance = 100 Entonces # [Avance 7] Revisa si esta al 100%
+                    estado_inicial <- "Completado" # [Avance 7] Marca estado como Completado
+                Sino # [Avance 7] Si no esta al 100%
+                    Si avance > 0 Entonces # [Avance 7] Revisa si tiene avance mayor a cero
+                        estado_inicial <- "En Proceso" # [Avance 7] Marca estado como En Proceso
+                    Sino # [Avance 7] Si esta en cero
+                        estado_inicial <- "Iniciado" # [Avance 7] Marca estado como Iniciado
+                    FinSi # [Avance 7] Cierra revision de avance mayor a cero
+                FinSi # [Avance 7] Cierra revision de 100%
+                AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%") # [Avance 6] Agrega el proyecto a la lista
+                AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", estado_inicial) # [Avance 7] Agrega la fila a la tabla
+            Sino # [Avance 4] Si el numero esta fuera de 0 a 100
+                Escribir "El porcentaje debe estar entre 0 y 100" # [Avance 1] Avisa que el rango no es valido
+            FinSi # [Avance 4] Cierra revision del rango
+            Escribir "Desea registrar otro proyecto? (s/n):" # [Avance 1] Pregunta si quiere seguir registrando
+            Leer continuar # [Avance 5] Lee la respuesta para continuar o salir del ciclo
+        FinMientras # [Avance 5] Cierra el ciclo de registro
     FinSubProceso
 
-    SubProceso calcular_metricas() // [Avance 3] Define subproceso para calcular métricas
-        Definir nombre como cadena // [Avance 1] Define variable de texto para el nombre
-        Definir metas_total, metas_cumplidas Como Entero // [Avance 1] Define enteros para las metas
-        Definir presupuesto_inicial, presupuesto_gastado Como Real // [Avance 1] Define reales para el presupuesto
-        Definir dias, semanas, dias_s Como Entero // [Avance 1] Define enteros para el tiempo
-        Definir presupuesto_restante, porcentaje_avance Como Real // [Avance 1] Define reales para resultados
-        
-        Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO" // [Avance 1] Imprime título de métricas
-        Escribir "Nombre del proyecto:" // [Avance 1] Solicita el nombre
-        Leer nombre // [Avance 1] Lee el nombre
-        Escribir "Total de metas:" // [Avance 1] Solicita el total de metas
-        Leer metas_total // [Avance 1] Lee el total de metas
-        Escribir "Metas alcanzadas:" // [Avance 1] Solicita metas cumplidas
-        Leer metas_cumplidas // [Avance 1] Lee metas cumplidas
-        Escribir "Presupuesto inicial:" // [Avance 1] Solicita presupuesto inicial
-        Leer presupuesto_inicial // [Avance 1] Lee presupuesto inicial
-        Escribir "Presupuesto gastado:" // [Avance 1] Solicita presupuesto gastado
-        Leer presupuesto_gastado // [Avance 1] Lee presupuesto gastado
-        Escribir "Duracion estimada en dias del proyecto:" // [Avance 1] Solicita días estimados
-        Leer dias // [Avance 1] Lee los días
-        
-        Si metas_total <= 0 Entonces // [Avance 4] Estructura de decisión comprueba que las metas sean válidas
-            Escribir "Error: Sus metas deben ser al menos 1" // [Avance 1] Imprime error por metas nulas
-        Sino // [Avance 4] Estructura de decisión: se ejecuta si las metas son correctas
-            presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado) // [Avance 2 y 3] Llama subproceso de resta
-            porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total) // [Avance 2 y 3] Llama subproceso de porcentaje
-            semanas <- calcular_semanas(dias) // [Avance 2 y 3] Llama subproceso de semanas
-            dias_s <- calcular_dias_sobrantes(dias, semanas) // [Avance 2 y 3] Llama subproceso de días sobrantes
-            
-            Escribir "RESUMEN DE RESULTADOS" // [Avance 1] Imprime encabezado del reporte
-            Escribir "Resumen de metricas: ", nombre // [Avance 1] Muestra el nombre evaluado
-            Escribir "Avance real de metas: ", porcentaje_avance, "%" // [Avance 1] Imprime el porcentaje
-            generar_barra_progreso(porcentaje_avance) // [Avance 3] Muestra la barra visual
-            evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado) // [Avance 3] Muestra el estado financiero
-            Escribir "Presupuesto disponible: $", presupuesto_restante // [Avance 2] Imprime saldo restante
-            Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias" // [Avance 2] Imprime tiempo desglosado
-        FinSi // [Avance 4] Cierra la estructura condicional
+    SubProceso calcular_metricas() # [Avance 3] Crea la funcion para calcular cuentas de tiempo y dinero
+        Definir nombre Como Cadena # [Avance 1] Guarda el nombre del proyecto
+        Definir metas_total, metas_cumplidas Como Entero # [Avance 1] Guarda total de metas y metas logradas
+        Definir presupuesto_inicial, presupuesto_gastado Como Real # [Avance 1] Guarda dinero inicial y gastado
+        Definir dias, semanas, dias_s Como Entero # [Avance 1] Guarda dias totales, semanas y dias extra
+        Definir presupuesto_restante, porcentaje_avance Como Real # [Avance 1] Guarda dinero restante y avance de metas
+        Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO" # [Avance 1] Muestra el titulo de metricas
+        Escribir "Nombre del proyecto:" # [Avance 1] Pide el nombre del proyecto
+        Leer nombre # [Avance 1] Lee el nombre del proyecto
+        Escribir "Total de metas:" # [Avance 1] Pide el total de metas
+        Leer metas_total # [Avance 1] Lee el total de metas
+        Escribir "Metas alcanzadas:" # [Avance 1] Pide las metas alcanzadas
+        Leer metas_cumplidas # [Avance 1] Lee las metas alcanzadas
+        Escribir "Presupuesto inicial:" # [Avance 1] Pide el presupuesto inicial
+        Leer presupuesto_inicial # [Avance 1] Lee el presupuesto inicial
+        Escribir "Presupuesto gastado:" # [Avance 1] Pide el presupuesto gastado
+        Leer presupuesto_gastado # [Avance 1] Lee el presupuesto gastado
+        Escribir "Duracion estimada en dias del proyecto:" # [Avance 1] Pide los dias estimados
+        Leer dias # [Avance 1] Lee los dias estimados
+        Si metas_total <= 0 Entonces # [Avance 4] Revisa que haya al menos 1 meta
+            Escribir "Error: Sus metas deben ser al menos 1" # [Avance 1] Avisa que las metas deben ser mayores a cero
+        Sino # [Avance 4] Si el total de metas es valido
+            presupuesto_restante <- calcular_restante(presupuesto_inicial, presupuesto_gastado) # [Avance 2 y 3] Calcula el dinero disponible
+            porcentaje_avance <- calcular_porcentaje(metas_cumplidas, metas_total) # [Avance 2 y 3] Calcula el porcentaje de metas
+            semanas <- calcular_semanas(dias) # [Avance 2 y 3] Calcula las semanas completas
+            dias_s <- calcular_dias_sobrantes(dias, semanas) # [Avance 2 y 3] Calcula los dias sobrantes
+            Escribir "RESUMEN DE RESULTADOS" # [Avance 1] Muestra el titulo del resumen
+            Escribir "Resumen de metricas: ", nombre # [Avance 1] Muestra el nombre del proyecto
+            Escribir "Avance real de metas: ", porcentaje_avance, "%" # [Avance 1] Muestra el porcentaje de metas
+            generar_barra_progreso(porcentaje_avance) # [Avance 3] Muestra la barra visual del avance
+            evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado) # [Avance 3] Muestra como va el presupuesto
+            Escribir "Presupuesto disponible: $", presupuesto_restante # [Avance 2] Muestra el dinero que queda
+            Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias" # [Avance 2] Muestra semanas y dias extra
+        FinSi # [Avance 4] Cierra la revision de metas
     FinSubProceso
 
-    SubProceso ver_historial_proyectos() // [Avance 3] Define subproceso para ver el historial
-        Escribir "HISTORIAL DE PROYECTOS REGISTRADOS" // [Avance 1] Imprime título del historial
-        Para CADA elemento EN proyectos_registrados Hacer // [Avance 5 y 6] Recorrido de lista
-            Escribir "- ", elemento // [Avance 6] Imprime cada elemento
-        FinPara // [Avance 5] Cierra el ciclo
+    SubProceso ver_historial_proyectos() # [Avance 3] Crea la funcion para mostrar el historial
+        Escribir "HISTORIAL DE PROYECTOS REGISTRADOS" # [Avance 1] Muestra el titulo del historial
+        Para cada elemento en proyectos_registrados Hacer # [Avance 5 y 6] Recorre cada proyecto guardado en la lista
+            Escribir "- ", elemento # [Avance 6] Muestra cada proyecto en pantalla
+        FinPara # [Avance 5] Cierra el ciclo de la lista
     FinSubProceso
 
-    SubProceso calcular_estadisticas_lista() // [Avance 6] Subproceso de análisis de listas
-        Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS" // [Avance 1]
-        Definir total_elementos Como Entero // [Avance 1]
-        total_elementos <- LONGITUD_LISTA(proyectos_registrados) // [Avance 6]
-        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos // [Avance 6]
+    SubProceso calcular_estadisticas_lista() # [Avance 6] Crea la funcion de estadisticas de la lista
+        Definir total_elementos Como Entero # [Avance 1] Guarda cuantos proyectos hay en la lista
+        Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS" # [Avance 1] Muestra el titulo de estadisticas
+        total_elementos <- LONGITUD_LISTA(proyectos_registrados) # [Avance 6] Cuenta los elementos de la lista
+        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos # [Avance 6] Muestra el total de proyectos
     FinSubProceso
 
-    SubProceso ver_matriz_proyectos() // [Avance 7] Define subproceso para ver matriz en tabla
-        Escribir "TABLA DE DATOS MATRIZ DE PROYECTOS" // [Avance 1]
-        Para cada fila en matriz_proyectos Hacer // [Avance 5 y 7] Recorrido de filas en la matriz
-            Escribir "Proyecto: ", fila[0], " | Avance: ", fila[1], " | Estado: ", fila[2] // [Avance 7] Acceso a columnas
-        FinPara // [Avance 5] Cierra el ciclo de la matriz
+    SubProceso ver_matriz_proyectos() # [Avance 7] Crea la funcion para ver la tabla de proyectos
+        Escribir "TABLA DE DATOS MATRIZ DE PROYECTOS" # [Avance 1] Muestra el titulo de la tabla
+        Para cada fila en matriz_proyectos Hacer # [Avance 5 y 7] Recorre cada fila de la tabla
+            Escribir "Proyecto: ", fila[0], " | Avance: ", fila[1], " | Estado: ", fila[2] # [Avance 7] Muestra nombre, avance y estado
+        FinPara # [Avance 5] Cierra el ciclo de la tabla
     FinSubProceso
 
-    SubProceso actualizar_estados_matriz() // [Avance 7] Subproceso de actualización dinámica en lote
-        // [Avance 7] Recorre y actualiza los estados de la matriz según los valores registrados
+    SubProceso actualizar_estados_matriz() # [Avance 7] Crea la funcion para actualizar estados en lote
+        Para cada fila en matriz_proyectos Hacer # [Avance 5 y 7] Recorre cada fila de la tabla
+            Escribir "Actualizando estado del proyecto: ", fila[0] # [Avance 7] Indica que revisa el estado de la fila
+        FinPara # [Avance 5] Cierra el ciclo de actualizacion
     FinSubProceso
 
-    SubProceso resumen_conteo_matriz() // [Avance 7] Subproceso de resumen y conteo cruzado
-        Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS" // [Avance 1]
+    SubProceso resumen_conteo_matriz() # [Avance 7] Crea la funcion de conteo por estado
+        Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS" # [Avance 1] Muestra el titulo del conteo
+        Para cada fila en matriz_proyectos Hacer # [Avance 5 y 7] Recorre cada fila de la tabla
+            Escribir "Registro: ", fila[0], " -> Estado actual: ", fila[2] # [Avance 7] Muestra el estado de cada fila
+        FinPara # [Avance 5] Cierra el ciclo de conteo
     FinSubProceso
 
-    SubProceso mostrar_menu() // [Avance 3] Define subproceso para mostrar opciones
-        Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS" // [Avance 1] Título principal
-        Escribir "1. Crear cuenta" // [Avance 1] Opción 1
-        Escribir "2. Iniciar sesion" // [Avance 1] Opción 2
-        Escribir "3. Registrar proyecto (Con ciclo)" // [Avance 1] Opción 3
-        Escribir "4. Calcular metricas de proyecto" // [Avance 1] Opción 4
-        Escribir "5. Ver historial de proyectos" // [Avance 1] Opción 5
-        Escribir "6. Ver estadisticas de la lista" // [Avance 6] Opción 6
-        Escribir "7. Ver matriz de proyectos en tabla" // [Avance 7] Opción 7
-        Escribir "8. Actualizar estados de proyectos en lote" // [Avance 7] Opción 8
-        Escribir "9. Ver resumen y conteo cruzado" // [Avance 7] Opción 9
-        Escribir "10. Salir" // [Avance 1 y 7] Opción 10 actualizada
+    SubProceso buscar_analizar_cadenas() # [Avance 8] Crea la funcion para buscar y revisar texto
+        Definir palabra_clave Como Cadena # [Avance 8] Guarda la palabra a buscar
+        Escribir "BUSQUEDA Y ANALISIS DE CADENAS EN PROYECTOS" # [Avance 1 y 8] Muestra el titulo de busqueda
+        Escribir "Ingrese una palabra clave para buscar:" # [Avance 8] Pide la palabra clave
+        Leer palabra_clave # [Avance 8] Lee la palabra clave
+        palabra_clave <- MINUSCULAS(RECORTAR(palabra_clave)) # [Avance 8] Quita espacios y pasa a minusculas
+        Para cada elemento en proyectos_registrados Hacer # [Avance 5 y 6] Recorre cada proyecto de la lista
+            Si CONTIENE(MINUSCULAS(elemento), palabra_clave) Entonces # [Avance 8] Revisa si la palabra aparece en el proyecto
+                Escribir "Coincidencia encontrada: ", elemento # [Avance 8] Muestra el proyecto encontrado
+                Escribir "En mayusculas: ", MAYUSCULAS(elemento) # [Avance 8] Muestra el texto en mayusculas
+                Escribir "Total de caracteres: ", LONGITUD_CADENA(elemento) # [Avance 8] Muestra cuantos caracteres tiene
+            FinSi # [Avance 8] Cierra la revision de coincidencia
+        FinPara # [Avance 5] Cierra el ciclo de busqueda
     FinSubProceso
 
-    SubProceso principal() // [Avance 3] Define subproceso que controla el flujo general
-        Definir opcion Como Cadena // [Avance 1]
-        Definir ejecutando Como Logico // [Avance 1]
-        
-        ejecutando <- Verdadero // [Avance 1]
-        
-        Mientras ejecutando Hacer // [Avance 5] Estructura de repetición principal del menú
-            mostrar_menu() // [Avance 3]
-            Escribir "Selecciona una opcion (1 a 10):" // [Avance 1]
-            Leer opcion // [Avance 1]
-            
-            Si opcion = "1" Entonces // [Avance 4]
-                crear_cuenta() // [Avance 3]
-            Sino 
-                Si opcion = "2" Entonces // [Avance 4]
-                    iniciar_sesion() // [Avance 3]
-                Sino 
-                    Si opcion = "3" Entonces // [Avance 4]
-                        registrar_proyecto() // [Avance 3]
-                    Sino 
-                        Si opcion = "4" Entonces // [Avance 4]
-                            calcular_metricas() // [Avance 3]
-                        Sino 
-                            Si opcion = "5" Entonces // [Avance 4]
-                                ver_historial_proyectos() // [Avance 3 y 6]
-                            Sino 
-                                Si opcion = "6" Entonces // [Avance 4]
-                                    calcular_estadisticas_lista() // [Avance 6]
-                                Sino 
-                                    Si opcion = "7" Entonces // [Avance 4 y 7]
-                                        ver_matriz_proyectos() // [Avance 7]
-                                    Sino 
-                                        Si opcion = "8" Entonces // [Avance 4 y 7]
-                                            actualizar_estados_matriz() // [Avance 7]
-                                            Escribir "Estados actualizados en lote correctamente!" // [Avance 1]
-                                        Sino 
-                                            Si opcion = "9" Entonces // [Avance 4 y 7]
-                                                resumen_conteo_matriz() // [Avance 7]
-                                            Sino 
-                                                Si opcion = "10" Entonces // [Avance 4 y 7]
-                                                    Escribir "Cerrando programa" // [Avance 1]
-                                                    ejecutando <- Falso // [Avance 1]
-                                                Sino 
-                                                    Escribir "Opcion no valida. Por favor escribe un numero del 1 al 10." // [Avance 1]
-                                                FinSi // [Avance 4]
-                                            FinSi // [Avance 4]
-                                        FinSi // [Avance 4]
-                                    FinSi // [Avance 4]
-                                FinSi // [Avance 4]
-                            FinSi // [Avance 4]
-                        FinSi // [Avance 4]
-                    FinSi // [Avance 4]
-                FinSi // [Avance 4]
-            FinSi // [Avance 4]
-            Escribir "Presiona enter para continuar..."
-            Leer opcion // Paus
-        FinMientras // [Avance 5]
+    SubProceso guardar_datos_archivos() # [Avance 9] Crea la funcion para guardar en archivos de texto
+        Escribir "GUARDAR PROYECTOS Y MATRIZ EN ARCHIVO" # [Avance 1 y 9] Muestra el titulo de guardado
+        ABRIR_ARCHIVO_ESCRITURA(archivo_proyectos) # [Avance 9] Abre el archivo de proyectos para escribir
+        Para cada elemento en proyectos_registrados Hacer # [Avance 5 y 9] Recorre cada proyecto de la lista
+            ESCRIBIR_LINEA(archivo_proyectos, elemento) # [Avance 9] Guarda cada proyecto en el archivo de texto
+        FinPara # [Avance 5] Cierra el ciclo de escritura de proyectos
+        CERRAR_ARCHIVO(archivo_proyectos) # [Avance 9] Cierra el archivo de proyectos
+        ABRIR_ARCHIVO_ESCRITURA(archivo_matriz) # [Avance 9] Abre el archivo de la tabla para escribir
+        Para cada fila en matriz_proyectos Hacer # [Avance 5 y 9] Recorre cada fila de la tabla
+            ESCRIBIR_LINEA(archivo_matriz, fila[0] + "|" + fila[1] + "|" + fila[2]) # [Avance 9] Guarda las columnas separadas por "|"
+        FinPara # [Avance 5] Cierra el ciclo de escritura de la tabla
+        CERRAR_ARCHIVO(archivo_matriz) # [Avance 9] Cierra el archivo de la tabla
+        Escribir "Datos guardados en ", archivo_proyectos, " y ", archivo_matriz # [Avance 9] Confirma que se guardaron los archivos
     FinSubProceso
 
-    // Inicio del flujo del algoritmo
-    principal() // [Avance 3] Llama al subproceso principal
+    SubProceso cargar_datos_archivos() # [Avance 9] Crea la funcion para cargar desde archivos de texto
+        Definir linea Como Cadena # [Avance 9] Guarda cada renglon leido del archivo
+        Escribir "CARGAR PROYECTOS Y MATRIZ DESDE ARCHIVO" # [Avance 1 y 9] Muestra el titulo de carga
+        Si EXISTE_ARCHIVO(archivo_proyectos) Entonces # [Avance 9] Revisa si existe el archivo de proyectos
+            ABRIR_ARCHIVO_LECTURA(archivo_proyectos) # [Avance 9] Abre el archivo de proyectos para leerlo
+            LIMPIAR_LISTA(proyectos_registrados) # [Avance 6 y 9] Vacía la lista antes de cargar datos nuevos
+            Mientras NO FIN_ARCHIVO(archivo_proyectos) Hacer # [Avance 5 y 9] Lee mientras haya renglones en el archivo
+                linea <- LEER_LINEA(archivo_proyectos) # [Avance 9] Lee un renglon del archivo
+                Si linea <> "" Entonces # [Avance 4 y 9] Revisa que el renglon no este vacio
+                    AGREGAR_A_LISTA(proyectos_registrados, linea) # [Avance 6 y 9] Mete el renglon a la lista
+                FinSi # [Avance 4] Cierra revision de renglon vacio
+            FinMientras # [Avance 5] Cierra ciclo de lectura de proyectos
+            CERRAR_ARCHIVO(archivo_proyectos) # [Avance 9] Cierra el archivo de proyectos
+            Escribir "Proyectos cargados desde ", archivo_proyectos # [Avance 9] Confirma la carga de proyectos
+        Sino # [Avance 9] Si no existe el archivo de proyectos
+            Escribir "No se encontro el archivo ", archivo_proyectos # [Avance 9] Avisa que no existe el archivo
+        FinSi # [Avance 9] Cierra revision de existencia del archivo
+    FinSubProceso
+
+    SubProceso mostrar_menu() # [Avance 3] Crea la funcion para mostrar las opciones
+        Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS" # [Avance 1] Muestra el titulo del menu
+        Escribir "1. Crear cuenta" # [Avance 1] Opcion 1
+        Escribir "2. Iniciar sesion" # [Avance 1] Opcion 2
+        Escribir "3. Registrar proyecto (Con ciclo)" # [Avance 1] Opcion 3
+        Escribir "4. Calcular metricas de proyecto" # [Avance 1] Opcion 4
+        Escribir "5. Ver historial de proyectos" # [Avance 1] Opcion 5
+        Escribir "6. Ver estadisticas de la lista" # [Avance 6] Opcion 6
+        Escribir "7. Ver matriz de proyectos en tabla" # [Avance 7] Opcion 7
+        Escribir "8. Actualizar estados de proyectos en lote" # [Avance 7] Opcion 8
+        Escribir "9. Ver resumen y conteo cruzado" # [Avance 7] Opcion 9
+        Escribir "10. Buscar y analizar cadenas en proyectos" # [Avance 8] Opcion 10
+        Escribir "11. Guardar proyectos en archivo" # [Avance 9] Opcion 11
+        Escribir "12. Cargar proyectos desde archivo" # [Avance 9] Opcion 12
+        Escribir "13. Salir" # [Avance 1 y 9] Opcion 13
+    FinSubProceso
+
+    SubProceso principal() # [Avance 3] Crea la funcion principal que maneja el programa
+        Definir opcion Como Cadena # [Avance 1] Guarda la opcion elegida
+        Definir ejecutando Como Logico # [Avance 1] Mantiene encendido o apagado el menu
+        ejecutando <- Verdadero # [Avance 1] Inicia el ciclo del menu en verdadero
+        Mientras ejecutando Hacer # [Avance 5] Repite el menu mientras ejecutando sea verdadero
+            mostrar_menu() # [Avance 3] Muestra las opciones del menu
+            Escribir "Selecciona una opcion (1 a 13):" # [Avance 1] Pide elegir una opcion del 1 al 13
+            Leer opcion # [Avance 1] Lee la opcion elegida
+            Si opcion = "1" Entonces # [Avance 4] Revisa si eligio la opcion 1
+                crear_cuenta() # [Avance 3] Llama a crear_cuenta
+            Sino # [Avance 4] Si no eligio la 1
+                Si opcion = "2" Entonces # [Avance 4] Revisa si eligio la opcion 2
+                    iniciar_sesion() # [Avance 3] Llama a iniciar_sesion
+                Sino # [Avance 4] Si no eligio la 2
+                    Si opcion = "3" Entonces # [Avance 4] Revisa si eligio la opcion 3
+                        registrar_proyecto() # [Avance 3] Llama a registrar_proyecto
+                    Sino # [Avance 4] Si no eligio la 3
+                        Si opcion = "4" Entonces # [Avance 4] Revisa si eligio la opcion 4
+                            calcular_metricas() # [Avance 3] Llama a calcular_metricas
+                        Sino # [Avance 4] Si no eligio la 4
+                            Si opcion = "5" Entonces # [Avance 4] Revisa si eligio la opcion 5
+                                ver_historial_proyectos() # [Avance 3 y 6] Llama a ver_historial_proyectos
+                            Sino # [Avance 4] Si no eligio la 5
+                                Si opcion = "6" Entonces # [Avance 4] Revisa si eligio la opcion 6
+                                    calcular_estadisticas_lista() # [Avance 6] Llama a calcular_estadisticas_lista
+                                Sino # [Avance 4] Si no eligio la 6
+                                    Si opcion = "7" Entonces # [Avance 4 y 7] Revisa si eligio la opcion 7
+                                        ver_matriz_proyectos() # [Avance 7] Llama a ver_matriz_proyectos
+                                    Sino # [Avance 4] Si no eligio la 7
+                                        Si opcion = "8" Entonces # [Avance 4 y 7] Revisa si eligio la opcion 8
+                                            actualizar_estados_matriz() # [Avance 7] Llama a actualizar_estados_matriz
+                                            Escribir "Estados actualizados en lote correctamente!" # [Avance 1] Confirma actualizacion
+                                        Sino # [Avance 4] Si no eligio la 8
+                                            Si opcion = "9" Entonces # [Avance 4 y 7] Revisa si eligio la opcion 9
+                                                resumen_conteo_matriz() # [Avance 7] Llama a resumen_conteo_matriz
+                                            Sino # [Avance 4] Si no eligio la 9
+                                                Si opcion = "10" Entonces # [Avance 4 y 8] Revisa si eligio la opcion 10
+                                                    buscar_analizar_cadenas() # [Avance 8] Llama a buscar_analizar_cadenas
+                                                Sino # [Avance 4] Si no eligio la 10
+                                                    Si opcion = "11" Entonces # [Avance 4 y 9] Revisa si eligio la opcion 11
+                                                        guardar_datos_archivos() # [Avance 9] Llama a guardar_datos_archivos
+                                                    Sino # [Avance 4] Si no eligio la 11
+                                                        Si opcion = "12" Entonces # [Avance 4 y 9] Revisa si eligio la opcion 12
+                                                            cargar_datos_archivos() # [Avance 9] Llama a cargar_datos_archivos
+                                                        Sino # [Avance 4] Si no eligio la 12
+                                                            Si opcion = "13" Entonces # [Avance 4 y 9] Revisa si eligio la opcion 13
+                                                                Escribir "Cerrando programa" # [Avance 1] Muestra mensaje de cierre
+                                                                ejecutando <- Falso # [Avance 1] Termina el ciclo del menu
+                                                            Sino # [Avance 4] Si escribio algo fuera del 1 al 13
+                                                                Escribir "Opcion no valida. Por favor escribe un numero del 1 al 13." # [Avance 1] Avisa que la opcion no es valida
+                                                            FinSi # [Avance 4] Cierra revision de opcion 13
+                                                        FinSi # [Avance 4] Cierra revision de opcion 12
+                                                    FinSi # [Avance 4] Cierra revision de opcion 11
+                                                FinSi # [Avance 4] Cierra revision de opcion 10
+                                            FinSi # [Avance 4] Cierra revision de opcion 9
+                                        FinSi # [Avance 4] Cierra revision de opcion 8
+                                    FinSi # [Avance 4] Cierra revision de opcion 7
+                                FinSi # [Avance 4] Cierra revision de opcion 6
+                            FinSi # [Avance 4] Cierra revision de opcion 5
+                        FinSi # [Avance 4] Cierra revision de opcion 4
+                    FinSi # [Avance 4] Cierra revision de opcion 3
+                FinSi # [Avance 4] Cierra revision de opcion 2
+            FinSi # [Avance 4] Cierra revision de opcion 1
+            Escribir "Presiona enter para continuar..." # [Avance 1] Pide presionar enter para seguir
+            Leer opcion # [Avance 1] Pausa hasta que presione enter
+        FinMientras # [Avance 5] Cierra el ciclo principal
+    FinSubProceso
+
+    principal() # [Avance 3] Arranca el flujo principal del algoritmo
 
 FinAlgoritmo
