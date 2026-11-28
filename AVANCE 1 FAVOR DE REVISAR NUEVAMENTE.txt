@@ -1,418 +1,421 @@
-Repositorio 
 Algoritmo sistema_gestion_proyectos
 
-    Definir proyectos_registrados como una cadena
-    Definir matriz_proyectos como una cadena
-    Definir archivo_proyectos como una cadena
-    Definir archivo_matriz como una cadena
+Definir proyectos_registrados como una cadena
+Definir matriz_proyectos como una cadena
+Definir archivo_proyectos como una cadena
+Definir archivo_matriz como una cadena
 
-    archivo_proyectos <-- "proyectos_guardados.txt"
-    archivo_matriz <-- "matriz_proyectos.txt"
+archivo_proyectos <-- "proyectos_guardados.txt"
+archivo_matriz <-- "matriz_proyectos.txt"
 
-    SECCIÓN 1: FUNCIONES AUXILIARES Y MATEMÁTICAS
-    1
-    1.1 SubProceso calcular_restante (inicial, gastado)
-    1.2     Retornar inicial - gastado
-    1.3 FinSubProceso
+SECCION 1: FUNCIONES AUXILIARES Y MATEMATICAS
 
-    1.4 SubProceso calcular_porcentaje (cumplidas, total)
-    1.5     Retornar (cumplidas / total) * 100
-    1.6 FinSubProceso
+1.1 SubProceso calcular_restante (inicial, gastado)
+    Retornar inicial - gastado
+FinSubProceso
 
-    1.7 SubProceso calcular_semanas (dias)
-    1.8     Retornar TRUNC(dias / 7)
-    1.9 FinSubProceso
+1.4 SubProceso calcular_porcentaje (cumplidas, total)
+    Retornar (cumplidas / total) * 100
+FinSubProceso
 
-    1.10 SubProceso calcular_dias_sobrantes (dias, semanas)
-    1.11    Retornar dias - (semanas * 7)
-    1.12 FinSubProceso
+1.7 SubProceso calcular_semanas (dias)
+    Retornar TRUNC(dias / 7)
+FinSubProceso
 
-    1.13 SubProceso generar_barra_progreso (porcentaje)
-    1.14    Definir bloques como entero
-    1.15    Si porcentaje < 0 Entonces
-    1.16        porcentaje <-- 0
-    1.17    FinSi
-    1.18    Si porcentaje > 100 Entonces
-    1.19        porcentaje <-- 100
-    1.20    FinSi
-    1.21    bloques <-- TRUNC(porcentaje / 10)
-    1.22    Escribir "Progreso: [", bloques, " de 10 bloques completados]"
-    1.23 FinSubProceso
+1.10 SubProceso calcular_dias_sobrantes (dias, semanas)
+    Retornar dias - (semanas * 7)
+FinSubProceso
 
-    1.24 SubProceso evaluar_salud_presupuesto (inicial, gastado)
-    1.25    Definir porcentaje_gastado como real
-    1.26    Si inicial > 0 Entonces
-    1.27        porcentaje_gastado <-- (gastado / inicial) * 100
-    1.28    Sino
-    1.29        porcentaje_gastado <-- 0
-    1.30    FinSi
-    1.31    Si porcentaje_gastado > 90 Entonces
-    1.32        Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)"
-    1.33    Sino
-    1.34        Si porcentaje_gastado >= 70 Entonces
-    1.35            Escribir "Precaución: Presupuesto en riesgo moderado (Entre 70% y 90%)"
-    1.36        Sino
-    1.37            Escribir "Saludable: Presupuesto bajo control (Menor al 70%)"
-    1.38        FinSi
-    1.39    FinSi
-    1.40 FinSubProceso
+1.13 SubProceso generar_barra_progreso (porcentaje)
+    Definir bloques como entero
+    Si porcentaje < 0 Entonces
+        porcentaje <-- 0
+    FinSi
+    Si porcentaje > 100 Entonces
+        porcentaje <-- 100
+    FinSi
+    bloques <-- TRUNC(porcentaje / 10)
+    Escribir "Progreso: [", bloques, " de 10 bloques completados]"
+FinSubProceso
 
-    SECCIÓN 2: MÓDULO DE AUTENTICACIÓN
-    2
-    2.1 SubProceso crear_cuenta()
-    2.2     Definir nuevo_usuario, nueva_contrasena como una cadena
-    2.3     Escribir "REGISTRO NUEVA CUENTA"
-    2.4     Escribir "Ingrese un nombre de usuario:"
-    2.5     Leer nuevo_usuario
-    2.6     Escribir "Ingrese una contrasena:"
-    2.7     Leer nueva_contrasena
-    2.8     Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces
-    2.9         Escribir "Cuenta registrada con exito para: ", nuevo_usuario
-    2.10    Sino
-    2.11        Escribir "Error: Debe llenar todos los campos"
-    2.12    FinSi
-    2.13 FinSubProceso
+1.24 SubProceso evaluar_salud_presupuesto (inicial, gastado)
+    Definir porcentaje_gastado como real
+    Si inicial > 0 Entonces
+        porcentaje_gastado <-- (gastado / inicial) * 100
+    Sino
+        porcentaje_gastado <-- 0
+    FinSi
+    Si porcentaje_gastado > 90 Entonces
+        Escribir "Alerta: Presupuesto casi agotado (Mayor al 90%)"
+    Sino
+        Si porcentaje_gastado >= 70 Entonces
+            Escribir "Precaucion: Presupuesto en riesgo moderado (Entre 70% y 90%)"
+        Sino
+            Escribir "Saludable: Presupuesto bajo control (Menor al 70%)"
+        FinSi
+    FinSi
+FinSubProceso
 
-    2.14 SubProceso iniciar_sesion()
-    2.15    Definir usuario, contrasena como una cadena
-    2.16    Escribir "INICIO DE SESION"
-    2.17    Escribir "Ingrese su usuario:"
-    2.18    Leer usuario
-    2.19    Escribir "Ingrese contrasena:"
-    2.20    Leer contrasena
-    2.21    Si usuario <> "" Y contrasena <> "" Entonces
-    2.22        Escribir "Bienvenido/a, ", usuario
-    2.23    Sino
-    2.24        Escribir "Datos incorrectos"
-    2.25    FinSi
-    2.26 FinSubProceso
+SECCION 2: MODULO DE AUTENTICACION
 
-    SECCIÓN 3: REGISTRO Y MÉTRICAS DE PROYECTOS
-    3
-    3.1 SubProceso registrar_proyecto()
-    3.2     Definir nombre como una cadena
-    3.3     Definir avance como real
-    3.4     Definir continuar como una cadena
-    3.5     Definir estado_inicial como una cadena
-    3.6     continuar <-- "s"
-    3.7     Mientras continuar = "s" O continuar = "S" Hacer
-    3.8         Escribir "REGISTRO DE PROYECTO"
-    3.9         Escribir "Nombre del proyecto:"
-    3.10        Leer nombre
-    3.11        Escribir "Porcentaje de avance (0 a 100):"
-    3.12        Leer avance
-    3.13        Si avance >= 0 Y avance <-- 100 Entonces
-    3.14            Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
-    3.15            generar_barra_progreso(avance)
-    3.16            Si avance = 100 Entonces
-    3.17                estado_inicial <-- "Completado"
-    3.18            Sino
-    3.19                Si avance > 0 Entonces
-    3.20                    estado_inicial <-- "En Proceso"
-    3.21                Sino
-    3.22                    estado_inicial <-- "Iniciado"
-    3.23                FinSi
-    3.24            FinSi
-    3.25            AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%")
-    3.26            AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", estado_inicial)
-    3.27        Sino
-    3.28            Escribir "El porcentaje debe estar entre 0 y 100"
-    3.29        FinSi
-    3.30        Escribir "¿Desea registrar otro proyecto? (s/n):"
-    3.31        Leer continuar
-    3.32    FinMientras
-    3.33 FinSubProceso
+2.1 SubProceso crear_cuenta()
+    Definir nuevo_usuario, nueva_contrasena como una cadena
+    Escribir "REGISTRO NUEVA CUENTA"
+    Escribir "Ingrese un nombre de usuario:"
+    Leer nuevo_usuario
+    Escribir "Ingrese una contrasena:"
+    Leer nueva_contrasena
+    Si nuevo_usuario <> "" Y nueva_contrasena <> "" Entonces
+        Escribir "Cuenta registrada con exito para: ", nuevo_usuario
+    Sino
+        Escribir "Error: Debe llenar todos los campos"
+    FinSi
+FinSubProceso
 
-    3.34 SubProceso calcular_metricas()
-    3.35    Definir nombre como una cadena
-    3.36    Definir metas_total, metas_cumplidas como entero
-    3.37    Definir presupuesto_inicial, presupuesto_gastado Como Real
-    3.38    Definir dias, semanas, dias_s como entero
-    3.39    Definir presupuesto_restante, porcentaje_avance Como Real
-    3.40    Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
-    3.41    Escribir "Nombre del proyecto:"
-    3.42    Leer nombre
-    3.43    Escribir "Total de metas:"
-    3.44    Leer metas_total
-    3.45    Escribir "Metas alcanzadas:"
-    3.46    Leer metas_cumplidas
-    3.47    Escribir "Presupuesto inicial:"
-    3.48    Leer presupuesto_inicial
-    3.49    Escribir "Presupuesto gastado:"
-    3.50    Leer presupuesto_gastado
-    3.51    Escribir "Duracion estimada en dias del proyecto:"
-    3.52    Leer dias
-    3.53    Si metas_total <-- 0 Entonces
-    3.54        Escribir "Error: Sus metas deben ser al menos 1"
-    3.55    Sino
-    3.56        presupuesto_restante <-- calcular_restante(presupuesto_inicial, presupuesto_gastado)
-    3.57        porcentaje_avance <-- calcular_porcentaje(metas_cumplidas, metas_total)
-    3.58        semanas <-- calcular_semanas(dias)
-    3.59        dias_s <-- calcular_dias_sobrantes(dias, semanas)
-    3.60        Escribir "RESUMEN DE RESULTADOS"
-    3.61        Escribir "Resumen de metricas: ", nombre
-    3.62        Escribir "Avance real de metas: ", porcentaje_avance, "%"
-    3.63        generar_barra_progreso(porcentaje_avance)
-    3.64        evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado)
-    3.65        Escribir "Presupuesto disponible: $", presupuesto_restante
-    3.66        Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
-    3.67    FinSi
-    3.68 FinSubProceso
+2.14 SubProceso iniciar_sesion()
+    Definir usuario, contrasena como una cadena
+    Escribir "INICIO DE SESION"
+    Escribir "Ingrese su usuario:"
+    Leer usuario
+    Escribir "Ingrese contrasena:"
+    Leer contrasena
+    Si usuario <> "" Y contrasena <> "" Entonces
+        Escribir "Bienvenido/a, ", usuario
+    Sino
+        Escribir "Datos incorrectos"
+    FinSi
+FinSubProceso
 
-    SECCIÓN 4: LISTAS, MATRICES Y ANÁLISIS DE CADENAS
-    4
-    4.1 SubProceso ver_historial_proyectos()
-    4.2     Escribir "HISTORIAL DE PROYECTOS REGISTRADOS"
-    4.3     Si LONGITUD_LISTA(proyectos_registrados) = 0 Entonces
-    4.4         Escribir "No hay proyectos registrados aun."
-    4.5     Sino
-    4.6         Para cada elemento en proyectos_registrados Hacer
-    4.7             Escribir "- ", elemento
-    4.8         FinPara
-    4.9     FinSi
-    4.10 FinSubProceso
+SECCION 3: REGISTRO Y METRICAS DE PROYECTOS
 
-    4.11 SubProceso calcular_estadisticas_lista()
-    4.12    Definir total_elementos como entero
-    4.13    Definir suma_avances, promedio_avance, mayor_avance, menor_avance, valor_actual Como Real
-    4.14    Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS"
-    4.15    total_elementos <-- LONGITUD_LISTA(proyectos_registrados)
-    4.16    Si total_elementos = 0 Entonces
-    4.17        Escribir "La lista esta vacia."
-    4.18    Sino
-    4.19        suma_avances <-- 0
-    4.20        mayor_avance <-- 0
-    4.21        menor_avance <-- 100
-    4.22        Para cada fila en matriz_proyectos hacer
-    4.23            valor_actual <-- CONVERTIR_A_NUMERO(QUITAR_CARACTER(fila[1], "%"))
-    4.24            suma_avances <-- suma_avances + valor_actual
-    4.25            Si valor_actual > mayor_avance Entonces
-    4.26                mayor_avance <-- valor_actual
-    4.27            FinSi
-    4.28            Si valor_actual < menor_avance Entonces
-    4.29                menor_avance <-- valor_actual
-    4.30            FinSi
-    4.31        FinPara
-    4.32        promedio_avance <-- suma_avances / total_elementos
-    4.33        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos
-    4.34        Escribir "Promedio general de avance: ", promedio_avance, "%"
-    4.35        Escribir "Mayor avance registrado: ", mayor_avance, "%"
-    4.36        Escribir "Menor avance registrado: ", menor_avance, "%"
-    4.37    FinSi
-    4.38 FinSubProceso
+3.1 SubProceso registrar_proyecto()
+    Definir nombre como una cadena
+    Definir avance como real
+    Definir continuar como una cadena
+    Definir estado_inicial como una cadena
+    continuar <-- "s"
+    Mientras continuar = "s" O continuar = "S" Hacer
+        Escribir "REGISTRO DE PROYECTO"
+        Escribir "Nombre del proyecto:"
+        Leer nombre
+        Escribir "Porcentaje de avance (0 a 100):"
+        Leer avance
+        Si avance >= 0 Y avance <= 100 Entonces
+            Escribir "Proyecto ", nombre, " registrado con ", avance, "% de avance"
+            generar_barra_progreso(avance)
+            Si avance = 100 Entonces
+                estado_inicial <-- "Completado"
+            Sino
+                Si avance > 0 Entonces
+                    estado_inicial <-- "En Proceso"
+                Sino
+                    estado_inicial <-- "Iniciado"
+                FinSi
+            FinSi
+            AGREGAR_A_LISTA(proyectos_registrados, nombre + " - " + CONVERTIR_A_TEXTO(avance) + "%")
+            AGREGAR_A_MATRIZ(matriz_proyectos, nombre, CONVERTIR_A_TEXTO(avance) + "%", estado_inicial)
+        Sino
+            Escribir "El porcentaje debe estar entre 0 y 100"
+        FinSi
+        Escribir "¿Desea registrar otro proyecto? (s/n):"
+        Leer continuar
+    FinMientras
+FinSubProceso
 
-    4.39 SubProceso ver_matriz_proyectos()
-    4.40    Escribir "TABLA DE DATOS - MATRIZ DE PROYECTOS"
-    4.41    Si LONGITUD_LISTA(matriz_proyectos) = 0 Entonces
-    4.42        Escribir "No hay datos en la matriz de proyectos."
-    4.43    Sino
-    4.44        Para cada fila en matriz_proyectos Hacer
-    4.45            Escribir "Proyecto: ", fila[0], " - Avance: ", fila[1], " - Estado: ", fila[2]
-    4.46        FinPara
-    4.47    FinSi
-    4.48 FinSubProceso
+3.34 SubProceso calcular_metricas()
+    Definir nombre como una cadena
+    Definir metas_total, metas_cumplidas como entero
+    Definir presupuesto_inicial, presupuesto_gastado como real
+    Definir dias, semanas, dias_s como entero
+    Definir presupuesto_restante, porcentaje_avance como real
+    Escribir "CALCULO DE METRICAS DE FINANZAS Y TIEMPO"
+    Escribir "Nombre del proyecto:"
+    Leer nombre
+    Escribir "Total de metas:"
+    Leer metas_total
+    Escribir "Metas alcanzadas:"
+    Leer metas_cumplidas
+    Escribir "Presupuesto inicial:"
+    Leer presupuesto_inicial
+    Escribir "Presupuesto gastado:"
+    Leer presupuesto_gastado
+    Escribir "Duracion estimada en dias del proyecto:"
+    Leer dias
+    Si metas_total <= 0 Entonces
+        Escribir "Error: Sus metas deben ser al menos 1"
+    Sino
+        presupuesto_restante <-- calcular_restante(presupuesto_inicial, presupuesto_gastado)
+        porcentaje_avance <-- calcular_porcentaje(metas_cumplidas, metas_total)
+        semanas <-- calcular_semanas(dias)
+        dias_s <-- calcular_dias_sobrantes(dias, semanas)
+        Escribir "RESUMEN DE RESULTADOS"
+        Escribir "Resumen de metricas: ", nombre
+        Escribir "Avance real de metas: ", porcentaje_avance, "%"
+        generar_barra_progreso(porcentaje_avance)
+        evaluar_salud_presupuesto(presupuesto_inicial, presupuesto_gastado)
+        Escribir "Presupuesto disponible: $", presupuesto_restante
+        Escribir "Tiempo estimado: ", semanas, " semanas y ", dias_s, " dias"
+    FinSi
+FinSubProceso
 
-    4.49 SubProceso actualizar_estados_matriz()
-    4.50    Definir avance_num como real
-    4.51    Escribir "ACTUALIZACION DE ESTADOS EN LOTE"
-    4.52    Para cada fila en matriz_proyectos Hacer
-    4.53        avance_num <-- CONVERTIR_A_NUMERO(QUITAR_CARACTER(fila[1], "%"))
-    4.54        Si avance_num = 100 Entonces
-    4.55            fila[2] <-- "Completado"
-    4.56        Sino
-    4.57            Si avance_num > 0 Entonces
-    4.58                fila[2] <-- "En Proceso"
-    4.59            Sino
-    4.60                fila[2] <-- "Iniciado"
-    4.61            FinSi
-    4.62        FinSi
-    4.63        Escribir "Proyecto: ", fila[0], " -> Estado actualizado: ", fila[2]
-    4.64    FinPara
-    4.65 FinSubProceso
+SECCION 4: LISTAS, MATRICES Y ANALISIS DE CADENAS
 
-    4.66 SubProceso resumen_conteo_matriz()
-    4.67    Definir iniciados, en_proceso, completados Como Entero
-    4.68    iniciados <-- 0
-    4.69    en_proceso <-- 0
-    4.70    completados <-- 0
-    4.71    Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS"
-    4.72    Para cada fila en matriz_proyectos Hacer
-    4.73        Si fila[2] = "Iniciado" Entonces
-    4.74            iniciados <-- iniciados + 1
-    4.75        Sino
-    4.76            Si fila[2] = "En Proceso" Entonces
-    4.77                en_proceso <-- en_proceso + 1
-    4.78            Sino
-    4.79                Si fila[2] = "Completado" Entonces
-    4.80                    completados <-- completados + 1
-    4.81                FinSi
-    4.82            FinSi
-    4.83        FinSi
-    4.84    FinPara
-    4.85    Escribir "Total de registros: ", LONGITUD_LISTA(matriz_proyectos)
-    4.86    Escribir "Iniciados: ", iniciados
-    4.87    Escribir "En Proceso: ", en_proceso
-    4.88    Escribir "Completados: ", completados
-    4.89 FinSubProceso
+4.1 SubProceso ver_historial_proyectos()
+    Escribir "HISTORIAL DE PROYECTOS REGISTRADOS"
+    Si LONGITUD_LISTA(proyectos_registrados) = 0 Entonces
+        Escribir "No hay proyectos registrados aun."
+    Sino
+        Para cada elemento en proyectos_registrados Hacer
+            Escribir "- ", elemento
+        FinPara
+    FinSi
+FinSubProceso
 
-    4.90 SubProceso buscar_analizar_cadenas()
-    4.91    Definir palabra_clave como una cadena
-    4.92    Definir encontrados como entero
-    4.93    encontrados <-- 0
-    4.94    Escribir "BUSQUEDA Y ANALISIS DE CADENAS EN PROYECTOS"
-    4.95    Escribir "Ingrese una palabra clave para buscar:"
-    4.96    Leer palabra_clave
-    4.97    palabra_clave <-- MINUSCULAS(RECORTAR(palabra_clave))
-    4.98    Para cada elemento en proyectos_registrados Hacer
-    4.99        Si CONTIENE(MINUSCULAS(elemento), palabra_clave) Entonces
-    5.00            encontrados <-- encontrados + 1
-    5.01            Escribir "Coincidencia [", encontrados, "]: ", elemento
-    5.02            Escribir "En mayusculas: ", MAYUSCULAS(elemento)
-    5.03            Escribir "Total de caracteres: ", LONGITUD_CADENA(elemento)
-    5.04        FinSi
-    5.05    FinPara
-    5.06    Si encontrados = 0 Entonces
-    5.07        Escribir "No se encontraron proyectos con esa palabra."
-    5.08    Sino
-    5.09        Escribir "Total de coincidencias: ", encontrados
-    5.10    FinSi
-    5.11 FinSubProceso
+4.11 SubProceso calcular_estadisticas_lista()
+    Definir total_elementos como entero
+    Definir suma_avances, promedio_avance, mayor_avance, menor_avance, valor_actual como real
+    Escribir "ESTADISTICAS GENERALES DE LA LISTA DE PROYECTOS"
+    total_elementos <-- LONGITUD_LISTA(proyectos_registrados)
+    Si total_elementos = 0 Entonces
+        Escribir "La lista esta vacia."
+    Sino
+        suma_avances <-- 0
+        mayor_avance <-- 0
+        menor_avance <-- 100
+        Para cada fila en matriz_proyectos Hacer
+            valor_actual <-- CONVERTIR_A_NUMERO(QUITAR_CARACTER(fila[1], "%"))
+            suma_avances <-- suma_avances + valor_actual
+            Si valor_actual > mayor_avance Entonces
+                mayor_avance <-- valor_actual
+            FinSi
+            Si valor_actual < menor_avance Entonces
+                menor_avance <-- valor_actual
+            FinSi
+        FinPara
+        promedio_avance <-- suma_avances / total_elementos
+        Escribir "Cantidad total de proyectos en el arreglo: ", total_elementos
+        Escribir "Promedio general de avance: ", promedio_avance, "%"
+        Escribir "Mayor avance registrado: ", mayor_avance, "%"
+        Escribir "Menor avance registrado: ", menor_avance, "%"
+    FinSi
+FinSubProceso
 
-    SECCIÓN 5: MANEJO DE ARCHIVOS
-    5
-    5.1 SubProceso guardar_datos_archivos()
-    5.2     Escribir "GUARDAR PROYECTOS Y MATRIZ EN ARCHIVO"
-    5.3     ABRIR_ARCHIVO_ESCRITURA(archivo_proyectos)
-    5.4     Para cada elemento en proyectos_registrados Hacer
-    5.5         ESCRIBIR_LINEA(archivo_proyectos, elemento)
-    5.6     FinPara
-    5.7     CERRAR_ARCHIVO(archivo_proyectos)
-    5.8     ABRIR_ARCHIVO_ESCRITURA(archivo_matriz)
-    5.9     Para cada fila en matriz_proyectos Hacer
-    5.10        ESCRIBIR_LINEA(archivo_matriz, fila[0] + "-" + fila[1] + "-" + fila[2])
-    5.11    FinPara
-    5.12    CERRAR_ARCHIVO(archivo_matriz)
-    5.13    Escribir "Datos guardados en ", archivo_proyectos, " y ", archivo_matriz
-    5.14 FinSubProceso
+4.39 SubProceso ver_matriz_proyectos()
+    Escribir "TABLA DE DATOS - MATRIZ DE PROYECTOS"
+    Si LONGITUD_LISTA(matriz_proyectos) = 0 Entonces
+        Escribir "No hay datos en la matriz de proyectos."
+    Sino
+        Para cada fila en matriz_proyectos Hacer
+            Escribir "Proyecto: ", fila[0], " - Avance: ", fila[1], " - Estado: ", fila[2]
+        FinPara
+    FinSi
+FinSubProceso
 
-    5.15 SubProceso cargar_datos_archivos()
-    5.16    Definir linea, linea_m como una cadena
-    5.17    Definir campos como una cadena
-    5.18    Escribir "CARGAR PROYECTOS Y MATRIZ DESDE ARCHIVO"
-    5.19    Si EXISTE_ARCHIVO(archivo_proyectos) Entonces
-    5.20        ABRIR_ARCHIVO_LECTURA(archivo_proyectos)
-    5.21        LIMPIAR_LISTA(proyectos_registrados)
-    5.22        Mientras NO FIN_ARCHIVO(archivo_proyectos) Hacer
-    5.23            linea <-- RECORTAR(LEER_LINEA(archivo_proyectos))
-    5.24            Si linea <> "" Entonces
-    5.25                AGREGAR_A_LISTA(proyectos_registrados, linea)
-    5.26            FinSi
-    5.27        FinMientras
-    5.28        CERRAR_ARCHIVO(archivo_proyectos)
-    5.29        Si EXISTE_ARCHIVO(archivo_matriz) Entonces
-    5.30            ABRIR_ARCHIVO_LECTURA(archivo_matriz)
-    5.31            LIMPIAR_LISTA(matriz_proyectos)
-    5.32            Mientras NO FIN_ARCHIVO(archivo_matriz) Hacer
-    5.33                linea_m <-- RECORTAR(LEER_LINEA(archivo_matriz))
-    5.34                Si linea_m <> "" Entonces
-    5.35                    campos <-- DIVIDIR_TEXTO(linea_m, "-")
-    5.36                    AGREGAR_A_MATRIZ(matriz_proyectos, campos[0], campos[1], campos[2])
-    5.37                FinSi
-    5.38            FinMientras
-    5.39            CERRAR_ARCHIVO(archivo_matriz)
-    5.40        FinSi
-    5.41        Escribir "Proyectos y tabla cargados correctamente."
-    5.42    Sino
-    5.43        Escribir "No se encontro el archivo ", archivo_proyectos
-    5.44    FinSi
-    5.45 FinSubProceso
+4.49 SubProceso actualizar_estados_matriz()
+    Definir avance_num como real
+    Escribir "ACTUALIZACION DE ESTADOS EN LOTE"
+    Para cada fila en matriz_proyectos Hacer
+        avance_num <-- CONVERTIR_A_NUMERO(QUITAR_CARACTER(fila[1], "%"))
+        Si avance_num = 100 Entonces
+            fila[2] <-- "Completado"
+        Sino
+            Si avance_num > 0 Entonces
+                fila[2] <-- "En Proceso"
+            Sino
+                fila[2] <-- "Iniciado"
+            FinSi
+        FinSi
+        Escribir "Proyecto: ", fila[0], " -> Estado actualizado: ", fila[2]
+    FinPara
+FinSubProceso
 
-    SECCIÓN 6: MENÚ Y FLUJO PRINCIPAL
-    6
-    6.1 SubProceso mostrar_menu()
-    6.2     Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS"
-    6.3     Escribir "1. Crear cuenta"
-    6.4     Escribir "2. Iniciar sesion"
-    6.5     Escribir "3. Registrar proyecto (Con ciclo)"
-    6.6     Escribir "4. Calcular metricas de proyecto"
-    6.7     Escribir "5. Ver historial de proyectos"
-    6.8     Escribir "6. Ver estadisticas de la lista"
-    6.9     Escribir "7. Ver matriz de proyectos en tabla"
-    6.10    Escribir "8. Actualizar estados de proyectos en lote"
-    6.11    Escribir "9. Ver resumen y conteo cruzado"
-    6.12    Escribir "10. Buscar y analizar cadenas en proyectos"
-    6.13    Escribir "11. Guardar proyectos en archivo"
-    6.14    Escribir "12. Cargar proyectos desde archivo"
-    6.15    Escribir "13. Salir"
-    6.16 FinSubProceso
+4.66 SubProceso resumen_conteo_matriz()
+    Definir iniciados, en_proceso, completados como entero
+    iniciados <-- 0
+    en_proceso <-- 0
+    completados <-- 0
+    Escribir "RESUMEN Y CONTEO CRUZADO DE PROYECTOS"
+    Para cada fila en matriz_proyectos Hacer
+        Si fila[2] = "Iniciado" Entonces
+            iniciados <-- iniciados + 1
+        Sino
+            Si fila[2] = "En Proceso" Entonces
+                en_proceso <-- en_proceso + 1
+            Sino
+                Si fila[2] = "Completado" Entonces
+                    completados <-- completados + 1
+                FinSi
+            FinSi
+        FinSi
+    FinPara
+    Escribir "Total de registros: ", LONGITUD_LISTA(matriz_proyectos)
+    Escribir "Iniciados: ", iniciados
+    Escribir "En Proceso: ", en_proceso
+    Escribir "Completados: ", completados
+FinSubProceso
 
-    6.17 SubProceso principal()
-    6.18    Definir opcion como una cadena
-    6.19    Definir ejecutando Como Logico
-    6.20    ejecutando <-- Verdadero
-    6.21    Mientras ejecutando Hacer
-    6.22        mostrar_menu()
-    6.23        Escribir "Selecciona una opcion (1 a 13):"
-    6.24        Leer opcion
-    6.25        Si opcion = "1" Entonces
-    6.26            crear_cuenta()
-    6.27        Sino
-    6.28            Si opcion = "2" Entonces
-    6.29                iniciar_sesion()
-    6.30            Sino
-    6.31                Si opcion = "3" Entonces
-    6.32                    registrar_proyecto()
-    6.33                Sino
-    6.34                    Si opcion = "4" Entonces
-    6.35                        calcular_metricas()
-    6.36                    Sino
-    6.37                        Si opcion = "5" Entonces
-    6.38                            ver_historial_proyectos()
-    6.39                        Sino
-    6.40                            Si opcion = "6" Entonces
-    6.41                                calcular_estadisticas_lista()
-    6.42                            Sino
-    6.43                                Si opcion = "7" Entonces
-    6.44                                    ver_matriz_proyectos()
-    6.45                                Sino
-    6.46                                    Si opcion = "8" Entonces
-    6.47                                        actualizar_estados_matriz()
-    6.48                                        Escribir "Estados actualizados en lote correctamente!"
-    6.49                                    Sino
-    6.50                                        Si opcion = "9" Entonces
-    6.51                                            resumen_conteo_matriz()
-    6.52                                        Sino
-    6.53                                            Si opcion = "10" Entonces
-    6.54                                                buscar_analizar_cadenas()
-    6.55                                            Sino
-    6.56                                                Si opcion = "11" Entonces
-    6.57                                                    guardar_datos_archivos()
-    6.58                                                Sino
-    6.59                                                    Si opcion = "12" Entonces
-    6.60                                                        cargar_datos_archivos()
-    6.61                                                    Sino
-    6.62                                                        Si opcion = "13" Entonces
-    6.63                                                            Escribir "Cerrando programa"
-    6.64                                                            ejecutando <-- Falso
-    6.65                                                        Sino
-    6.66                                                            Escribir "Opcion no válida. Por favor escribe un numero del 1 al 13."
-    6.67                                                        FinSi
-    6.68                                                    FinSi
-    6.69                                                FinSi
-    6.70                                            FinSi
-    6.71                                        FinSi
-    6.72                                    FinSi
-    6.73                                FinSi
-    6.74                            FinSi
-    6.75                        FinSi
-    6.76                    FinSi
-    6.77                FinSi
-    6.78            FinSi
-    6.79        FinSi
-    6.80        Escribir "Presiona Enter para continuar"
-    6.81        Leer opcion
-    6.82    FinMientras
-    6.83 FinSubProceso
+4.90 SubProceso buscar_analizar_cadenas()
+    Definir palabra_clave como una cadena
+    Definir encontrados como entero
+    encontrados <-- 0
+    Escribir "BUSQUEDA Y ANALISIS DE CADENAS EN PROYECTOS"
+    Escribir "Ingrese una palabra clave para buscar:"
+    Leer palabra_clave
+    palabra_clave <-- MINUSCULAS(RECORTAR(palabra_clave))
+    Para cada elemento en proyectos_registrados Hacer
+        Si CONTIENE(MINUSCULAS(elemento), palabra_clave) Entonces
+            encontrados <-- encontrados + 1
+            Escribir "Coincidencia [", encontrados, "]: ", elemento
+            Escribir "En mayusculas: ", MAYUSCULAS(elemento)
+            Escribir "Total de caracteres: ", LONGITUD_CADENA(elemento)
+        FinSi
+    FinPara
+    Si encontrados = 0 Entonces
+        Escribir "No se encontraron proyectos con esa palabra."
+    Sino
+        Escribir "Total de coincidencias: ", encontrados
+    FinSi
+FinSubProceso
+
+SECCION 5: MANEJO DE ARCHIVOS
+
+5.1 SubProceso guardar_datos_archivos()
+    Escribir "GUARDAR PROYECTOS Y MATRIZ EN ARCHIVO"
+    ABRIR_ARCHIVO_ESCRITURA(archivo_proyectos)
+    Para cada elemento en proyectos_registrados Hacer
+        ESCRIBIR_LINEA(archivo_proyectos, elemento)
+    FinPara
+    CERRAR_ARCHIVO(archivo_proyectos)
+    ABRIR_ARCHIVO_ESCRITURA(archivo_matriz)
+    Para cada fila en matriz_proyectos Hacer
+        ESCRIBIR_LINEA(archivo_matriz, fila[0] + "-" + fila[1] + "-" + fila[2])
+    FinPara
+    CERRAR_ARCHIVO(archivo_matriz)
+    Escribir "Datos guardados en ", archivo_proyectos, " y ", archivo_matriz
+FinSubProceso
+
+5.15 SubProceso cargar_datos_archivos()
+    Definir linea, linea_m como una cadena
+    Definir campos como una cadena
+    Escribir "CARGAR PROYECTOS Y MATRIZ DESDE ARCHIVO"
+    Si EXISTE_ARCHIVO(archivo_proyectos) Entonces
+        ABRIR_ARCHIVO_LECTURA(archivo_proyectos)
+        LIMPIAR_LISTA(proyectos_registrados)
+        Mientras NO FIN_ARCHIVO(archivo_proyectos) Hacer
+            linea <-- RECORTAR(LEER_LINEA(archivo_proyectos))
+            Si linea <> "" Entonces
+                AGREGAR_A_LISTA(proyectos_registrados, linea)
+            FinSi
+        FinMientras
+        CERRAR_ARCHIVO(archivo_proyectos)
+        Si EXISTE_ARCHIVO(archivo_matriz) Entonces
+            ABRIR_ARCHIVO_LECTURA(archivo_matriz)
+            LIMPIAR_LISTA(matriz_proyectos)
+            Mientras NO FIN_ARCHIVO(archivo_matriz) Hacer
+                linea_m <-- RECORTAR(LEER_LINEA(archivo_matriz))
+                Si linea_m <> "" Entonces
+                    campos <-- DIVIDIR_TEXTO(linea_m, "-")
+                    AGREGAR_A_MATRIZ(matriz_proyectos, campos[0], campos[1], campos[2])
+                FinSi
+            FinMientras
+            CERRAR_ARCHIVO(archivo_matriz)
+        FinSi
+        Escribir "Proyectos y tabla cargados correctamente."
+    Sino
+        Escribir "No se encontro el archivo ", archivo_proyectos
+    FinSi
+FinSubProceso
+
+SECCION 6: MENU Y FLUJO PRINCIPAL
+
+6.1 SubProceso mostrar_menu()
+    Escribir "SISTEMA DE GESTION DE PROYECTOS Y RESULTADOS"
+    Escribir "1. Crear cuenta"
+    Escribir "2. Iniciar sesion"
+    Escribir "3. Registrar proyecto (Con ciclo)"
+    Escribir "4. Calcular metricas de proyecto"
+    Escribir "5. Ver historial de proyectos"
+    Escribir "6. Ver estadisticas de la lista"
+    Escribir "7. Ver matriz de proyectos en tabla"
+    Escribir "8. Actualizar estados de proyectos en lote"
+    Escribir "9. Ver resumen y conteo cruzado"
+    Escribir "10. Buscar y analizar cadenas en proyectos"
+    Escribir "11. Guardar proyectos en archivo"
+    Escribir "12. Cargar proyectos desde archivo"
+    Escribir "13. Salir"
+FinSubProceso
+
+6.17 SubProceso principal()
+    Definir opcion como una cadena
+    Definir ejecutando como logico
+    ejecutando <-- Verdadero
+    Mientras ejecutando Hacer
+        mostrar_menu()
+        Escribir "Selecciona una opcion (1 a 13):"
+        Leer opcion
+        Si opcion = "1" Entonces
+            crear_cuenta()
+        Sino
+            Si opcion = "2" Entonces
+                iniciar_sesion()
+            Sino
+                Si opcion = "3" Entonces
+                    registrar_proyecto()
+                Sino
+                    Si opcion = "4" Entonces
+                        calcular_metricas()
+                    Sino
+                        Si opcion = "5" Entonces
+                            ver_historial_proyectos()
+                        Sino
+                            Si opcion = "6" Entonces
+                                calcular_estadisticas_lista()
+                            Sino
+                                Si opcion = "7" Entonces
+                                    ver_matriz_proyectos()
+                                Sino
+                                    Si opcion = "8" Entonces
+                                        actualizar_estados_matriz()
+                                        Escribir "Estados actualizados en lote correctamente!"
+                                    Sino
+                                        Si opcion = "9" Entonces
+                                            resumen_conteo_matriz()
+                                        Sino
+                                            Si opcion = "10" Entonces
+                                                buscar_analizar_cadenas()
+                                            Sino
+                                                Si opcion = "11" Entonces
+                                                    guardar_datos_archivos()
+                                                Sino
+                                                    Si opcion = "12" Entonces
+                                                        cargar_datos_archivos()
+                                                    Sino
+                                                        Si opcion = "13" Entonces
+                                                            Escribir "Cerrando programa"
+                                                            ejecutando <-- Falso
+                                                        Sino
+                                                            Escribir "Opcion no valida. Por favor escribe un numero del 1 al 13."
+                                                        FinSi
+                                                    FinSi
+                                                FinSi
+                                            FinSi
+                                        FinSi
+                                    FinSi
+                                FinSi
+                            FinSi
+                        FinSi
+                    FinSi
+                FinSi
+            FinSi
+        FinSi
+        Escribir "Presiona Enter para continuar"
+        Leer opcion
+    FinMientras
+FinSubProceso
+
+principal()
+
+FinAlgoritmo
 
     principal()
 
